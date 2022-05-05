@@ -1,0 +1,37 @@
+/*
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ */
+
+#ifndef VP_FUNC_H_
+#define VP_FUNC_H_
+
+#include <stdlib.h>
+#include "common.h"
+
+typedef struct vp_label {
+	size_t pos;
+	#ifdef VP_DEBUG
+	const char *name;
+	#endif
+} vp_label;
+
+typedef struct vp_func {
+	const char* name;
+	i32 id;
+	size_t size_code;
+	size_t cap_code;
+	u8 *code;
+	u16 r32;
+	u16 r64;
+	u16 rsize;
+	u16 rresv; // unused
+	vp_func_type type;
+} vp_func;
+
+vp_func *vp_func_create(vp_type ret, vp_type *args, size_t num_args);
+// this also frees the code
+int vp_func_free(vp_func *fn);
+
+#endif

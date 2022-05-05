@@ -1,0 +1,10 @@
+data txt "Hello, World!"
+
+extern print(iarch) -> void
+
+pub func _start() -> i32 {
+	%0 = obj txt -- get pointer from object index
+	call void print(iarch %0)
+	%1 = ldi.i32 0
+	ret i32 %1
+}
