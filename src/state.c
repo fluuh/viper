@@ -4,6 +4,8 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
+#include <string.h>
+
 #include <viper/util.h>
 #include <viper/state.h>
 
@@ -89,4 +91,26 @@ void ve_free(ve_allocator *alloc, void *mem)
 	}
 	alloc->allocated -= block->size;
 	ve_free_block(alloc, block);
+}
+
+vp_state *vp_state_init(vn_nest *nest)
+{
+	vp_state *state = vu_malloc(sizeof(*state));
+	state->alloc = ve_allocator_init(0);
+	state->nest = nest;
+	state->num_objs = nest->num_objs;
+	state->objs = vu_malloc_array(nest->num_objs, sizeof(*state->objs));
+	for(int i = 0; i < state->num_objs; i++) {
+		size_t size = nest->objs[i]->size;
+		state->objs[i] = ve_malloc(state->alloc, size);
+		memcpy(state->objs[i], nest->objs[i]->init, size);
+	}
+	return state;
+}
+
+void vp_state_free(vp_state *state)
+{
+	ve_allocator_free(state->alloc);
+	vu_free(state->objs);
+	vu_free(state);
 }

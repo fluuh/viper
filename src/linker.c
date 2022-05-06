@@ -34,7 +34,6 @@ static i32 linker_resolve_import(vn_linker *lk, const char* name)
 			return sym->f->id;
 		}
 	}
-	exit(1);
 	// TODO: add import
 	return 0;
 }
@@ -129,7 +128,7 @@ static int check_func(vn_linker *lk, vn_nest *nest, vp_func *fn)
 			SKIP(5);
 		} else if(op < 39) {
 			SKIP(9);
-		} else if(op == 40) {
+		} else if(op == 41) {
 			// call instruction
 			SKIP(2);
 			u32* loc = (u32*)ip;
@@ -149,9 +148,8 @@ static int check_func(vn_linker *lk, vn_nest *nest, vp_func *fn)
 			}
 			SKIP(toskip * 2);
 		} else {
-			printf("linker problem\n");
 			// invalid instruction
-			break;
+			return 1;
 		}
 		op = NEXT();
 	}
@@ -163,7 +161,12 @@ int vn_linker_add(vn_linker *lk, vn_nest *nest)
 	lk->nests[lk->num_nests] = nest;
 	lk->num_nests++;
 	for(int i = 0; i < nest->num_funcs; i++) {
-		check_func(lk, nest, nest->funcs[i]);
+		if(nest->funcs[i]->ftype == vp_func_normal) {
+			int r = check_func(lk, nest, nest->funcs[i]);
+			if(r != 0) {
+				return 1;
+			}
+		}
 	}
 	return 0;
 }

@@ -28,6 +28,9 @@ vp_func *vp_func_create_native(vp_type ret, vp_type *args, size_t num_args,
                                vp_native_func func)
 {
 	vp_func *fn = vu_malloc(sizeof(*fn));
+	/* unused fields */
+	fn->code = (void*)0;
+	
 	fn->ftype = vp_func_native;
 	fn->native = func;
 	fn->name = (void*)0;
@@ -39,7 +42,9 @@ vp_func *vp_func_create_native(vp_type ret, vp_type *args, size_t num_args,
 
 int vp_func_free(vp_func *fn)
 {
-	vu_free(fn->code);
+	if(fn->code != (void*)0) {
+		vu_free(fn->code);
+	}
 	vu_free(fn);
 	return 0;
 }

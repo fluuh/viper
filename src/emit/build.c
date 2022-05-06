@@ -100,6 +100,11 @@ vn_bfunc *vn_bfunc_create_native(vn_builder *builder, vp_type ret,
                         vp_type *args, size_t num_args, vp_native_func func)
 {
 	vn_bfunc *fn = vu_malloc(sizeof(*fn) + sizeof(vp_type) * num_args);
+	/* unused fields */
+	fn->regs = (void*)0;
+	fn->labels = (void*)0;
+	fn->args = (void*)0;
+
 	fn->name = (void*)0;
 	fn->ftype = vn_bfunc_native;
 	fn->native = func;
@@ -123,7 +128,9 @@ int vn_bfunc_free(vn_bfunc *fn)
 	if(fn->labels != (void*)0) {
 		vu_free(fn->labels);
 	}
-	vu_free(fn->args);
+	if(fn->args != (void*)0) {
+		vu_free(fn->args);
+	}
 	vu_free(fn);
 	return 0;
 }

@@ -20,7 +20,10 @@ enum {
 };
 /* Types */
 
-typedef int(*vp_native_func)(void *state);
+// has to be here for vp_native_func
+typedef struct vp_state vp_state;
+
+typedef int(*vp_native_func)(vp_state *state);
 
 typedef unsigned long long u64;
 typedef unsigned int u32;
