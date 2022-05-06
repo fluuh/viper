@@ -20,6 +20,8 @@ enum {
 };
 /* Types */
 
+typedef int(*vp_native_func)(void *state);
+
 typedef unsigned long long u64;
 typedef unsigned int u32;
 typedef unsigned short u16;

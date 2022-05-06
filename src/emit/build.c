@@ -68,6 +68,7 @@ vn_bfunc *vn_bfunc_create(vn_builder *builder, vp_type ret,
 	}
 	vn_bfunc *fn = vu_malloc(sizeof(*fn) +
 	                         sizeof(vp_type) * num_args);
+	fn->ftype = vn_bfunc_normal;
 	fn->name = (void*)0;
 	fn->cap_code = VP_BUFF_DEFAULT;
 	fn->size_code = 0;
@@ -92,6 +93,22 @@ vn_bfunc *vn_bfunc_create(vn_builder *builder, vp_type ret,
 	for(int i = 0; i < fn->type.num_args; i++) {
 		fn->args[i] = vn_reg_create(fn, fn->type.args[i]);
 	}
+	return fn;
+}
+
+vn_bfunc *vn_bfunc_create_native(vn_builder *builder, vp_type ret, 
+                        vp_type *args, size_t num_args, vp_native_func func)
+{
+	vn_bfunc *fn = vu_malloc(sizeof(*fn) + sizeof(vp_type) * num_args);
+	fn->name = (void*)0;
+	fn->ftype = vn_bfunc_native;
+	fn->native = func;
+	fn->type.ret = ret;
+	fn->type.num_args = num_args;
+	memcpy(fn->type.args, args, num_args);
+	builder->funcs[builder->num_funcs] = fn;
+	fn->id = builder->num_funcs;
+	builder->num_funcs++;
 	return fn;
 }
 
@@ -128,17 +145,25 @@ vn_nest *vn_build(vn_builder *builder)
 	vu_free(builder->objs);
 	for(int i = 0; i < builder->num_funcs; i++) {
 		vn_bfunc *bf = builder->funcs[i];
-		vp_func *fn = vp_func_create(bf->type.ret, 
-		                             bf->type.args, 
-					     bf->type.num_args);
-		fn->cap_code = bf->cap_code;
-		fn->size_code = bf->size_code;
-		fn->code = bf->code;
-		if(bf->name != (void*)0) {
+		if(bf->ftype == vn_bfunc_native) {
+			vp_func *fn = vp_func_create_native(bf->type.ret,
+			                                    bf->type.args,
+							    bf->type.num_args,
+							    bf->native);
 			fn->name = bf->name;
+			nest->funcs[nest->num_funcs] = fn;
+			nest->num_funcs++;
+		} else {
+			vp_func *fn = vp_func_create(bf->type.ret, 
+						bf->type.args, 
+						bf->type.num_args);
+			fn->cap_code = bf->cap_code;
+			fn->size_code = bf->size_code;
+			fn->code = bf->code;
+			fn->name = bf->name;
+			nest->funcs[nest->num_funcs] = fn;
+			nest->num_funcs++;
 		}
-		nest->funcs[nest->num_funcs] = fn;
-		nest->num_funcs++;
 	}
 	vn_build_free(builder);
 	return nest;

@@ -17,7 +17,13 @@ typedef struct vn_reg {
 
 typedef struct vn_bfunc {
 	// if it has a name it's exported
+	enum {
+		// could probably make this the same as vp_func
+		vn_bfunc_normal,
+		vn_bfunc_native,
+	} ftype;
 	const char* name;
+	vp_native_func native;
 	i32 id;
 	size_t size_code;
 	size_t cap_code;
@@ -53,6 +59,8 @@ vn_builder *vn_build_create(void);
 
 vn_bfunc *vn_bfunc_create(vn_builder *builder, vp_type ret, 
                         vp_type *args, size_t num_args);
+vn_bfunc *vn_bfunc_create_native(vn_builder *builder, vp_type ret, 
+                        vp_type *args, size_t num_args, vp_native_func func);
 vn_import *vn_bimport(vn_builder *builder, const char *name,
                       vp_type ret, vp_type *args, u8 num_args);
 vp_obj *vn_bobject(vn_builder *builder, size_t size, u8 *init);

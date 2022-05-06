@@ -24,9 +24,6 @@ static void print_usage(const char* progname)
 	fputs("  ", stderr);
 	fputs(progname, stderr);
 	fputs(" [options] <file> [args...]\n", stderr);
-	fputs("  ", stderr);
-	fputs(progname, stderr);
-	fputs(" <mode> [options] [files]\n", stderr);
 	fputs("Options:\n"
 	"  -s            Run assembler\n"
 	"  -d            Run disassembler\n"

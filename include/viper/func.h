@@ -18,8 +18,13 @@ typedef struct vp_label {
 } vp_label;
 
 typedef struct vp_func {
+	enum {
+		vp_func_normal,
+		vp_func_native,
+	} ftype;
 	const char* name;
 	i32 id;
+	vp_native_func native;
 	size_t size_code;
 	size_t cap_code;
 	u8 *code;
@@ -31,6 +36,8 @@ typedef struct vp_func {
 } vp_func;
 
 vp_func *vp_func_create(vp_type ret, vp_type *args, size_t num_args);
+vp_func *vp_func_create_native(vp_type ret, vp_type *args, size_t num_args,
+                               vp_native_func func);
 // this also frees the code
 int vp_func_free(vp_func *fn);
 

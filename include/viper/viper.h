@@ -23,6 +23,6 @@
 
 #define VP_VER_SYM vp_ver_0_1_0
 
-void  VP_VER_SYM(void);
+void VP_VER_SYM(void);
 
 #endif
