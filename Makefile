@@ -1,7 +1,7 @@
 
 INC = -Iinclude
 
-CC = gcc
+CC = clang
 CWARNS = -Wall -Wshadow -Wpointer-arith -Wcast-qual \
         -Wstrict-prototypes -Wmissing-prototypes -Werror
 CFLAGS = -m64 -std=c99 $(INC) -O0 -c -march=native -g $(CWARNS)
@@ -19,7 +19,7 @@ BIN_LIB  = $(OUT_DIR)/$(BIN_NAME)
 
 CORE_SRC = src/util/dbuff.c src/util/mem.c src/nest.c src/emit/emit.c \
            src/emit/build.c src/func.c src/linker.c src/api.c src/asm/asm.c \
-	   src/obj.c src/loader/writer.c
+	   src/obj.c src/loader/writer.c src/state.c
 CORE_OBJ = $(CORE_SRC:src/%.c=$(OUT_DIR)/obj/%.o)
 
 BIN_SRC = src/main.c

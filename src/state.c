@@ -1,0 +1,92 @@
+/*
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ */
+
+#include <viper/util.h>
+#include <viper/state.h>
+
+static void ve_free_block(ve_allocator *alloc, ve_mblock *block)
+{
+	ve_mblock *next = block->next;
+	ve_mblock *prev = block->prev;
+
+	// Fix references around it
+	if(block->next != (void*)0) {
+		block->next->prev = prev;
+	}
+	if(block->prev != (void*)0) {
+		block->prev->next = next;
+	} else {
+		// next is now first
+		alloc->blocks = next;
+	}
+	
+	// Free the block
+	vu_free(block->block);
+	vu_free(block);
+}
+
+ve_allocator *ve_allocator_init(size_t max)
+{
+	if(max == 0) {
+		max = -1;
+	}
+	ve_allocator *alloc = vu_malloc(sizeof(*alloc));
+	alloc->cap_blocks = VP_BUFF_DEFAULT;
+	alloc->num_blocks = 0;
+	alloc->blocks = (void*)0;
+	alloc->allocated = 0;
+	alloc->max = max;
+	return alloc;
+}
+
+void ve_allocator_free(ve_allocator *alloc)
+{
+	// Free unfreed blocks
+	while(alloc->blocks != (void*)0) {
+		ve_free_block(alloc, alloc->blocks);
+	}
+	// Free the allocator
+	vu_free(alloc);
+}
+
+void *ve_malloc(ve_allocator *alloc, size_t size)
+{
+	if(alloc->allocated + size >= alloc->max) {
+		// out of space
+		return (void*)0;
+	}
+	alloc->allocated += size;
+	ve_mblock *block = vu_malloc(sizeof(*block));
+	block->size = size;
+	block->prev = (void*)0;
+	block->next = alloc->blocks;
+	if(alloc->blocks != (void*)0) {
+		alloc->blocks->prev = block;
+	}
+	alloc->blocks = block;
+	// Allocate the memory
+	block->block = vu_malloc(size);
+	return block->block;
+}
+
+void ve_free(ve_allocator *alloc, void *mem)
+{
+	int found = 0;
+	ve_mblock *block = alloc->blocks;
+	while(block != (void*)0) {
+		if(block->block == mem) {
+			found = 1;
+			break;
+		}
+		block = block->next;
+	}
+	if(!found) {
+		// invalid free
+		return;
+	}
+	alloc->allocated -= block->size;
+	ve_free_block(alloc, block);
+}
