@@ -17,9 +17,9 @@ vn_linker *vn_linker_create(void)
 	lk->cap_sym = VP_BUFF_DEFAULT;
 	lk->num_sym = 0;
 	lk->symbols = vu_malloc_array(lk->cap_sym, sizeof(*lk->symbols));
-	lk->cap_calls = VP_BUFF_DEFAULT;
-	lk->num_calls = 0;
-	lk->calls = vu_malloc_array(lk->cap_calls, sizeof(*lk->calls));
+	lk->cap_refs = VP_BUFF_DEFAULT;
+	lk->num_refs = 0;
+	lk->refs = vu_malloc_array(lk->cap_refs, sizeof(*lk->refs));
 	lk->cap_nests = VP_BUFF_DEFAULT;
 	lk->num_nests = 0;
 	lk->nests = vu_malloc_array(lk->cap_nests, sizeof(*lk->nests));
@@ -39,17 +39,19 @@ static i32 linker_resolve_import(vn_linker *lk, const char* name)
 }
 
 // resolve all calls
-static int linker_resolve_calls(vn_linker *lk)
+static int linker_resolve_refs(vn_linker *lk)
 {
-	for(int i = 0; i < lk->num_calls; i++) {
-		vn_call *call = &lk->calls[i];
-		i32 f = 0;
-		if(call->imported) {
-			f = linker_resolve_import(lk, call->name);
-		} else {
-			f = call->func->id;
+	for(int i = 0; i < lk->num_refs; i++) {
+		vn_ref *ref = &lk->refs[i];
+		i32 id = 0;
+		if(ref->imported) {
+			id = linker_resolve_import(lk, ref->name);
+		} else if(ref->type == vn_ref_call) {
+			id = ref->func->id;
+		} else if(ref->type == vn_ref_obj) {
+			id = ref->obj->id;
 		}
-		*call->loc = f;
+		*ref->loc = id;
 	}
 	return 0;
 }
@@ -57,6 +59,7 @@ static int linker_resolve_calls(vn_linker *lk)
 // find all symbols
 static int linker_symbols(vn_linker *lk) 
 {
+	// TODO: find exported objects
 	for(int i = 0; i < lk->out->num_funcs; i++) {
 		// TODO: dynamic array for symbols
 		const char* name = lk->out->funcs[i]->name;
@@ -73,10 +76,16 @@ static int linker_symbols(vn_linker *lk)
 static int linker_merge_nest(vn_linker *lk, vn_nest *nest)
 {
 	for(int i = 0; i < nest->num_funcs; i++) {
-		u32 loc = lk->out->num_funcs;
+		u32 id = lk->out->num_funcs;
 		lk->out->num_funcs++;
-		lk->out->funcs[loc] = nest->funcs[i];
-		lk->out->funcs[loc]->id = loc;
+		lk->out->funcs[id] = nest->funcs[i];
+		lk->out->funcs[id]->id = id;
+	}
+	for(int i = 0; i < nest->num_objs; i++) {
+		u32 id = lk->out->num_objs;
+		lk->out->num_objs++;
+		lk->out->objs[id] = nest->objs[i];
+		lk->out->objs[id]->id = id;
 	}
 	return 0;
 }
@@ -104,7 +113,7 @@ vn_nest *vn_linker_link(vn_linker *lk)
 	lk->out = nest;
 	linker_merge(lk);
 	linker_symbols(lk);
-	linker_resolve_calls(lk);
+	linker_resolve_refs(lk);
 	return nest;
 }
 
@@ -124,27 +133,44 @@ static int check_func(vn_linker *lk, vn_nest *nest, vp_func *fn)
 			SKIP(2);
 		} else if(op < 37) {
 			SKIP(3);
-		} else if(op < 38) {
-			SKIP(5);
+		} else if(op == 37) {
+			u32 *loc = (u32*)ip;
+			i32 id = NEXT4();
+			u32 index = lk->num_refs;
+			lk->num_refs++;
+			lk->refs[index].type = vn_ref_obj;
+			lk->refs[index].loc = loc;
+			if(id < 0) {
+				// TODO: imported object
+				return 1;
+			} else {
+				lk->refs[index].imported = 0;
+				lk->refs[index].obj = nest->objs[id];
+			}
 		} else if(op < 39) {
+			SKIP(5);
+		} else if(op < 40) {
+			SKIP(6);
+		} else if(op < 41) {
 			SKIP(9);
 		} else if(op == 41) {
 			// call instruction
 			SKIP(2);
-			u32* loc = (u32*)ip;
+			u32 *loc = (u32*)ip;
 			i32 id = NEXT4();
 			u8 toskip = NEXT();
-			u32 index = lk->num_calls;
-			lk->num_calls++;
-			lk->calls[index].loc = loc;
+			u32 index = lk->num_refs;
+			lk->num_refs++;
+			lk->refs[index].type = vn_ref_call;
+			lk->refs[index].loc = loc;
 			if(id < 0) {
 				// imported function
 				vn_import *imp = nest->imports[-id - 1];
-				lk->calls[index].name = imp->name;
-				lk->calls[index].imported = 1;
+				lk->refs[index].name = imp->name;
+				lk->refs[index].imported = 1;
 			} else {
-				lk->calls[index].imported = 0;
-				lk->calls[index].func = nest->funcs[id];
+				lk->refs[index].imported = 0;
+				lk->refs[index].func = nest->funcs[id];
 			}
 			SKIP(toskip * 2);
 		} else {

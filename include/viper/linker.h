@@ -15,23 +15,27 @@ typedef struct vn_sym {
 } vn_sym;
 
 typedef struct {
+	enum {
+		vn_ref_call,
+		vn_ref_obj,
+	} type;
 	u32* loc;
 	u8 imported;
 	union {
 		const char *name;
 		vp_func *func;
+		vp_obj *obj;
 	};
-} vn_call;
+} vn_ref;
 
 typedef struct vn_linker {
 	vn_nest *out;
 	size_t cap_sym;
 	size_t num_sym;
 	vn_sym *symbols;
-	// this should be provided by the verifier
-	size_t cap_calls;
-	size_t num_calls;
-	vn_call *calls;
+	size_t cap_refs;
+	size_t num_refs;
+	vn_ref *refs;
 	size_t cap_nests;
 	size_t num_nests;
 	vn_nest **nests;

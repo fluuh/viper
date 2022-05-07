@@ -7,6 +7,16 @@
 #ifndef VP_BC_H_
 #define VP_BC_H_
 
+/* ranges:
+ * 0-2: +0
+ * 3: +1
+ * 4-8: +2
+ * 9-36: +3
+ * 37-38: +5
+ * 39: +6
+ * 40: +9
+ * 41: variable length
+ */
 // TODO: add iarch instructions
 #define BCDEF(_) \
 	_(NOP, "nop") \
