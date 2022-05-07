@@ -6,6 +6,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include <viper/util.h>
 #include <viper/linker.h>
@@ -26,16 +27,17 @@ vn_linker *vn_linker_create(void)
 	return lk;
 }
 
-static i32 linker_resolve_import(vn_linker *lk, const char* name)
+static int linker_resolve_import(vn_linker *lk, u32 *dst, const char* name)
 {
 	for(int i = 0; i < lk->num_sym; i++) {
 		vn_sym *sym = &lk->symbols[i];
-		if(sym->name == name) {
-			return sym->f->id;
+		if(strcmp(sym->name, name) == 0) {
+			*dst = sym->f->id;
+			return 0;
 		}
 	}
 	// TODO: add import
-	return 0;
+	return 1;
 }
 
 // resolve all calls
@@ -43,9 +45,12 @@ static int linker_resolve_refs(vn_linker *lk)
 {
 	for(int i = 0; i < lk->num_refs; i++) {
 		vn_ref *ref = &lk->refs[i];
-		i32 id = 0;
+		u32 id = 0;
 		if(ref->imported) {
-			id = linker_resolve_import(lk, ref->name);
+			int res = linker_resolve_import(lk, &id, ref->name);
+			if(res != 0) {
+				return 1;
+			}
 		} else if(ref->type == vn_ref_call) {
 			id = ref->func->id;
 		} else if(ref->type == vn_ref_obj) {
@@ -111,9 +116,11 @@ vn_nest *vn_linker_link(vn_linker *lk)
 	}
 	vn_nest *nest = vn_nest_alloc(num_funcs, num_imports, num_objs);
 	lk->out = nest;
-	linker_merge(lk);
-	linker_symbols(lk);
-	linker_resolve_refs(lk);
+	if(linker_merge(lk) != 0 ||
+	   linker_symbols(lk) != 0 ||
+	   linker_resolve_refs(lk) != 0) {
+		return (void*)0;
+	}
 	return nest;
 }
 

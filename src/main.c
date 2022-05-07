@@ -102,6 +102,7 @@ static void print_error(const char* msg) {
 
 static int std_print(vp_state *state)
 {
+	printf("%s\n", (char*)*VP_RXX(state->fp));
 	return 0;
 }
 
@@ -163,12 +164,18 @@ static int pmain(void)
 	if(vn_linker_add(lk, assembled) != 0 ||
 	   vn_linker_add(lk, stdnest) != 0) {
 		print_error("linker failed");
+		return 1;
 	}
 	vn_nest *nest = vn_linker_link(lk);
+	if(nest == (void*)0) {
+		print_error("linker failed");
+		return 1;
+	}
 	vp_state *state = vp_state_init(nest);
 	vp_export start = vn_get_export(state->nest, "_start");
 	if(start == -1) {
 		print_error("start function not found");
+		return 1;
 	}
 	i32 res = 0;
 	vp_call_func(state, start, &res, (void*)0, 0);

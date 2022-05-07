@@ -157,17 +157,40 @@ vn_nest *vn_build(vn_builder *builder)
 			                                    bf->type.args,
 							    bf->type.num_args,
 							    bf->native);
+			fn->ftype = vp_func_native;
 			fn->name = bf->name;
+			fn->r32 = 0;
+			fn->r64 = 0;
+			fn->rxx = 0;
+			for(int j = 0; j < fn->type.num_args; j++) {
+				switch(fn->type.args[i]) {
+				case(vp_i32):
+					fn->r32++;
+					break;
+				case(vp_i64):
+					fn->r64++;
+					break;
+				case(vp_iarch):
+					fn->rxx++;
+					break;
+				default:
+					break;
+				}
+			}
 			nest->funcs[nest->num_funcs] = fn;
 			nest->num_funcs++;
 		} else {
 			vp_func *fn = vp_func_create(bf->type.ret, 
 						bf->type.args, 
 						bf->type.num_args);
+			fn->ftype = vp_func_normal;
 			fn->cap_code = bf->cap_code;
 			fn->size_code = bf->size_code;
 			fn->code = bf->code;
 			fn->name = bf->name;
+			fn->r32 = bf->rw;
+			fn->r64 = bf->rl;
+			fn->rxx = bf->rx;
 			nest->funcs[nest->num_funcs] = fn;
 			nest->num_funcs++;
 		}

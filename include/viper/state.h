@@ -56,6 +56,13 @@ struct vp_state {
 	ve_callframe *fp;
 };
 
+#define VP_RXX(fp) \
+	(uxx*)((uxx)fp + fp->rxx)
+#define VP_R32(fp) \
+	(u32*)((uxx)fp + fp->r32)
+#define VP_R64(fp) \
+	(u64*)((uxx)fp + fp->r64)
+
 vp_state *vp_state_init(vn_nest *nest);
 void vp_state_free(vp_state *state);
 
