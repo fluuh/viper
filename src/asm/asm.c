@@ -309,6 +309,12 @@ static token *get_token(assembler *as)
 	} else if(c == '}') {
 		read_char(as);
 		tok->type = tok_rbrace;
+	} else if(c == '.') {
+		read_char(as);
+		tok->type = tok_dot;
+	} else if(c == ',') {
+		read_char(as);
+		tok->type = tok_comma;
 	} else {
 		tok->type = tok_eof;
 	}
@@ -451,6 +457,17 @@ static int parse_ret(assembler *as, vn_bfunc *fn, vn_reg **regs)
 	return 0;
 }
 
+static int parse_ldi(assembler *as, vn_bfunc *fn, vn_reg **regs, u8 reg)
+{
+	tok_expect(as, tok_dot);
+	token *type = tok_expect(as, tok_type);
+	vp_type t = type->vtype;
+	token *num = tok_expect(as, tok_num);
+	vn_reg *r = check_reg(fn, regs, reg, t);
+	vn_emit_ldi(fn, r, num->num);
+	return 0;
+}
+
 static int parse_inst(assembler *as, vn_bfunc *fn, vn_reg **regs, char *name)
 {
 	if(strcmp(name, "call") == 0) {
@@ -492,12 +509,62 @@ static int parse_setter(assembler *as, vn_bfunc *fn,
 			}
 			vn_emit_obj(fn, r, obj->index);
 		} else if(strcmp(tok->str, "ldi") == 0) {
+			return parse_ldi(as, fn, regs, reg);
+		} else if(strcmp(tok->str, "add") == 0) {
 			tok_expect(as, tok_dot);
 			token *type = tok_expect(as, tok_type);
 			vp_type t = type->vtype;
-			token *num = tok_expect(as, tok_num);
-			vn_reg *r = check_reg(fn, regs, reg, t);
-			vn_emit_ldi(fn, r, num->num);
+			vn_reg *dst = check_reg(fn, regs, reg, t);
+			token *to0 = tok_expect(as, tok_reg);
+			vn_reg *op0 = check_reg(fn, regs, to0->num, t);
+			tok_expect(as, tok_comma);
+			token *to1 = tok_expect(as, tok_reg);
+			vn_reg *op1 = check_reg(fn, regs, to1->num, t);
+			vn_emit_add(fn, dst, op0, op1);
+		} else if(strcmp(tok->str, "sub") == 0) {
+			tok_expect(as, tok_dot);
+			token *type = tok_expect(as, tok_type);
+			vp_type t = type->vtype;
+			vn_reg *dst = check_reg(fn, regs, reg, t);
+			token *to0 = tok_expect(as, tok_reg);
+			vn_reg *op0 = check_reg(fn, regs, to0->num, t);
+			tok_expect(as, tok_comma);
+			token *to1 = tok_expect(as, tok_reg);
+			vn_reg *op1 = check_reg(fn, regs, to1->num, t);
+			vn_emit_sub(fn, dst, op0, op1);
+		} else if(strcmp(tok->str, "mul") == 0) {
+			tok_expect(as, tok_dot);
+			token *type = tok_expect(as, tok_type);
+			vp_type t = type->vtype;
+			vn_reg *dst = check_reg(fn, regs, reg, t);
+			token *to0 = tok_expect(as, tok_reg);
+			vn_reg *op0 = check_reg(fn, regs, to0->num, t);
+			tok_expect(as, tok_comma);
+			token *to1 = tok_expect(as, tok_reg);
+			vn_reg *op1 = check_reg(fn, regs, to1->num, t);
+			vn_emit_mul(fn, dst, op0, op1);
+		} else if(strcmp(tok->str, "div") == 0) {
+			tok_expect(as, tok_dot);
+			token *type = tok_expect(as, tok_type);
+			vp_type t = type->vtype;
+			vn_reg *dst = check_reg(fn, regs, reg, t);
+			token *to0 = tok_expect(as, tok_reg);
+			vn_reg *op0 = check_reg(fn, regs, to0->num, t);
+			tok_expect(as, tok_comma);
+			token *to1 = tok_expect(as, tok_reg);
+			vn_reg *op1 = check_reg(fn, regs, to1->num, t);
+			vn_emit_div(fn, dst, op0, op1);
+		} else if(strcmp(tok->str, "idiv") == 0) {
+			tok_expect(as, tok_dot);
+			token *type = tok_expect(as, tok_type);
+			vp_type t = type->vtype;
+			vn_reg *dst = check_reg(fn, regs, reg, t);
+			token *to0 = tok_expect(as, tok_reg);
+			vn_reg *op0 = check_reg(fn, regs, to0->num, t);
+			tok_expect(as, tok_comma);
+			token *to1 = tok_expect(as, tok_reg);
+			vn_reg *op1 = check_reg(fn, regs, to1->num, t);
+			vn_emit_idiv(fn, dst, op0, op1);
 		} else if(strcmp(tok->str, "call")) {
 			check_reg(fn, regs, reg, vp_void);
 			return parse_call(as, fn, regs, reg);
