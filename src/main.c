@@ -28,7 +28,7 @@ static void print_usage(const char* progname)
 	"  -s            Run assembler\n"
 	"  -d            Run disassembler\n"
 	"  -l            Run linker\n"
-	"  -c            Compile files\n"
+	"  -f <function> Start function      default: _start\n"
 	"  -o <file>     Write output to <file>\n"
 	"  -h            Display this information\n"
 	"  -v            Show version information\n", stderr);
@@ -39,6 +39,7 @@ static struct args {
 	int mode;
 	int flags;
 	char *out;
+	char *start;
 	char **args;
 } args;
 
@@ -55,6 +56,7 @@ static int parse_args(char **argv)
 	args.mode = MODE_RUN;
 	args.flags = 0;
 	args.out = "a.out";
+	args.start = "_start";
 	int i;
 	for(i = 1; argv[i] != (void*)0 && argv[i][0] == '-'; i++) {
 		switch(argv[i][1]) {
@@ -72,6 +74,12 @@ static int parse_args(char **argv)
 			if(argv[i] == (void*)0)
 				return -1;
 			args.out = argv[i];
+			break;
+		case('f'):
+			i++;
+			if(argv[i] == (void*)0)
+				return -1;
+			args.start = argv[i];
 			break;
 		case('h'):
 			args.flags |= FLAG_HELP;
@@ -173,7 +181,7 @@ static int pmain(void)
 		return 1;
 	}
 	vp_state *state = vp_state_init(nest);
-	vp_export start = vn_get_export(state->nest, "_start");
+	vp_export start = vn_get_export(state->nest, args.start);
 	if(start == -1) {
 		print_error("start function not found");
 		return 1;
