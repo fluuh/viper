@@ -106,15 +106,19 @@ static int dispatch(vp_state *state)
 
 	#else
 
+	#define next_case(op, _) case OP_##op: goto OPC_##op;
+
+	#define next() \
+		switch(imm()) { BCDEF(next_case) }
+
 	#define vm_loop \
-		loop: \
-		switch(imm())
+		next();
 	
 	#define vm_break \
-		goto loop
+		next()
 	
 	#define vm_case(op) \
-		case OP_##op
+		OPC_##op
 
 	#endif
 
@@ -123,6 +127,12 @@ static int dispatch(vp_state *state)
 	vm_loop {
 	vm_case(NOP):
 		vm_break;
+	vm_case(END):
+		// TODO: OP_END
+		return 1;
+	vm_case(RETVOID):
+		// TODO: OP_RETVOID
+		return 1;
 	vm_case(RET):
 	{
 		imm();
@@ -179,12 +189,60 @@ static int dispatch(vp_state *state)
 		LOAD_FRAME();
 		vm_break;
 	}
+	vm_case(JMP):
+		// TODO: OP_JMP
+		return 1;
+	vm_case(NEG_W):
+		return 1;
+	vm_case(NEG_L):
+		return 1;
+	vm_case(EQZ_W):
+		return 1;
+	vm_case(EQZ_L):
+		return 1;
+	vm_case(EQ_W):
+		return 1;
+	vm_case(EQ_L):
+		return 1;
+	vm_case(LT_WU):
+		return 1;
+	vm_case(LT_LU):
+		return 1;
+	vm_case(LT_WS):
+		return 1;
+	vm_case(LT_LS):
+		return 1;
+	vm_case(GT_WU):
+		return 1;
+	vm_case(GT_LU):
+		return 1;
+	vm_case(GT_WS):
+		return 1;
+	vm_case(GT_LS):
+		return 1;
+	vm_case(LE_WU):
+		return 1;
+	vm_case(LE_LU):
+		return 1;
+	vm_case(LE_WS):
+		return 1;
+	vm_case(LE_LS):
+		return 1;
+	vm_case(GE_WU):
+		return 1;
+	vm_case(GE_LU):
+		return 1;
+	vm_case(GE_WS):
+		return 1;
+	vm_case(GE_LS):
+		return 1;
 	vm_case(ADD_W):
 	{
 		u32 *dst = (r32 + imm());
 		u32 *op0 = (r32 + imm());
 		u32 *op1 = (r32 + imm());
 		*dst = *op0 + *op1;
+		vm_break;
 	}
 	vm_case(ADD_L):
 	{
@@ -192,6 +250,7 @@ static int dispatch(vp_state *state)
 		u64 *op0 = (r64 + imm());
 		u64 *op1 = (r64 + imm());
 		*dst = *op0 + *op1;
+		vm_break;
 	}
 	vm_case(SUB_W):
 	{
@@ -199,6 +258,7 @@ static int dispatch(vp_state *state)
 		u32 *op0 = (r32 + imm());
 		u32 *op1 = (r32 + imm());
 		*dst = *op0 - *op1;
+		vm_break;
 	}
 	vm_case(SUB_L):
 	{
@@ -206,6 +266,7 @@ static int dispatch(vp_state *state)
 		u64 *op0 = (r64 + imm());
 		u64 *op1 = (r64 + imm());
 		*dst = *op0 - *op1;
+		vm_break;
 	}
 	vm_case(MUL_W):
 	{
@@ -213,6 +274,7 @@ static int dispatch(vp_state *state)
 		u32 *op0 = (r32 + imm());
 		u32 *op1 = (r32 + imm());
 		*dst = *op0 * *op1;
+		vm_break;
 	}
 	vm_case(MUL_L):
 	{
@@ -220,6 +282,7 @@ static int dispatch(vp_state *state)
 		u64 *op0 = (r64 + imm());
 		u64 *op1 = (r64 + imm());
 		*dst = *op0 * *op1;
+		vm_break;
 	}
 	vm_case(DIV_WU):
 	{
@@ -227,6 +290,7 @@ static int dispatch(vp_state *state)
 		u32 *op0 = (r32 + imm());
 		u32 *op1 = (r32 + imm());
 		*dst = *op0 / *op1;
+		vm_break;
 	}
 	vm_case(DIV_LU):
 	{
@@ -234,6 +298,7 @@ static int dispatch(vp_state *state)
 		u64 *op0 = (r64 + imm());
 		u64 *op1 = (r64 + imm());
 		*dst = *op0 / *op1;
+		vm_break;
 	}
 	vm_case(DIV_WS):
 	{
@@ -241,6 +306,7 @@ static int dispatch(vp_state *state)
 		i32 *op0 = (i32*)(r32 + imm());
 		i32 *op1 = (i32*)(r32 + imm());
 		*dst = *op0 / *op1;
+		vm_break;
 	}
 	vm_case(DIV_LS):
 	{
@@ -248,6 +314,7 @@ static int dispatch(vp_state *state)
 		i64 *op0 = (i64*)(r64 + imm());
 		i64 *op1 = (i64*)(r64 + imm());
 		*dst = *op0 / *op1;
+		vm_break;
 	}
 	vm_case(OBJ):
 	{
@@ -264,6 +331,10 @@ static int dispatch(vp_state *state)
 		*(r32 + dst) = val;
 		vm_break;
 	}
+	vm_case(BR):
+		return 1;
+	vm_case(LDI_L):
+		return 1;
 	vm_case(CALL):
 	{
 		vp_type tdst = imm();
