@@ -565,6 +565,94 @@ static int parse_setter(assembler *as, vn_bfunc *fn,
 			token *to1 = tok_expect(as, tok_reg);
 			vn_reg *op1 = check_reg(fn, regs, to1->num, t);
 			vn_emit_idiv(fn, dst, op0, op1);
+		} else if(strcmp(tok->str, "lt_u") == 0) {
+			tok_expect(as, tok_dot);
+			token *type = tok_expect(as, tok_type);
+			vp_type t = type->vtype;
+			vn_reg *dst = check_reg(fn, regs, reg, t);
+			token *to0 = tok_expect(as, tok_reg);
+			vn_reg *op0 = check_reg(fn, regs, to0->num, t);
+			tok_expect(as, tok_comma);
+			token *to1 = tok_expect(as, tok_reg);
+			vn_reg *op1 = check_reg(fn, regs, to1->num, t);
+			vn_emit_lt_u(fn, dst, op0, op1);
+		} else if(strcmp(tok->str, "lt_s") == 0) {
+			tok_expect(as, tok_dot);
+			token *type = tok_expect(as, tok_type);
+			vp_type t = type->vtype;
+			vn_reg *dst = check_reg(fn, regs, reg, t);
+			token *to0 = tok_expect(as, tok_reg);
+			vn_reg *op0 = check_reg(fn, regs, to0->num, t);
+			tok_expect(as, tok_comma);
+			token *to1 = tok_expect(as, tok_reg);
+			vn_reg *op1 = check_reg(fn, regs, to1->num, t);
+			vn_emit_lt_s(fn, dst, op0, op1);
+		} else if(strcmp(tok->str, "gt_u") == 0) {
+			tok_expect(as, tok_dot);
+			token *type = tok_expect(as, tok_type);
+			vp_type t = type->vtype;
+			vn_reg *dst = check_reg(fn, regs, reg, t);
+			token *to0 = tok_expect(as, tok_reg);
+			vn_reg *op0 = check_reg(fn, regs, to0->num, t);
+			tok_expect(as, tok_comma);
+			token *to1 = tok_expect(as, tok_reg);
+			vn_reg *op1 = check_reg(fn, regs, to1->num, t);
+			vn_emit_gt_u(fn, dst, op0, op1);
+		} else if(strcmp(tok->str, "gt_s") == 0) {
+			tok_expect(as, tok_dot);
+			token *type = tok_expect(as, tok_type);
+			vp_type t = type->vtype;
+			vn_reg *dst = check_reg(fn, regs, reg, t);
+			token *to0 = tok_expect(as, tok_reg);
+			vn_reg *op0 = check_reg(fn, regs, to0->num, t);
+			tok_expect(as, tok_comma);
+			token *to1 = tok_expect(as, tok_reg);
+			vn_reg *op1 = check_reg(fn, regs, to1->num, t);
+			vn_emit_gt_s(fn, dst, op0, op1);
+		} else if(strcmp(tok->str, "le_u") == 0) {
+			tok_expect(as, tok_dot);
+			token *type = tok_expect(as, tok_type);
+			vp_type t = type->vtype;
+			vn_reg *dst = check_reg(fn, regs, reg, t);
+			token *to0 = tok_expect(as, tok_reg);
+			vn_reg *op0 = check_reg(fn, regs, to0->num, t);
+			tok_expect(as, tok_comma);
+			token *to1 = tok_expect(as, tok_reg);
+			vn_reg *op1 = check_reg(fn, regs, to1->num, t);
+			vn_emit_le_u(fn, dst, op0, op1);
+		} else if(strcmp(tok->str, "le_s") == 0) {
+			tok_expect(as, tok_dot);
+			token *type = tok_expect(as, tok_type);
+			vp_type t = type->vtype;
+			vn_reg *dst = check_reg(fn, regs, reg, t);
+			token *to0 = tok_expect(as, tok_reg);
+			vn_reg *op0 = check_reg(fn, regs, to0->num, t);
+			tok_expect(as, tok_comma);
+			token *to1 = tok_expect(as, tok_reg);
+			vn_reg *op1 = check_reg(fn, regs, to1->num, t);
+			vn_emit_le_s(fn, dst, op0, op1);
+		} else if(strcmp(tok->str, "ge_u") == 0) {
+			tok_expect(as, tok_dot);
+			token *type = tok_expect(as, tok_type);
+			vp_type t = type->vtype;
+			vn_reg *dst = check_reg(fn, regs, reg, t);
+			token *to0 = tok_expect(as, tok_reg);
+			vn_reg *op0 = check_reg(fn, regs, to0->num, t);
+			tok_expect(as, tok_comma);
+			token *to1 = tok_expect(as, tok_reg);
+			vn_reg *op1 = check_reg(fn, regs, to1->num, t);
+			vn_emit_ge_u(fn, dst, op0, op1);
+		} else if(strcmp(tok->str, "ge_s") == 0) {
+			tok_expect(as, tok_dot);
+			token *type = tok_expect(as, tok_type);
+			vp_type t = type->vtype;
+			vn_reg *dst = check_reg(fn, regs, reg, t);
+			token *to0 = tok_expect(as, tok_reg);
+			vn_reg *op0 = check_reg(fn, regs, to0->num, t);
+			tok_expect(as, tok_comma);
+			token *to1 = tok_expect(as, tok_reg);
+			vn_reg *op1 = check_reg(fn, regs, to1->num, t);
+			vn_emit_ge_s(fn, dst, op0, op1);
 		} else if(strcmp(tok->str, "call")) {
 			check_reg(fn, regs, reg, vp_void);
 			return parse_call(as, fn, regs, reg);
