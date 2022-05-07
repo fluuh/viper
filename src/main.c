@@ -154,14 +154,15 @@ static int pmain(void)
 		return 0;
 	}
 	FILE* file = fopen(args.args[0], "r");
-	vn_nest *assembled = vn_assemble_file(file);
-	if(assembled == (void*)0) {
-		print_error("assembler failed");
+	vn_nest *new;
+	int nres = vp_load_file(file, &new);
+	if(nres != 0) {
+		print_error("loader failed");
 		return 1;
 	}
 	vn_nest *stdnest = create_stdnest();
 	vn_linker *lk = vn_linker_create();
-	if(vn_linker_add(lk, assembled) != 0 ||
+	if(vn_linker_add(lk, new) != 0 ||
 	   vn_linker_add(lk, stdnest) != 0) {
 		print_error("linker failed");
 		return 1;

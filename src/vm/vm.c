@@ -73,6 +73,8 @@ static int dispatch(vp_state *state)
 		(ip += 2, *(u16*)(ip - 2))
 	#define imm4() \
 		(ip += 4, *(u32*)(ip - 4))
+	#define imm8() \
+		(ip += 8, *(u64*)(ip - 8))
 
 	#define LOAD_FRAME() \
 		ip = state->fp->ip; \
@@ -334,7 +336,12 @@ static int dispatch(vp_state *state)
 	vm_case(BR):
 		return 1;
 	vm_case(LDI_L):
-		return 1;
+	{
+		u8 dst = imm();
+		u64 val = imm8();
+		*(r64 + dst) = val;
+		vm_break;
+	}
 	vm_case(CALL):
 	{
 		vp_type tdst = imm();

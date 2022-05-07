@@ -37,4 +37,6 @@ vn_writer *vn_writer_init(FILE *file, vn_nest *nest);
 // Write a nest to file.
 int vp_write_nest(FILE *file, vn_nest *nest);
 
+int vp_load_file(FILE *file, vn_nest **nest);
+
 #endif
