@@ -31,15 +31,35 @@ void ve_allocator_free(ve_allocator *alloc);
 void *ve_malloc(ve_allocator *alloc, size_t size);
 void ve_free(ve_allocator *alloc, void *mem);
 
+typedef struct ve_callframe ve_callframe;
+
+struct ve_callframe {
+	size_t size;
+	ve_callframe *prev;
+	vp_func *fn;
+	u8 *ip;
+	size_t ret_offset;
+	size_t r32;
+	size_t r64;
+	size_t rxx;
+};
+
 // typedef is in common.h
 struct vp_state {
 	vn_nest *nest;
 	ve_allocator *alloc;
 	size_t num_objs;
 	void **objs;
+	size_t num_frames;
+	size_t cap_frames;
+	ve_callframe *frames;
+	ve_callframe *fp;
 };
 
 vp_state *vp_state_init(vn_nest *nest);
 void vp_state_free(vp_state *state);
+
+int vp_call_func(vp_state *state, vp_export fi, void *res, 
+                 u64 *args, int num_args);
 
 #endif

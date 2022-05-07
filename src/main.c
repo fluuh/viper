@@ -100,6 +100,22 @@ static void print_error(const char* msg) {
 	fflush(stderr);
 }
 
+static int std_print(vp_state *state)
+{
+	return 0;
+}
+
+static vn_nest *create_stdnest(void)
+{
+	vn_builder *builder = vn_build_create();
+	vp_type params[] = {vp_iarch};
+	vn_bfunc *fn = vn_bfunc_create_native(builder, 
+	                                      vp_void, params, 1,
+					      &std_print);
+	fn->name = "print";
+	return vn_build(builder);
+}
+
 static int pmain(void)
 {
 	struct status *s = &status;
@@ -136,7 +152,29 @@ static int pmain(void)
 		vn_nest_free(nest);
 		return 0;
 	}
-
+	FILE* file = fopen(args.args[0], "r");
+	vn_nest *assembled = vn_assemble_file(file);
+	if(assembled == (void*)0) {
+		print_error("assembler failed");
+		return 1;
+	}
+	vn_nest *stdnest = create_stdnest();
+	vn_linker *lk = vn_linker_create();
+	if(vn_linker_add(lk, assembled) != 0 ||
+	   vn_linker_add(lk, stdnest) != 0) {
+		print_error("linker failed");
+	}
+	vn_nest *nest = vn_linker_link(lk);
+	vp_state *state = vp_state_init(nest);
+	vp_export start = vn_get_export(state->nest, "_start");
+	if(start == -1) {
+		print_error("start function not found");
+	}
+	i32 res = 0;
+	vp_call_func(state, start, &res, (void*)0, 0);
+	printf("program exited with code %i\n", res);
+	vp_state_free(state);
+	vn_nest_free(nest);
 	return 0;
 }
 

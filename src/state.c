@@ -105,6 +105,9 @@ vp_state *vp_state_init(vn_nest *nest)
 		state->objs[i] = ve_malloc(state->alloc, size);
 		memcpy(state->objs[i], nest->objs[i]->init, size);
 	}
+	state->frames = vu_malloc_array(VP_BUFF_DEFAULT, 4);
+	state->fp = state->frames;
+	state->fp->size = 0;
 	return state;
 }
 
@@ -112,5 +115,6 @@ void vp_state_free(vp_state *state)
 {
 	ve_allocator_free(state->alloc);
 	vu_free(state->objs);
+	vu_free(state->frames);
 	vu_free(state);
 }

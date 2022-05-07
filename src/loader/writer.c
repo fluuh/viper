@@ -43,7 +43,7 @@ static int read_funcs(vn_writer *writer)
 		vu_dbuff_cwrite(bc, VN_ELEMENT_START);
 		vu_dbuff_write(bc, (u8*)&fn->r32, 2);
 		vu_dbuff_write(bc, (u8*)&fn->r64, 2);
-		vu_dbuff_write(bc, (u8*)&fn->rsize, 2);
+		vu_dbuff_write(bc, (u8*)&fn->rxx, 2);
 		// if rresv is ever used, this has to be modified
 		u16 resv = 0;
 		vu_dbuff_write(bc, (u8*)&resv, 2);

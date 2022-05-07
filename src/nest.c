@@ -78,3 +78,18 @@ int vn_nest_free(vn_nest *nest) {
 	}
 	return vn_nest_free_partial(nest);
 }
+
+vp_export vn_get_export(vn_nest *nest, const char *name)
+{
+	for(int i = 0; i < nest->num_funcs; i++) {
+		const char *en = nest->funcs[i]->name;
+		if(en == (void*)0) {
+			continue;
+		}
+		if(strcmp(en, name) == 0) {
+			return i;
+		}
+	}
+	// this should probably be better than this
+	return -1;
+}

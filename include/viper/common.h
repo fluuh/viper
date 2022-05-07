@@ -29,11 +29,13 @@ typedef unsigned long long u64;
 typedef unsigned int u32;
 typedef unsigned short u16;
 typedef unsigned char u8;
+typedef unsigned long long uxx;
 
 typedef signed long long i64;
 typedef signed int i32;
 typedef signed short i16;
 typedef signed char i8;
+typedef signed long long ixx;
 
 typedef i8 vp_type;
 
@@ -42,5 +44,7 @@ typedef struct vp_func_type {
 	u8 num_args;
 	vp_type args[];
 } vp_func_type;
+
+typedef u64 vp_export;
 
 #endif

@@ -30,7 +30,7 @@ typedef struct vp_func {
 	u8 *code;
 	u16 r32;
 	u16 r64;
-	u16 rsize;
+	u16 rxx;
 	u16 rresv; // unused
 	vp_func_type type;
 } vp_func;

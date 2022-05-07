@@ -41,5 +41,6 @@ int vn_verify(vn_nest *nest);
 int vn_nest_free_partial(vn_nest *nest);
 int vn_nest_free(vn_nest *nest);
 
+vp_export vn_get_export(vn_nest *nest, const char *name);
 
 #endif
