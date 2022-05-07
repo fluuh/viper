@@ -31,7 +31,6 @@
 	_(EQZ_W, "eqz.i32") \
 	_(EQZ_L, "eqz.i64") \
 	/* +3 */\
-	/* Comparison Ops */\
 	_(EQ_W, "eq.i32") \
 	_(EQ_L, "eq.i64") \
 	_(LT_WU, "lt_u.i32") \
@@ -50,7 +49,6 @@
 	_(GE_LU, "ge_u.i64") \
 	_(GE_WS, "ge_s.i32") \
 	_(GE_LS, "ge_s.i64") \
-	/* Binary Ops */\
 	_(ADD_W, "add.i32") \
 	_(ADD_L, "add.i64") \
 	_(SUB_W, "sub.i32") \

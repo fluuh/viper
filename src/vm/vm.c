@@ -179,6 +179,76 @@ static int dispatch(vp_state *state)
 		LOAD_FRAME();
 		vm_break;
 	}
+	vm_case(ADD_W):
+	{
+		u32 *dst = (r32 + imm());
+		u32 *op0 = (r32 + imm());
+		u32 *op1 = (r32 + imm());
+		*dst = *op0 + *op1;
+	}
+	vm_case(ADD_L):
+	{
+		u64 *dst = (r64 + imm());
+		u64 *op0 = (r64 + imm());
+		u64 *op1 = (r64 + imm());
+		*dst = *op0 + *op1;
+	}
+	vm_case(SUB_W):
+	{
+		u32 *dst = (r32 + imm());
+		u32 *op0 = (r32 + imm());
+		u32 *op1 = (r32 + imm());
+		*dst = *op0 - *op1;
+	}
+	vm_case(SUB_L):
+	{
+		u64 *dst = (r64 + imm());
+		u64 *op0 = (r64 + imm());
+		u64 *op1 = (r64 + imm());
+		*dst = *op0 - *op1;
+	}
+	vm_case(MUL_W):
+	{
+		u32 *dst = (r32 + imm());
+		u32 *op0 = (r32 + imm());
+		u32 *op1 = (r32 + imm());
+		*dst = *op0 * *op1;
+	}
+	vm_case(MUL_L):
+	{
+		u64 *dst = (r64 + imm());
+		u64 *op0 = (r64 + imm());
+		u64 *op1 = (r64 + imm());
+		*dst = *op0 * *op1;
+	}
+	vm_case(DIV_WU):
+	{
+		u32 *dst = (r32 + imm());
+		u32 *op0 = (r32 + imm());
+		u32 *op1 = (r32 + imm());
+		*dst = *op0 / *op1;
+	}
+	vm_case(DIV_LU):
+	{
+		u64 *dst = (r64 + imm());
+		u64 *op0 = (r64 + imm());
+		u64 *op1 = (r64 + imm());
+		*dst = *op0 / *op1;
+	}
+	vm_case(DIV_WS):
+	{
+		i32 *dst = (i32*)(r32 + imm());
+		i32 *op0 = (i32*)(r32 + imm());
+		i32 *op1 = (i32*)(r32 + imm());
+		*dst = *op0 / *op1;
+	}
+	vm_case(DIV_LS):
+	{
+		i64 *dst = (i64*)(r64 + imm());
+		i64 *op0 = (i64*)(r64 + imm());
+		i64 *op1 = (i64*)(r64 + imm());
+		*dst = *op0 / *op1;
+	}
 	vm_case(OBJ):
 	{
 		u8 dst = imm();
