@@ -135,11 +135,56 @@ int vn_bfunc_free(vn_bfunc *fn)
 	return 0;
 }
 
+static vp_func *build_func(vn_builder *builder, vn_nest *nest, vn_bfunc *bf)
+{
+	vp_func *fn;
+	if(bf->ftype == vn_bfunc_native) {
+		fn = vp_func_create_native(bf->type.ret,
+		                           bf->type.args,
+					   bf->type.num_args,
+					   bf->native);
+		fn->ftype = vp_func_native;
+		fn->r32 = 0;
+		fn->r64 = 0;
+		fn->rxx = 0;
+		for(int i = 0; i < fn->type.num_args; i++) {
+			switch(fn->type.args[i]) {
+			case(vp_i32):
+				fn->r32++;
+				break;
+			case(vp_i64):
+				fn->r64++;
+				break;
+			case(vp_iarch):
+				fn->rxx++;
+				break;
+			default:
+				break;
+			}
+		}
+	} else {
+		fn = vp_func_create(bf->type.ret,
+				    bf->type.args,
+				    bf->type.num_args);
+		fn->ftype = vp_func_normal;
+		fn->cap_code = bf->cap_code;
+		fn->size_code = bf->size_code;
+		fn->code = bf->code;
+		fn->r32 = bf->rw;
+		fn->r64 = bf->rl;
+		fn->rxx = bf->rx;
+	}
+	if(bf->name != (void*)0) {
+		fn->name = bf->name;
+	}
+	return fn;
+}
+
 vn_nest *vn_build(vn_builder *builder)
 {
-	vn_nest *nest = vn_nest_alloc(builder->num_funcs, 
+	vn_nest *nest = vn_nest_alloc(builder->num_funcs,
 	                              builder->num_imports,
-				      builder->num_objs);
+				      builder->num_objs, 0);
 	for(int i = 0; i < builder->num_imports; i++) {
 		nest->imports[i] = builder->imports[i];
 	}
@@ -152,48 +197,8 @@ vn_nest *vn_build(vn_builder *builder)
 	vu_free(builder->objs);
 	for(int i = 0; i < builder->num_funcs; i++) {
 		vn_bfunc *bf = builder->funcs[i];
-		if(bf->ftype == vn_bfunc_native) {
-			vp_func *fn = vp_func_create_native(bf->type.ret,
-			                                    bf->type.args,
-							    bf->type.num_args,
-							    bf->native);
-			fn->ftype = vp_func_native;
-			fn->name = bf->name;
-			fn->r32 = 0;
-			fn->r64 = 0;
-			fn->rxx = 0;
-			for(int j = 0; j < fn->type.num_args; j++) {
-				switch(fn->type.args[i]) {
-				case(vp_i32):
-					fn->r32++;
-					break;
-				case(vp_i64):
-					fn->r64++;
-					break;
-				case(vp_iarch):
-					fn->rxx++;
-					break;
-				default:
-					break;
-				}
-			}
-			nest->funcs[nest->num_funcs] = fn;
-			nest->num_funcs++;
-		} else {
-			vp_func *fn = vp_func_create(bf->type.ret, 
-						bf->type.args, 
-						bf->type.num_args);
-			fn->ftype = vp_func_normal;
-			fn->cap_code = bf->cap_code;
-			fn->size_code = bf->size_code;
-			fn->code = bf->code;
-			fn->name = bf->name;
-			fn->r32 = bf->rw;
-			fn->r64 = bf->rl;
-			fn->rxx = bf->rx;
-			nest->funcs[nest->num_funcs] = fn;
-			nest->num_funcs++;
-		}
+		vp_func *fn = build_func(builder, nest, bf);
+		nest->funcs[nest->num_funcs++] = fn;
 	}
 	vn_build_free(builder);
 	return nest;

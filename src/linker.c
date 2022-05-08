@@ -40,7 +40,7 @@ static int linker_resolve_import(vn_linker *lk, u32 *dst, const char* name)
 	return 1;
 }
 
-// resolve all calls
+// resolve all references
 static int linker_resolve_refs(vn_linker *lk)
 {
 	for(int i = 0; i < lk->num_refs; i++) {
@@ -114,7 +114,7 @@ vn_nest *vn_linker_link(vn_linker *lk)
 		num_funcs += lk->nests[i]->num_funcs;
 		num_objs += lk->nests[i]->num_objs;
 	}
-	vn_nest *nest = vn_nest_alloc(num_funcs, num_imports, num_objs);
+	vn_nest *nest = vn_nest_alloc(num_funcs, num_imports, num_objs, 0);
 	lk->out = nest;
 	if(linker_merge(lk) != 0 ||
 	   linker_symbols(lk) != 0 ||

@@ -11,6 +11,18 @@
 #include "func.h"
 #include "obj.h"
 
+typedef struct vn_export {
+	const char *name;
+	enum {
+		vn_export_func,
+		vn_export_obj,
+	} type;
+	union {
+		vp_func *fn;
+		vp_obj *obj;
+	};
+} vn_export;
+
 // this could be defined in func.h, but since
 // it's only used by nest it isn't shared.
 typedef struct vn_import {
@@ -29,9 +41,13 @@ typedef struct vn_nest {
 	u32 num_objs;
 	u32 cap_objs;
 	vp_obj **objs;
+	size_t num_exports;
+	size_t cap_exports;
+	vn_export *exports;
 } vn_nest;
 
-vn_nest *vn_nest_alloc(u32 num_funcs, u32 num_imports, u32 num_objs);
+vn_nest *vn_nest_alloc(u32 num_funcs, u32 num_imports, u32 num_objs,
+                       u32 num_exports);
 vn_import *vn_import_create(const char *name,
                             vp_type ret, vp_type* args, u8 num_args);
 int vn_import_free(vn_import *import);

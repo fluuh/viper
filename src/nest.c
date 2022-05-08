@@ -9,7 +9,8 @@
 #include <viper/util.h>
 #include <viper/nest.h>
 
-vn_nest *vn_nest_alloc(u32 num_funcs, u32 num_imports, u32 num_objs)
+vn_nest *vn_nest_alloc(u32 num_funcs, u32 num_imports, u32 num_objs,
+                       u32 num_exports)
 {
 	vn_nest *nest = vu_malloc(sizeof(*nest));
 	nest->cap_funcs = num_funcs;
@@ -21,6 +22,9 @@ vn_nest *vn_nest_alloc(u32 num_funcs, u32 num_imports, u32 num_objs)
 	nest->cap_objs = num_objs;
 	nest->num_objs = 0; // again!
 	nest->objs = vu_malloc_array(num_objs, sizeof(*nest->objs));
+	nest->cap_exports = num_exports;
+	nest->num_exports = 0;
+	nest->exports = vu_malloc_array(num_exports, sizeof(*nest->exports));
 	return nest;
 }
 

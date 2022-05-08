@@ -162,6 +162,10 @@ static int pmain(void)
 		return 0;
 	}
 	FILE* file = fopen(args.args[0], "r");
+	if(file == (void*)0) {
+		print_error("file not found");
+		return 1;
+	}
 	vn_nest *new;
 	int nres = vp_load_file(file, &new);
 	if(nres != 0) {

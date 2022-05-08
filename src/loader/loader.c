@@ -213,7 +213,8 @@ int vp_load_file(FILE *file, vn_nest **nest)
 		return 1;
 	}
 	vn_nest *new = vn_nest_alloc(ld->num_funcs, 
-	                             ld->num_imports, ld->num_objs);
+	                             ld->num_imports, ld->num_objs,
+				     ld->num_exports);
 	new->num_funcs = ld->num_funcs;
 	new->num_imports = ld->num_imports;
 	new->num_objs = ld->num_objs;
@@ -225,6 +226,23 @@ int vp_load_file(FILE *file, vn_nest **nest)
 	}
 	for(int i = 0; i < ld->num_imports; i++) {
 		new->imports[i] = ld->imports[i];
+	}
+	for(int i = 0; i < ld->num_exports; i++) {
+		export *ex = &ld->exports[i];
+		vn_export *nex = &new->exports[i];
+		switch(ex->type) {
+		case(VN_SECTION_OBJS):
+			nex->type = vn_export_obj;
+			nex->fn = ld->funcs[i];
+			break;
+		case(VN_SECTION_FUNCS):
+			nex->type = vn_export_func;
+			nex->obj = ld->objs[i];
+			break;
+		default:
+			return 1;
+		}
+		nex->name = ex->name;
 	}
 	*nest = new;
 	vu_free(ld->exports);
