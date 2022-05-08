@@ -12,6 +12,15 @@
 #define VP_BUFF_DEFAULT 256
 
 enum {
+	vperr_none = 0,
+	vperr_internal,
+	vperr_halt,
+	vperr_code,
+	vperr_index,
+	vperr_mem,
+};
+
+enum {
 	// floats aren't tracked
 	vp_void = 0,
 	vp_i32 = -1, // w

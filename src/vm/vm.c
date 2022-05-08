@@ -130,11 +130,17 @@ static int dispatch(vp_state *state)
 	vm_case(NOP):
 		vm_break;
 	vm_case(END):
-		// TODO: OP_END
-		return 1;
+		return vperr_code; // unreachable
 	vm_case(RETVOID):
-		// TODO: OP_RETVOID
-		return 1;
+	{
+		if(fn->type.ret != vp_void) {
+			return 1;
+		}
+		// there is no need to deal with return values
+		pop_callframe(state);
+		LOAD_FRAME();
+		vm_break;
+	}
 	vm_case(RET):
 	{
 		imm();
@@ -193,51 +199,51 @@ static int dispatch(vp_state *state)
 	}
 	vm_case(JMP):
 		// TODO: OP_JMP
-		return 1;
+		return vperr_internal;
 	vm_case(NEG_W):
-		return 1;
+		return vperr_internal;
 	vm_case(NEG_L):
-		return 1;
+		return vperr_internal;
 	vm_case(EQZ_W):
-		return 1;
+		return vperr_internal;
 	vm_case(EQZ_L):
-		return 1;
+		return vperr_internal;
 	vm_case(EQ_W):
-		return 1;
+		return vperr_internal;
 	vm_case(EQ_L):
-		return 1;
+		return vperr_internal;
 	vm_case(LT_WU):
-		return 1;
+		return vperr_internal;
 	vm_case(LT_LU):
-		return 1;
+		return vperr_internal;
 	vm_case(LT_WS):
-		return 1;
+		return vperr_internal;
 	vm_case(LT_LS):
-		return 1;
+		return vperr_internal;
 	vm_case(GT_WU):
-		return 1;
+		return vperr_internal;
 	vm_case(GT_LU):
-		return 1;
+		return vperr_internal;
 	vm_case(GT_WS):
-		return 1;
+		return vperr_internal;
 	vm_case(GT_LS):
-		return 1;
+		return vperr_internal;
 	vm_case(LE_WU):
-		return 1;
+		return vperr_internal;
 	vm_case(LE_LU):
-		return 1;
+		return vperr_internal;
 	vm_case(LE_WS):
-		return 1;
+		return vperr_internal;
 	vm_case(LE_LS):
-		return 1;
+		return vperr_internal;
 	vm_case(GE_WU):
-		return 1;
+		return vperr_internal;
 	vm_case(GE_LU):
-		return 1;
+		return vperr_internal;
 	vm_case(GE_WS):
-		return 1;
+		return vperr_internal;
 	vm_case(GE_LS):
-		return 1;
+		return vperr_internal;
 	vm_case(ADD_W):
 	{
 		u32 *dst = (r32 + imm());
@@ -410,5 +416,5 @@ static int dispatch(vp_state *state)
 	#undef imm2
 	#undef imm4
 
-	return 1;
+	return vperr_internal;
 }
