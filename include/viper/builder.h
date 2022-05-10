@@ -17,18 +17,19 @@ typedef struct vb_reg {
 	u16 i;
 } vb_reg;
 
+typedef struct vb_const {
+	vp_type type;
+	u64 val;
+} vb_const;
+
 typedef struct vb_value {
 	enum {
 		vb_val_reg,
-		vb_val_num,
-		vb_val_name,
-		vb_val_lbl,
+		vb_val_const,
 	} type;
 	union {
 		vb_reg reg;
-		i64 num;
-		const char *name;
-		vb_label *lbl;
+		vb_const c;
 	};
 } vb_value;
 
@@ -40,7 +41,16 @@ struct vb_inst {
 	u8 op;
 	// these are assumed to be correct
 	int num;
-	vb_value vals[];
+	struct {
+		enum {
+			vb_iarg_value,
+			vb_iarg_label,
+		} kind;
+		union {
+			vb_value *val;
+			vb_label *lbl;
+		};
+	} vals[];
 };
 
 typedef struct {
@@ -99,5 +109,17 @@ vb_inst *vb_inst_create(vb_block *block, int size);
 vb_label *vb_label_create(vb_func *fn);
 
 int vb_label_bind(vb_label *lbl, vb_block *block);
+
+vb_value *vb_value_init(vb_func *fn);
+
+vb_value *vb_reg_create(vb_func *fn, vp_type type);
+
+/* Emitter */
+vb_inst *vb_emit_nop(vb_func *fn);
+vb_inst *vb_emit_end(vb_func *fn);
+vb_inst *vb_emit_ret(vb_func *fn, vb_value *val);
+vb_inst *vb_emit_jmp(vb_func *fn, vb_label *lbl);
+vb_inst *vb_emit_neg(vb_func *fn, vb_value *dst, vb_value *op);
+vb_inst *vb_emit_ld(vb_func *fn, vb_value *dst, vb_value *op);
 
 #endif

@@ -113,3 +113,24 @@ int vb_label_bind(vb_label *lbl, vb_block *block)
 	lbl->block = block;
 	return 0;
 }
+
+vb_value *vb_value_init(vb_func *fn)
+{
+	vb_value *val = vu_malloc(sizeof(*val));
+	if(fn->num_vals >= fn->cap_vals) {
+		fn->cap_vals *= 2;
+		fn->vals = vu_realloc(fn->vals, fn->cap_vals);
+	}
+	fn->vals[fn->num_vals++] = val;
+	return val;
+}
+
+vb_value *vb_reg_create(vb_func *fn, vp_type type)
+{
+	vb_value *val = vb_value_init(fn);
+	val->type = vb_val_reg;
+	val->reg.t = type;
+	// this will be assigned later
+	val->reg.i = 0;
+	return val;
+}
