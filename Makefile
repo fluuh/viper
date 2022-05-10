@@ -20,7 +20,7 @@ BIN_LIB  = $(OUT_DIR)/$(BIN_NAME)
 CORE_SRC = src/util/dbuff.c src/util/mem.c src/nest.c src/emit/emit.c \
            src/emit/build.c src/func.c src/linker.c src/api.c src/asm/asm.c \
 	   src/obj.c src/loader/writer.c src/state.c src/vm/vm.c \
-	   src/loader/loader.c
+	   src/loader/loader.c src/builder/build.c src/builder/emit.c
 CORE_OBJ = $(CORE_SRC:src/%.c=$(OUT_DIR)/obj/%.o)
 
 BIN_SRC = src/main.c
