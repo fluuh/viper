@@ -75,6 +75,9 @@ vb_inst *vb_inst_init(int size)
 {
 	vb_inst *inst = vu_malloc(sizeof(*inst) + sizeof(vb_value) * size);
 	inst->num = size;
+	for(int i = 0; i < size; i++) {
+		inst->vals[i].kind = vb_iarg_value;
+	}
 	return inst;
 }
 

@@ -120,6 +120,10 @@ vb_inst *vb_emit_end(vb_func *fn);
 vb_inst *vb_emit_ret(vb_func *fn, vb_value *val);
 vb_inst *vb_emit_jmp(vb_func *fn, vb_label *lbl);
 vb_inst *vb_emit_neg(vb_func *fn, vb_value *dst, vb_value *op);
-vb_inst *vb_emit_ld(vb_func *fn, vb_value *dst, vb_value *op);
+vb_inst *vb_emit_eqz(vb_func *fn, vb_value *dst, vb_value *op);
+vb_inst *vb_emit_eq(vb_func *fn, vb_value *dst, vb_value *op0, vb_value *op1);
+vb_inst *vb_emit_add(vb_func *fn, vb_value *dst, 
+		     vb_value *op0, vb_value *op1);
+vb_inst *vb_emit_ldi(vb_func *fn, vb_value *dst, vb_value *op);
 
 #endif
