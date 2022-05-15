@@ -133,5 +133,7 @@ vb_inst *vb_emit_div(vb_func *fn, vb_value *dst,
 vb_inst *vb_emit_idiv(vb_func *fn, vb_value *dst,
 		     vb_value *op0, vb_value *op1);
 vb_inst *vb_emit_ldi(vb_func *fn, vb_value *dst, vb_value *op);
+vb_inst *vb_emit_br(vb_func *fn, vb_value *cond,
+                    vb_label *ctrue, vb_label *cfalse);
 
 #endif

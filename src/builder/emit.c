@@ -199,3 +199,15 @@ vb_inst *vb_emit_ldi(vb_func *fn, vb_value *dst, vb_value *op)
 	inst->vals[1].val = op;
 	return inst;
 }
+
+vb_inst *vb_emit_br(vb_func *fn, vb_value *cond,
+                    vb_label *ctrue, vb_label *cfalse)
+{
+	vb_inst *inst = vb_inst_create(fn->current, 3);
+	inst->vals[0].val = cond;
+	inst->vals[1].kind = vb_iarg_label;
+	inst->vals[1].lbl = ctrue;
+	inst->vals[2].kind = vb_iarg_label;
+	inst->vals[2].lbl = cfalse;
+	return inst;
+}
