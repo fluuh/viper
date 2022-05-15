@@ -124,6 +124,14 @@ vb_inst *vb_emit_eqz(vb_func *fn, vb_value *dst, vb_value *op);
 vb_inst *vb_emit_eq(vb_func *fn, vb_value *dst, vb_value *op0, vb_value *op1);
 vb_inst *vb_emit_add(vb_func *fn, vb_value *dst, 
 		     vb_value *op0, vb_value *op1);
+vb_inst *vb_emit_sub(vb_func *fn, vb_value *dst,
+		     vb_value *op0, vb_value *op1);
+vb_inst *vb_emit_mul(vb_func *fn, vb_value *dst,
+		     vb_value *op0, vb_value *op1);
+vb_inst *vb_emit_div(vb_func *fn, vb_value *dst,
+		     vb_value *op0, vb_value *op1);
+vb_inst *vb_emit_idiv(vb_func *fn, vb_value *dst,
+		     vb_value *op0, vb_value *op1);
 vb_inst *vb_emit_ldi(vb_func *fn, vb_value *dst, vb_value *op);
 
 #endif

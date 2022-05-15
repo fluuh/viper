@@ -150,6 +150,30 @@ vb_inst *vb_emit_add(vb_func *fn, vb_value *dst,
 	return vb_emit_arith(fn, OP_ADD_W, dst, op0, op1);
 }
 
+vb_inst *vb_emit_sub(vb_func *fn, vb_value *dst,
+		     vb_value *op0, vb_value *op1)
+{
+	return vb_emit_arith(fn, OP_SUB_W, dst, op0, op1);
+}
+
+vb_inst *vb_emit_mul(vb_func *fn, vb_value *dst,
+		     vb_value *op0, vb_value *op1)
+{
+	return vb_emit_arith(fn, OP_MUL_W, dst, op0, op1);
+}
+
+vb_inst *vb_emit_div(vb_func *fn, vb_value *dst,
+		     vb_value *op0, vb_value *op1)
+{
+	return vb_emit_arith(fn, OP_DIV_WU, dst, op0, op1);
+}
+
+vb_inst *vb_emit_idiv(vb_func *fn, vb_value *dst,
+		     vb_value *op0, vb_value *op1)
+{
+	return vb_emit_arith(fn, OP_DIV_WS, dst, op0, op1);
+}
+
 vb_inst *vb_emit_ldi(vb_func *fn, vb_value *dst, vb_value *op)
 {
 	if(dst->type != vb_val_reg || op->type != vb_val_const) {
