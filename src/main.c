@@ -7,11 +7,6 @@
 #include <stdio.h>
 
 #include <viper/viper.h>
-#include <viper/linker.h>
-#include <viper/emit.h>
-#include <viper/asm.h>
-#include <viper/loader.h>
-#include <viper/state.h>
 
 static void print_copyright(void)
 {

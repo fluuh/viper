@@ -25,4 +25,15 @@
 
 void VP_VER_SYM(void);
 
+#include "asm.h"
+#include "builder.h"
+#include "emit.h"
+#include "func.h"
+#include "linker.h"
+#include "loader.h"
+#include "nest.h"
+#include "obj.h"
+#include "state.h"
+#include "util.h"
+
 #endif
