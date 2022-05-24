@@ -130,6 +130,7 @@ static int pmain(void)
 	int argn = parse_args(s->argv);
 	if(argn < 0) {
 		print_error("invalid options");
+		print_usage(status.argv[0]);
 		return 1;
 	}
 	if((args.flags & FLAG_VERSION)) {
