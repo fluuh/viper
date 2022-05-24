@@ -10,19 +10,19 @@
 #include "common.h"
 #include "nest.h"
 
-typedef struct vb_label vb_label;
+typedef struct vb_label_s vb_label;
 
-typedef struct vb_reg {
+typedef struct vb_reg_s {
 	vp_type t;
-	u16 i;
+	int i;
 } vb_reg;
 
-typedef struct vb_const {
+typedef struct vb_const_s {
 	vp_type type;
 	u64 val;
 } vb_const;
 
-typedef struct vb_value {
+typedef struct vb_value_s {
 	enum {
 		vb_val_reg,
 		vb_val_const,
@@ -33,9 +33,9 @@ typedef struct vb_value {
 	};
 } vb_value;
 
-typedef struct vb_inst vb_inst;
+typedef struct vb_inst_s vb_inst;
 
-struct vb_inst {
+struct vb_inst_s {
 	vb_inst *next;
 	vb_inst *prev;
 	u8 op;
@@ -58,7 +58,7 @@ typedef struct {
 	vb_inst *last;
 } vb_block;
 
-struct vb_label {
+struct vb_label_s {
 	const char *name;
 	vb_block *block;
 };
@@ -70,8 +70,7 @@ typedef struct {
 		vb_kind_native,
 	} kind;
 	vp_native_func func;
-	int r32;
-	int r64;
+	int regn;
 	// args are the first values
 	size_t cap_vals;
 	size_t num_vals;

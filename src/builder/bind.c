@@ -43,8 +43,6 @@ static size_t block_size(vb_block *block)
  */
 static int bind_registers(vb_func *fn)
 {
-	int r32;
-	int r64;
 	for(int i = 0; i < fn->num_vals; i++) {
 		vb_value *val = fn->vals[i];
 		if(val->type != vb_val_reg) {
@@ -52,17 +50,16 @@ static int bind_registers(vb_func *fn)
 		}
 		switch(val->reg.t) {
 		case(vp_i32):
-			val->reg.i = r32++;
+			val->reg.i = fn->regn++;
 			break;
 		case(vp_i64):
-			val->reg.i = r64++;
+			val->reg.i = fn->regn;
+			fn->regn += 2;
 			break;
 		default:
 			return 1;
 		}
 	}
-	fn->r32 = r32;
-	fn->r64 = r64;
 	return 0;
 }
 
