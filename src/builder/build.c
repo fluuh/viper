@@ -23,9 +23,12 @@ vb_func *vb_func_init(vb_builder *builder,
                       vp_type ret, vp_type *args, u8 num_args)
 {
 	vb_func *fn = vu_malloc(sizeof(*fn) + sizeof(vp_type) * num_args);
+	fn->r32 = 0;
+	fn->r64 = 0;
 	fn->type.ret = ret;
 	fn->type.num_args = num_args;
 	memcpy(&fn->type.args, args, sizeof(vp_type) * num_args);
+	fn->id = builder->num_funcs;
 	builder->funcs[builder->num_funcs++] = fn;
 	return fn;
 }

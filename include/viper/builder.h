@@ -64,11 +64,14 @@ struct vb_label {
 };
 
 typedef struct {
+	u32 id;
 	enum {
 		vb_kind_normal,
 		vb_kind_native,
 	} kind;
 	vp_native_func func;
+	int r32;
+	int r64;
 	// args are the first values
 	size_t cap_vals;
 	size_t num_vals;
@@ -135,5 +138,9 @@ vb_inst *vb_emit_idiv(vb_func *fn, vb_value *dst,
 vb_inst *vb_emit_ldi(vb_func *fn, vb_value *dst, vb_value *op);
 vb_inst *vb_emit_br(vb_func *fn, vb_value *cond,
                     vb_label *ctrue, vb_label *cfalse);
+
+int vb_bind_func(vb_builder *builder, vb_func *fn);
+int vb_bind(vb_builder *builder);
+vn_nest *vb_build(vb_builder *builder);
 
 #endif
