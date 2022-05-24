@@ -10,7 +10,7 @@
 
 static void print_copyright(void)
 {
-	fputs("Viper " VP_VERSION "\n", stdout);
+	fputs(VP_VERSION "\n", stdout);
 }
 
 static void print_usage(const char* progname) 
@@ -50,7 +50,7 @@ static int parse_args(char **argv)
 {
 	args.mode = MODE_RUN;
 	args.flags = 0;
-	args.out = "a.out";
+	args.out = (void*)0;
 	args.start = "_start";
 	int i;
 	for(i = 1; argv[i] != (void*)0 && argv[i][0] == '-'; i++) {
@@ -149,7 +149,12 @@ static int pmain(void)
 			print_error("assembler failed");
 			return 1;
 		}
-		FILE* out = fopen(args.out, "w");
+		FILE* out;
+		if(args.out != NULL) {
+			out = fopen(args.out, "w");
+		} else {
+			out = stdout;
+		}
 		if(vp_write_nest(out, nest) != 0) {
 			print_error("writer failed");
 			return 1;
