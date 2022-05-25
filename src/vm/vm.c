@@ -84,7 +84,7 @@ static int dispatch(vp_state *state)
 #ifdef VP_CGO
 
 	static void *dispatch_table[] = {
-#define OPCODE(name, _) &&OPC_##name,
+#define OPCODE(name, s, t) &&OPC_##name,
 	    BCDEF(OPCODE)
 #undef OPCODE
 	};
@@ -99,7 +99,7 @@ static int dispatch(vp_state *state)
 
 #else
 
-#define next_case(op, _)                                                       \
+#define next_case(op, s, t)                                                    \
 	case OP_##op:                                                          \
 		goto OPC_##op;
 
