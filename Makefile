@@ -58,4 +58,4 @@ clean:
 	$(RM) -r $(OUT_DIR)
 
 fmt:
-	clang-format -i -style=file $(BIN_SRC) $(CORE_SRC)
+	clang-format -i -style=file $(BIN_SRC) $(CORE_SRC) include/viper/*.h
