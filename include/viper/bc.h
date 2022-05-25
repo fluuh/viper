@@ -17,7 +17,6 @@
  * 40: +9
  * 41: variable length
  */
-// TODO: add iarch instructions
 #define BCDEF(_) \
 	_(NOP, "nop") \
 	_(END, "end") \
@@ -63,7 +62,7 @@
 	_(OBJ, "obj") \
 	_(LDI_W, "ldi.i32") \
 	/* +6 */\
-	_(BR, "branch") \
+	_(BR, "br") \
 	/* +9 */\
 	_(LDI_L, "ldi.i64") \
 	/* variable length */\

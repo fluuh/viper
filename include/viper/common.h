@@ -23,9 +23,10 @@ enum {
 enum {
 	// floats aren't tracked
 	vp_void = 0,
-	vp_i32 = -1, // w
-	vp_i64 = -2, // l
-	vp_iarch = -3, // p
+	vp_i32 = -1, // word, size_t
+	vp_i64 = -2, // long, ptr
+	/* TODO: remove iarch */
+	vp_iarch = -3,
 };
 /* Types */
 
@@ -54,6 +55,7 @@ typedef struct vp_func_type {
 	vp_type args[];
 } vp_func_type;
 
-typedef u64 vp_export;
+typedef i64 vp_export;
+#define VP_EXPORT_NONE -1
 
 #endif

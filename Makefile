@@ -1,14 +1,15 @@
 
 INC = -Iinclude
 
-CC = clang
-CWARNS = -Wall -Wshadow -Wpointer-arith -Wcast-qual \
+CC      = clang
+LD      = $(CC)
+LDFLAGS =
+CWARNS  = -Wall -Wshadow -Wpointer-arith -Wcast-qual \
         -Wstrict-prototypes -Wmissing-prototypes
-CFLAGS = -m64 -std=c99 $(INC) -O2 -c -march=native -g $(CWARNS)
-AR     = ar rcs
-RM     = rm -f
+CFLAGS  = -m64 -std=c99 $(INC) -O2 -c -march=native -g $(CWARNS)
+AR      = ar rcs
+RM      = rm -f
 
-# build
 OUT_DIR = build
 
 CORE_NAME = libviper.a
@@ -35,7 +36,7 @@ core: $(CORE_LIB)
 
 $(BIN_LIB): $(BIN_OBJ) $(CORE_LIB)
 	@echo "Linking $(subst $(OUT_DIR)/,,$@)"
-	@$(CC) -o $@ $^
+	@$(LD) $(LDFLAGS) -o $@ $^
 	@echo "Bin built successfully :-D"
 
 $(BIN_OBJ): $(OUT_DIR)/obj/%.o:src/%.c

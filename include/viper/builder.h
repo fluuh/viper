@@ -140,6 +140,6 @@ vb_inst *vb_emit_br(vb_func *fn, vb_value *cond,
 
 int vb_bind_func(vb_builder *builder, vb_func *fn);
 int vb_bind(vb_builder *builder);
-vn_nest *vb_build(vb_builder *builder);
+int vb_build(vb_builder *builder, vn_nest **dst);
 
 #endif

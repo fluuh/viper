@@ -187,7 +187,7 @@ static int pmain(void)
 	}
 	vp_state *state = vp_state_init(nest);
 	vp_export start = vn_get_export(state->nest, args.start);
-	if(start == -1) {
+	if(start == VP_EXPORT_NONE) {
 		print_error("start function not found");
 		return 1;
 	}
