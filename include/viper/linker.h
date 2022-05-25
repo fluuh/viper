@@ -42,6 +42,7 @@ typedef struct vn_linker {
 } vn_linker;
 
 vn_linker *vn_linker_create(void);
+void vn_linker_free(vn_linker *lk);
 int vn_linker_add(vn_linker *linker, vn_nest *nest);
 // Linking is done in two steps:
 // 1. Find all calls and exports.

@@ -12,7 +12,7 @@
 
 typedef struct export
 {
-	const char *name;
+	char *name;
 	int type;
 	u32 id;
 }
@@ -52,6 +52,7 @@ static int read_imports(loader *ld)
 		char *name = vu_malloc_array(size, 1);
 		fread(name, 1, size, ld->file);
 		vn_import *imp = vn_import_create(name, ret, args, num_args);
+		vu_free(name);
 		u32 id = ld->num_imports;
 		ld->num_imports++;
 		ld->imports[id] = imp;
@@ -99,7 +100,8 @@ static int read_funcs(loader *ld)
 		fread(args_buff, 1, num_args, ld->file);
 		u32 id = ld->num_funcs;
 		ld->num_funcs++;
-		vp_func *fn = vp_func_create(tret, args_buff, num_args);
+		vp_func *fn =
+		    vp_func_create((void *)0, tret, args_buff, num_args);
 		fn->id = id;
 		ld->funcs[id] = fn;
 	}
@@ -121,6 +123,7 @@ static int read_objs(loader *ld)
 		u8 *init = vu_malloc_array(size, 1);
 		fread(init, 1, size, ld->file);
 		vp_obj *obj = vp_obj_create(init, size);
+		vu_free(init);
 		obj->id = id;
 		ld->objs[id] = obj;
 	}

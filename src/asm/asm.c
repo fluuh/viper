@@ -710,10 +710,8 @@ static int parse_func(assembler *as, int pub)
 	tok_expect(as, tok_arrow);
 	tok = tok_expect(as, tok_type);
 	ret = tok->vtype;
-	vn_bfunc *fn = vn_bfunc_create(as->builder, ret, args, num_args);
-	if (pub) {
-		fn->name = name->str;
-	}
+	vn_bfunc *fn =
+	    vn_bfunc_create(name->str, as->builder, ret, args, num_args);
 	new_symbol(as, name->str, sym_extern, fn->id);
 	return parse_body(as, fn);
 }

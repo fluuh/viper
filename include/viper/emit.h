@@ -22,7 +22,7 @@ typedef struct vn_bfunc {
 		vn_bfunc_normal,
 		vn_bfunc_native,
 	} ftype;
-	const char *name;
+	char *name;
 	vp_native_func native;
 	i32 id;
 	size_t size_code;
@@ -57,10 +57,10 @@ typedef struct vn_builder {
 
 vn_builder *vn_build_create(void);
 
-vn_bfunc *vn_bfunc_create(vn_builder *builder, vp_type ret, vp_type *args,
-                          size_t num_args);
-vn_bfunc *vn_bfunc_create_native(vn_builder *builder, vp_type ret,
-                                 vp_type *args, size_t num_args,
+vn_bfunc *vn_bfunc_create(const char *name, vn_builder *builder, vp_type ret,
+                          vp_type *args, size_t num_args);
+vn_bfunc *vn_bfunc_create_native(const char *name, vn_builder *builder,
+                                 vp_type ret, vp_type *args, size_t num_args,
                                  vp_native_func func);
 vn_import *vn_bimport(vn_builder *builder, const char *name, vp_type ret,
                       vp_type *args, u8 num_args);

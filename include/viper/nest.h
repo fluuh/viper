@@ -12,7 +12,7 @@
 #include "obj.h"
 
 typedef struct vn_export {
-	const char *name;
+	char *name;
 	enum {
 		vn_export_func,
 		vn_export_obj,
@@ -27,7 +27,7 @@ typedef struct vn_export {
 // it's only used by nest it isn't shared.
 typedef struct vn_import {
 	i32 id;
-	const char *name;
+	char *name;
 	vp_func_type type;
 } vn_import;
 

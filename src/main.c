@@ -112,9 +112,8 @@ static vn_nest *create_stdnest(void)
 {
 	vn_builder *builder = vn_build_create();
 	vp_type params[] = {vp_iarch};
-	vn_bfunc *fn =
-	    vn_bfunc_create_native(builder, vp_void, params, 1, &std_print);
-	fn->name = "print";
+	vn_bfunc_create_native("print", builder, vp_void, params,
+	                                      1, &std_print);
 	return vn_build(builder);
 }
 

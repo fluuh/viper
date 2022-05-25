@@ -57,8 +57,8 @@ int vn_build_free(vn_builder *builder)
 	return 0;
 }
 
-vn_bfunc *vn_bfunc_create(vn_builder *builder, vp_type ret, vp_type *args,
-                          size_t num_args)
+vn_bfunc *vn_bfunc_create(const char *name, vn_builder *builder, vp_type ret,
+                          vp_type *args, size_t num_args)
 {
 	if (builder->cap_funcs <= builder->num_funcs + 1) {
 		builder->cap_funcs *= 2;
@@ -66,7 +66,10 @@ vn_bfunc *vn_bfunc_create(vn_builder *builder, vp_type ret, vp_type *args,
 	}
 	vn_bfunc *fn = vu_malloc(sizeof(*fn) + sizeof(vp_type) * num_args);
 	fn->ftype = vn_bfunc_normal;
-	fn->name = (void *)0;
+	if (name != NULL) {
+		fn->name = vu_malloc(strlen(name) + 1);
+		memcpy(fn->name, name, strlen(name) + 1);
+	}
 	fn->cap_code = VP_BUFF_DEFAULT;
 	fn->size_code = 0;
 	fn->code = vu_malloc_array(VP_BUFF_DEFAULT, sizeof(*fn->code));
@@ -93,8 +96,8 @@ vn_bfunc *vn_bfunc_create(vn_builder *builder, vp_type ret, vp_type *args,
 	return fn;
 }
 
-vn_bfunc *vn_bfunc_create_native(vn_builder *builder, vp_type ret,
-                                 vp_type *args, size_t num_args,
+vn_bfunc *vn_bfunc_create_native(const char *name, vn_builder *builder,
+                                 vp_type ret, vp_type *args, size_t num_args,
                                  vp_native_func func)
 {
 	vn_bfunc *fn = vu_malloc(sizeof(*fn) + sizeof(vp_type) * num_args);
@@ -102,8 +105,10 @@ vn_bfunc *vn_bfunc_create_native(vn_builder *builder, vp_type ret,
 	fn->regs = (void *)0;
 	fn->labels = (void *)0;
 	fn->args = (void *)0;
-
-	fn->name = (void *)0;
+	if (name != NULL) {
+		fn->name = vu_malloc(strlen(name) + 1);
+		memcpy(fn->name, name, strlen(name) + 1);
+	}
 	fn->ftype = vn_bfunc_native;
 	fn->native = func;
 	fn->type.ret = ret;
@@ -117,16 +122,19 @@ vn_bfunc *vn_bfunc_create_native(vn_builder *builder, vp_type ret,
 
 int vn_bfunc_free(vn_bfunc *fn)
 {
-	if (fn->regs != (void *)0) {
+	if(fn->name != NULL) {
+		vu_free(fn->name);
+	}
+	if (fn->regs != NULL) {
 		vu_free(fn->regs);
 	}
 	// these are going to be generated
 	// by vn_verify later on, so we don't
 	// need to keep it
-	if (fn->labels != (void *)0) {
+	if (fn->labels != NULL) {
 		vu_free(fn->labels);
 	}
-	if (fn->args != (void *)0) {
+	if (fn->args != NULL) {
 		vu_free(fn->args);
 	}
 	vu_free(fn);
@@ -137,8 +145,9 @@ static vp_func *build_func(vn_builder *builder, vn_nest *nest, vn_bfunc *bf)
 {
 	vp_func *fn;
 	if (bf->ftype == vn_bfunc_native) {
-		fn = vp_func_create_native(bf->type.ret, bf->type.args,
-		                           bf->type.num_args, bf->native);
+		fn =
+		    vp_func_create_native(bf->name, bf->type.ret, bf->type.args,
+		                          bf->type.num_args, bf->native);
 		fn->ftype = vp_func_native;
 		fn->r32 = 0;
 		fn->r64 = 0;
@@ -159,7 +168,7 @@ static vp_func *build_func(vn_builder *builder, vn_nest *nest, vn_bfunc *bf)
 			}
 		}
 	} else {
-		fn = vp_func_create(bf->type.ret, bf->type.args,
+		fn = vp_func_create(bf->name, bf->type.ret, bf->type.args,
 		                    bf->type.num_args);
 		fn->ftype = vp_func_normal;
 		fn->cap_code = bf->cap_code;
@@ -168,9 +177,6 @@ static vp_func *build_func(vn_builder *builder, vn_nest *nest, vn_bfunc *bf)
 		fn->r32 = bf->rw;
 		fn->r64 = bf->rl;
 		fn->rxx = bf->rx;
-	}
-	if (bf->name != (void *)0) {
-		fn->name = bf->name;
 	}
 	return fn;
 }

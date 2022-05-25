@@ -4,6 +4,7 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
+#include "viper/nest.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -25,6 +26,17 @@ vn_linker *vn_linker_create(void)
 	lk->num_nests = 0;
 	lk->nests = vu_malloc_array(lk->cap_nests, sizeof(*lk->nests));
 	return lk;
+}
+
+void vn_linker_free(vn_linker *lk)
+{
+	vu_free(lk->symbols);
+	vu_free(lk->refs);
+	for (int i = 0; i < lk->num_nests; i++) {
+		vn_nest_free_partial(lk->nests[i]);
+	}
+	vu_free(lk->nests);
+	vu_free(lk);
 }
 
 static int linker_resolve_import(vn_linker *lk, u32 *dst, const char *name)
@@ -118,8 +130,10 @@ vn_nest *vn_linker_link(vn_linker *lk)
 	lk->out = nest;
 	if (linker_merge(lk) != 0 || linker_symbols(lk) != 0 ||
 	    linker_resolve_refs(lk) != 0) {
+		vn_linker_free(lk);
 		return (void *)0;
 	}
+	vn_linker_free(lk);
 	return nest;
 }
 

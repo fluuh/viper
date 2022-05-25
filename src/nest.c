@@ -33,7 +33,8 @@ vn_import *vn_import_create(const char *name, vp_type ret, vp_type *args,
 {
 	vn_import *import =
 	    vu_malloc(sizeof(*import) + sizeof(vp_type) * num_args);
-	import->name = name;
+	import->name = vu_malloc(strlen(name) + 1);
+	memcpy(import->name, name, strlen(name) + 1);
 	import->id = 0; // this has to be set by the caller
 	import->type.ret = ret;
 	import->type.num_args = num_args;
@@ -43,6 +44,7 @@ vn_import *vn_import_create(const char *name, vp_type ret, vp_type *args,
 
 int vn_import_free(vn_import *import)
 {
+	vu_free(import->name);
 	vu_free(import);
 	return 0;
 }
@@ -68,6 +70,7 @@ int vn_nest_free_partial(vn_nest *nest)
 	}
 	vu_free(nest->funcs);
 	vu_free(nest->imports);
+	vu_free(nest->exports);
 	vu_free(nest->objs);
 	vu_free(nest);
 	return 0;

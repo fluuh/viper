@@ -69,6 +69,7 @@ typedef struct {
 		vb_kind_normal,
 		vb_kind_native,
 	} kind;
+	char *name;
 	vp_native_func func;
 	int regn;
 	// args are the first values
@@ -93,14 +94,15 @@ typedef struct {
 
 vb_builder *vb_builder_create(void);
 
-vb_func *vb_func_init(vb_builder *builder, vp_type ret, vp_type *args,
+vb_func *vb_func_init(const char *name, vb_builder *builder, vp_type ret, vp_type *args,
                       u8 num_args);
 
-vb_func *vb_func_create(vb_builder *builder, vp_type ret, vp_type *args,
-                        u8 num_args);
-
-vb_func *vb_func_native(vb_builder *builder, vp_native_func func, vp_type ret,
+vb_func *vb_func_create(const char *name, vb_builder *builder, vp_type ret,
                         vp_type *args, u8 num_args);
+
+vb_func *vb_func_native(const char *name, vb_builder *builder,
+                        vp_native_func func, vp_type ret, vp_type *args,
+                        u8 num_args);
 
 vb_block *vb_block_create(vb_func *fn);
 vb_inst *vb_inst_init(int size);
