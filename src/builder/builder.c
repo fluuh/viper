@@ -19,11 +19,11 @@ vb_builder *vb_builder_create(void)
 	return builder;
 }
 
-vb_func *vb_func_init(const char *name, vb_builder *builder, vp_type ret, vp_type *args,
-                      u8 num_args)
+vb_func *vb_func_init(const char *name, vb_builder *builder, vp_type ret,
+                      vp_type *args, u8 num_args)
 {
 	vb_func *fn = vu_malloc(sizeof(*fn) + sizeof(vp_type) * num_args);
-	if(name != (void*)0) {
+	if (name != (void *)0) {
 		fn->name = vu_malloc(strlen(name) + 1);
 		memcpy(fn->name, name, strlen(name) + 1);
 	}
@@ -36,8 +36,8 @@ vb_func *vb_func_init(const char *name, vb_builder *builder, vp_type ret, vp_typ
 	return fn;
 }
 
-vb_func *vb_func_create(const char *name, vb_builder *builder, vp_type ret, vp_type *args,
-                        u8 num_args)
+vb_func *vb_func_create(const char *name, vb_builder *builder, vp_type ret,
+                        vp_type *args, u8 num_args)
 {
 	vb_func *fn = vb_func_init(name, builder, ret, args, num_args);
 	fn->kind = vb_kind_normal;
@@ -54,8 +54,9 @@ vb_func *vb_func_create(const char *name, vb_builder *builder, vp_type ret, vp_t
 	return fn;
 }
 
-vb_func *vb_func_native(const char *name, vb_builder *builder, vp_native_func func, vp_type ret,
-                        vp_type *args, u8 num_args)
+vb_func *vb_func_native(const char *name, vb_builder *builder,
+                        vp_native_func func, vp_type ret, vp_type *args,
+                        u8 num_args)
 {
 	vb_func *fn = vb_func_init(name, builder, ret, args, num_args);
 	fn->kind = vb_kind_native;

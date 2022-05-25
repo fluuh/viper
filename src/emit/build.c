@@ -122,7 +122,7 @@ vn_bfunc *vn_bfunc_create_native(const char *name, vn_builder *builder,
 
 int vn_bfunc_free(vn_bfunc *fn)
 {
-	if(fn->name != NULL) {
+	if (fn->name != NULL) {
 		vu_free(fn->name);
 	}
 	if (fn->regs != NULL) {

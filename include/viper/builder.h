@@ -94,8 +94,8 @@ typedef struct {
 
 vb_builder *vb_builder_create(void);
 
-vb_func *vb_func_init(const char *name, vb_builder *builder, vp_type ret, vp_type *args,
-                      u8 num_args);
+vb_func *vb_func_init(const char *name, vb_builder *builder, vp_type ret,
+                      vp_type *args, u8 num_args);
 
 vb_func *vb_func_create(const char *name, vb_builder *builder, vp_type ret,
                         vp_type *args, u8 num_args);
