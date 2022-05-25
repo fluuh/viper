@@ -22,7 +22,7 @@ typedef struct vn_bfunc {
 		vn_bfunc_normal,
 		vn_bfunc_native,
 	} ftype;
-	const char* name;
+	const char *name;
 	vp_native_func native;
 	i32 id;
 	size_t size_code;
@@ -57,12 +57,13 @@ typedef struct vn_builder {
 
 vn_builder *vn_build_create(void);
 
-vn_bfunc *vn_bfunc_create(vn_builder *builder, vp_type ret, 
-                        vp_type *args, size_t num_args);
-vn_bfunc *vn_bfunc_create_native(vn_builder *builder, vp_type ret, 
-                        vp_type *args, size_t num_args, vp_native_func func);
-vn_import *vn_bimport(vn_builder *builder, const char *name,
-                      vp_type ret, vp_type *args, u8 num_args);
+vn_bfunc *vn_bfunc_create(vn_builder *builder, vp_type ret, vp_type *args,
+                          size_t num_args);
+vn_bfunc *vn_bfunc_create_native(vn_builder *builder, vp_type ret,
+                                 vp_type *args, size_t num_args,
+                                 vp_native_func func);
+vn_import *vn_bimport(vn_builder *builder, const char *name, vp_type ret,
+                      vp_type *args, u8 num_args);
 vp_obj *vn_bobject(vn_builder *builder, size_t size, u8 *init);
 // doesn't free code
 int vn_bfunc_free(vn_bfunc *fn);
@@ -110,10 +111,9 @@ int vn_emit_obj(vn_bfunc *fn, vn_reg *dst, u32 oi);
 
 int vn_emit_ldi(vn_bfunc *fn, vn_reg *dst, u64 num);
 
-int vn_emit_call(vn_bfunc *fn, vn_reg *dst, 
-                 vn_bfunc *cf, vn_reg **args, u8 num_args);
-int vn_emit_call_import(vn_bfunc *fn, vn_reg *dst,
-                        vn_import *import, vn_reg **args, u8 num_args);
-
+int vn_emit_call(vn_bfunc *fn, vn_reg *dst, vn_bfunc *cf, vn_reg **args,
+                 u8 num_args);
+int vn_emit_call_import(vn_bfunc *fn, vn_reg *dst, vn_import *import,
+                        vn_reg **args, u8 num_args);
 
 #endif

@@ -6,8 +6,8 @@
 
 #include <string.h>
 
-#include <viper/util.h>
 #include <viper/nest.h>
+#include <viper/util.h>
 
 vn_nest *vn_nest_alloc(u32 num_funcs, u32 num_imports, u32 num_objs,
                        u32 num_exports)
@@ -28,11 +28,11 @@ vn_nest *vn_nest_alloc(u32 num_funcs, u32 num_imports, u32 num_objs,
 	return nest;
 }
 
-vn_import *vn_import_create(const char *name,
-                            vp_type ret, vp_type* args, u8 num_args)
+vn_import *vn_import_create(const char *name, vp_type ret, vp_type *args,
+                            u8 num_args)
 {
-	vn_import *import = vu_malloc(sizeof(*import) + 
-	                              sizeof(vp_type) * num_args);
+	vn_import *import =
+	    vu_malloc(sizeof(*import) + sizeof(vp_type) * num_args);
 	import->name = name;
 	import->id = 0; // this has to be set by the caller
 	import->type.ret = ret;
@@ -41,12 +41,13 @@ vn_import *vn_import_create(const char *name,
 	return import;
 }
 
-int vn_import_free(vn_import *import) {
+int vn_import_free(vn_import *import)
+{
 	vu_free(import);
 	return 0;
 }
 
-int vn_verify_func(vn_nest *nest, vp_func* f)
+int vn_verify_func(vn_nest *nest, vp_func *f)
 {
 	// TODO: verify functions
 	return 0;
@@ -54,7 +55,7 @@ int vn_verify_func(vn_nest *nest, vp_func* f)
 
 int vn_verify(vn_nest *nest)
 {
-	for(int i = 0; i < nest->num_funcs; i++) {
+	for (int i = 0; i < nest->num_funcs; i++) {
 		vn_verify_func(nest, nest->funcs[i]);
 	}
 	return 0;
@@ -62,7 +63,7 @@ int vn_verify(vn_nest *nest)
 
 int vn_nest_free_partial(vn_nest *nest)
 {
-	for(int i = 0; i < nest->num_imports; i++) {
+	for (int i = 0; i < nest->num_imports; i++) {
 		vn_import_free(nest->imports[i]);
 	}
 	vu_free(nest->funcs);
@@ -72,11 +73,12 @@ int vn_nest_free_partial(vn_nest *nest)
 	return 0;
 }
 
-int vn_nest_free(vn_nest *nest) {
-	for(int i = 0; i < nest->num_funcs; i++) {
+int vn_nest_free(vn_nest *nest)
+{
+	for (int i = 0; i < nest->num_funcs; i++) {
 		vp_func_free(nest->funcs[i]);
 	}
-	for(int i = 0; i < nest->num_objs; i++) {
+	for (int i = 0; i < nest->num_objs; i++) {
 		// this should call a vp_obj_free function
 		vu_free(nest->objs[i]);
 	}
@@ -85,12 +87,12 @@ int vn_nest_free(vn_nest *nest) {
 
 vp_export vn_get_export(vn_nest *nest, const char *name)
 {
-	for(int i = 0; i < nest->num_funcs; i++) {
+	for (int i = 0; i < nest->num_funcs; i++) {
 		const char *en = nest->funcs[i]->name;
-		if(en == (void*)0) {
+		if (en == (void *)0) {
 			continue;
 		}
-		if(strcmp(en, name) == 0) {
+		if (strcmp(en, name) == 0) {
 			return i;
 		}
 	}

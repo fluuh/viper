@@ -13,9 +13,9 @@ vu_dbuff *vu_dbuff_create(size_t n, size_t size)
 	size *= n;
 	vu_dbuff *b = vu_malloc(sizeof(*b));
 	b->size = 0;
-	if(size == 0) {
+	if (size == 0) {
 		b->cap = 0;
-		b->buff = (void*)0;
+		b->buff = (void *)0;
 		return b;
 	}
 	b->cap = size;
@@ -26,9 +26,9 @@ vu_dbuff *vu_dbuff_create(size_t n, size_t size)
 int vu_dbuff_write(vu_dbuff *b, const u8 *src, size_t size)
 {
 	// size check
-	if(b->cap <= b->size + size) {
+	if (b->cap <= b->size + size) {
 		// TODO: remove this check
-		if(b->cap == 0) {
+		if (b->cap == 0) {
 			b->cap = VP_BUFF_DEFAULT;
 		} else {
 			b->cap *= 2;
@@ -44,9 +44,9 @@ int vu_dbuff_write(vu_dbuff *b, const u8 *src, size_t size)
 
 int vu_dbuff_cwrite(vu_dbuff *b, const char c)
 {
-	if(b->cap <= b->size + 1) {
+	if (b->cap <= b->size + 1) {
 
-		if(b->cap == 0) {
+		if (b->cap == 0) {
 			b->cap = VP_BUFF_DEFAULT;
 		} else {
 			b->cap *= 2;

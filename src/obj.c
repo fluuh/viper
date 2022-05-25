@@ -6,13 +6,13 @@
 
 #include <string.h>
 
-#include <viper/util.h>
 #include <viper/obj.h>
+#include <viper/util.h>
 
 vp_obj *vp_obj_create(u8 *init, size_t size)
 {
 	vp_obj *obj = vu_malloc(sizeof(*obj) + size);
-	obj->name = (void*)0;
+	obj->name = (void *)0;
 	obj->id = 0; // this is set by the caller
 	obj->size = size;
 	memcpy(obj->init, init, size);

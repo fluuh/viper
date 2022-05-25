@@ -10,30 +10,26 @@
 
 void *vu_malloc(size_t size)
 {
-	if(size == 0) {
-		return (void*)0;
+	if (size == 0) {
+		return (void *)0;
 	}
 	return malloc(size);
 }
 
 void *vu_zalloc(size_t size)
 {
-	void* m = vu_malloc(size);
+	void *m = vu_malloc(size);
 	// TODO: zeroing
 	return m;
 }
 
-void *vu_malloc_array(size_t size, size_t num)
-{
-	return vu_malloc(size * num);
-}
-
+void *vu_malloc_array(size_t size, size_t num) { return vu_malloc(size * num); }
 
 void *vu_realloc(void *p, size_t size)
 {
-	if(size == 0) {
+	if (size == 0) {
 		free(p);
-		return (void*)0;
+		return (void *)0;
 	}
 	return realloc(p, size);
 }

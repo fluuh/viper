@@ -7,14 +7,14 @@
 #ifndef VP_FUNC_H_
 #define VP_FUNC_H_
 
-#include <stdlib.h>
 #include "common.h"
+#include <stdlib.h>
 
 typedef struct vp_label {
 	size_t pos;
-	#ifdef VP_DEBUG
+#ifdef VP_DEBUG
 	const char *name;
-	#endif
+#endif
 } vp_label;
 
 typedef struct vp_func {
@@ -22,7 +22,7 @@ typedef struct vp_func {
 		vp_func_normal,
 		vp_func_native,
 	} ftype;
-	const char* name;
+	const char *name;
 	i32 id;
 	vp_native_func native;
 	size_t size_code;

@@ -12,6 +12,6 @@
 #include "nest.h"
 
 vn_nest *vn_assemble_file(FILE *file);
-vn_nest *vn_assemble(const char* src);
+vn_nest *vn_assemble(const char *src);
 
 #endif

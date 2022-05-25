@@ -93,14 +93,14 @@ typedef struct {
 
 vb_builder *vb_builder_create(void);
 
-vb_func *vb_func_init(vb_builder *builder,
-                      vp_type ret, vp_type *args, u8 num_args);
+vb_func *vb_func_init(vb_builder *builder, vp_type ret, vp_type *args,
+                      u8 num_args);
 
-vb_func *vb_func_create(vb_builder *builder, 
-                        vp_type ret, vp_type *args, u8 num_args);
+vb_func *vb_func_create(vb_builder *builder, vp_type ret, vp_type *args,
+                        u8 num_args);
 
-vb_func *vb_func_native(vb_builder *builder, vp_native_func func,
-                        vp_type ret, vp_type *args, u8 num_args);
+vb_func *vb_func_native(vb_builder *builder, vp_native_func func, vp_type ret,
+                        vp_type *args, u8 num_args);
 
 vb_block *vb_block_create(vb_func *fn);
 vb_inst *vb_inst_init(int size);
@@ -124,19 +124,14 @@ vb_inst *vb_emit_jmp(vb_func *fn, vb_label *lbl);
 vb_inst *vb_emit_neg(vb_func *fn, vb_value *dst, vb_value *op);
 vb_inst *vb_emit_eqz(vb_func *fn, vb_value *dst, vb_value *op);
 vb_inst *vb_emit_eq(vb_func *fn, vb_value *dst, vb_value *op0, vb_value *op1);
-vb_inst *vb_emit_add(vb_func *fn, vb_value *dst, 
-		     vb_value *op0, vb_value *op1);
-vb_inst *vb_emit_sub(vb_func *fn, vb_value *dst,
-		     vb_value *op0, vb_value *op1);
-vb_inst *vb_emit_mul(vb_func *fn, vb_value *dst,
-		     vb_value *op0, vb_value *op1);
-vb_inst *vb_emit_div(vb_func *fn, vb_value *dst,
-		     vb_value *op0, vb_value *op1);
-vb_inst *vb_emit_idiv(vb_func *fn, vb_value *dst,
-		     vb_value *op0, vb_value *op1);
+vb_inst *vb_emit_add(vb_func *fn, vb_value *dst, vb_value *op0, vb_value *op1);
+vb_inst *vb_emit_sub(vb_func *fn, vb_value *dst, vb_value *op0, vb_value *op1);
+vb_inst *vb_emit_mul(vb_func *fn, vb_value *dst, vb_value *op0, vb_value *op1);
+vb_inst *vb_emit_div(vb_func *fn, vb_value *dst, vb_value *op0, vb_value *op1);
+vb_inst *vb_emit_idiv(vb_func *fn, vb_value *dst, vb_value *op0, vb_value *op1);
 vb_inst *vb_emit_ldi(vb_func *fn, vb_value *dst, vb_value *op);
-vb_inst *vb_emit_br(vb_func *fn, vb_value *cond,
-                    vb_label *ctrue, vb_label *cfalse);
+vb_inst *vb_emit_br(vb_func *fn, vb_value *cond, vb_label *ctrue,
+                    vb_label *cfalse);
 
 int vb_bind_func(vb_builder *builder, vb_func *fn);
 int vb_bind(vb_builder *builder);

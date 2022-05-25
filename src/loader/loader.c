@@ -10,11 +10,13 @@
 #include <viper/loader.h>
 #include <viper/viper.h>
 
-typedef struct export {
+typedef struct export
+{
 	const char *name;
 	int type;
 	u32 id;
-} export;
+}
+export;
 
 typedef struct loader {
 	u16 opt;
@@ -35,12 +37,12 @@ typedef struct loader {
 
 static int read_imports(loader *ld)
 {
-	if(fgetc(ld->file) != VN_SECTION_IMPORTS) {
+	if (fgetc(ld->file) != VN_SECTION_IMPORTS) {
 		return 1;
 	}
 	char buff[4];
 	fread(buff, 4, 1, ld->file);
-	while(fgetc(ld->file) == VN_ELEMENT_START) {
+	while (fgetc(ld->file) == VN_ELEMENT_START) {
 		u8 ret = fgetc(ld->file);
 		u8 num_args = fgetc(ld->file);
 		vp_type args[16];
@@ -59,13 +61,13 @@ static int read_imports(loader *ld)
 
 static int read_code(loader *ld)
 {
-	if(fgetc(ld->file) != VN_SECTION_CODE) {
+	if (fgetc(ld->file) != VN_SECTION_CODE) {
 		return 1;
 	}
 	char buff[4];
 	fread(buff, 4, 1, ld->file);
 	u32 id = 0;
-	while(fgetc(ld->file) == VN_ELEMENT_START) {
+	while (fgetc(ld->file) == VN_ELEMENT_START) {
 		vp_func *fn = ld->funcs[id];
 		fread(&fn->r32, 2, 1, ld->file);
 		fread(&fn->r64, 2, 1, ld->file);
@@ -85,12 +87,12 @@ static int read_code(loader *ld)
 
 static int read_funcs(loader *ld)
 {
-	if(fgetc(ld->file) != VN_SECTION_FUNCS) {
+	if (fgetc(ld->file) != VN_SECTION_FUNCS) {
 		return 1;
 	}
 	char buff[4];
 	fread(buff, 4, 1, ld->file);
-	while(fgetc(ld->file) == VN_ELEMENT_START) {
+	while (fgetc(ld->file) == VN_ELEMENT_START) {
 		u8 tret = fgetc(ld->file);
 		u8 num_args = fgetc(ld->file);
 		vp_type args_buff[16];
@@ -106,12 +108,12 @@ static int read_funcs(loader *ld)
 
 static int read_objs(loader *ld)
 {
-	if(fgetc(ld->file) != VN_SECTION_OBJS) {
+	if (fgetc(ld->file) != VN_SECTION_OBJS) {
 		return 1;
 	}
 	char buff[4];
 	fread(buff, 4, 1, ld->file);
-	while(fgetc(ld->file) == VN_ELEMENT_START) {
+	while (fgetc(ld->file) == VN_ELEMENT_START) {
 		u32 id = ld->num_objs;
 		ld->num_objs++;
 		u32 size;
@@ -127,12 +129,12 @@ static int read_objs(loader *ld)
 
 static int read_exports(loader *ld)
 {
-	if(fgetc(ld->file) != VN_SECTION_EXPORTS) {
+	if (fgetc(ld->file) != VN_SECTION_EXPORTS) {
 		return 1;
 	}
 	char buff[4];
 	fread(buff, 4, 1, ld->file); // skip size
-	while(fgetc(ld->file) == VN_ELEMENT_START) {
+	while (fgetc(ld->file) == VN_ELEMENT_START) {
 		int id = ld->num_exports;
 		export *ex = &ld->exports[id];
 		ld->num_exports++;
@@ -153,12 +155,12 @@ static int read_header(loader *ld)
 	char buff[5];
 	fread(buff, 4, 1, ld->file);
 	buff[4] = '\0';
-	if(strcmp(buff, VN_MAGIC) != 0) {
+	if (strcmp(buff, VN_MAGIC) != 0) {
 		return 1;
 	}
 	u8 gen = (u8)fgetc(ld->file);
 	u8 min = (u8)fgetc(ld->file);
-	if(gen != VP_VER_GEN || min != VP_VER_MIN) {
+	if (gen != VP_VER_GEN || min != VP_VER_MIN) {
 		return 2;
 	}
 	fread(&ld->opt, 2, 1, ld->file);
@@ -167,11 +169,11 @@ static int read_header(loader *ld)
 
 static int resolve_exports(loader *ld)
 {
-	for(int i = 0; i < ld->num_exports; i++) {
+	for (int i = 0; i < ld->num_exports; i++) {
 		export *ex = &ld->exports[i];
-		if(ex->type == VN_SECTION_OBJS) {
+		if (ex->type == VN_SECTION_OBJS) {
 			ld->objs[ex->id]->name = ex->name;
-		} else if(ex->type == VN_SECTION_FUNCS) {
+		} else if (ex->type == VN_SECTION_FUNCS) {
 			ld->funcs[ex->id]->name = ex->name;
 		} else {
 			return 1;
@@ -196,46 +198,42 @@ int vp_load_file(FILE *file, vn_nest **nest)
 	ld->num_imports = 0;
 	ld->cap_imports = VP_BUFF_DEFAULT;
 	ld->imports = vu_malloc_array(VP_BUFF_DEFAULT, sizeof(*ld->imports));
-	if(read_header(ld) != 0) {
+	if (read_header(ld) != 0) {
 		return 1;
 	}
-	#define SEC_START() \
-		if(fgetc(ld->file) != VN_SECTION_START) { \
-			return 1; \
-		}
+#define SEC_START()                                                            \
+	if (fgetc(ld->file) != VN_SECTION_START) {                             \
+		return 1;                                                      \
+	}
 	SEC_START();
-	if(read_exports(ld) != 0 ||
-	   read_objs(ld) != 0 ||
-	   read_funcs(ld) != 0 ||
-	   read_code(ld) != 0 ||
-	   read_imports(ld) != 0 ||
-	   resolve_exports(ld) != 0) {
+	if (read_exports(ld) != 0 || read_objs(ld) != 0 ||
+	    read_funcs(ld) != 0 || read_code(ld) != 0 ||
+	    read_imports(ld) != 0 || resolve_exports(ld) != 0) {
 		return 1;
 	}
-	vn_nest *new = vn_nest_alloc(ld->num_funcs, 
-	                             ld->num_imports, ld->num_objs,
-				     ld->num_exports);
+	vn_nest *new = vn_nest_alloc(ld->num_funcs, ld->num_imports,
+	                             ld->num_objs, ld->num_exports);
 	new->num_funcs = ld->num_funcs;
 	new->num_imports = ld->num_imports;
 	new->num_objs = ld->num_objs;
-	for(int i = 0; i < ld->num_funcs; i++) {
+	for (int i = 0; i < ld->num_funcs; i++) {
 		new->funcs[i] = ld->funcs[i];
 	}
-	for(int i = 0; i < ld->num_objs; i++) {
+	for (int i = 0; i < ld->num_objs; i++) {
 		new->objs[i] = ld->objs[i];
 	}
-	for(int i = 0; i < ld->num_imports; i++) {
+	for (int i = 0; i < ld->num_imports; i++) {
 		new->imports[i] = ld->imports[i];
 	}
-	for(int i = 0; i < ld->num_exports; i++) {
+	for (int i = 0; i < ld->num_exports; i++) {
 		export *ex = &ld->exports[i];
 		vn_export *nex = &new->exports[i];
-		switch(ex->type) {
-		case(VN_SECTION_OBJS):
+		switch (ex->type) {
+		case (VN_SECTION_OBJS):
 			nex->type = vn_export_obj;
 			nex->fn = ld->funcs[i];
 			break;
-		case(VN_SECTION_FUNCS):
+		case (VN_SECTION_FUNCS):
 			nex->type = vn_export_func;
 			nex->obj = ld->objs[i];
 			break;

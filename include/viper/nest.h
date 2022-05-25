@@ -48,10 +48,10 @@ typedef struct vn_nest {
 
 vn_nest *vn_nest_alloc(u32 num_funcs, u32 num_imports, u32 num_objs,
                        u32 num_exports);
-vn_import *vn_import_create(const char *name,
-                            vp_type ret, vp_type* args, u8 num_args);
+vn_import *vn_import_create(const char *name, vp_type ret, vp_type *args,
+                            u8 num_args);
 int vn_import_free(vn_import *import);
-int vn_verify_func(vn_nest *nest, vp_func* f);
+int vn_verify_func(vn_nest *nest, vp_func *f);
 int vn_verify(vn_nest *nest);
 // this does not free the functions
 int vn_nest_free_partial(vn_nest *nest);

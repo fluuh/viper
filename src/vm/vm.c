@@ -4,8 +4,8 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-#include <viper/state.h>
 #include <viper/bc.h>
+#include <viper/state.h>
 
 static int dispatch(vp_state *state);
 
@@ -23,7 +23,7 @@ static int push_callframe(vp_state *state, vp_func *fn)
 	fp->r64 = fp->r32 + r32;
 	fp->rxx = fp->r64 + r64;
 	fp->fn = fn;
-	if(fn->ftype == vp_func_normal) {
+	if (fn->ftype == vp_func_normal) {
 		fp->ip = fn->code;
 	}
 	fp->ret_offset = 0; // this is set by the caller
@@ -37,22 +37,22 @@ static int pop_callframe(vp_state *state)
 	return 0;
 }
 
-int vp_call_func(vp_state *state, vp_export fi, void *res, 
-                 u64 *args, int num_args)
+int vp_call_func(vp_state *state, vp_export fi, void *res, u64 *args,
+                 int num_args)
 {
 	vp_func *fn = state->nest->funcs[fi];
 	push_callframe(state, fn);
 	// TODO: load args
 	int ret = dispatch(state);
-	switch(fn->type.ret) {
-	case(vp_i32):
-		*(u32*)res = *(u32*)((uxx)state->fp + state->fp->ret_offset);
+	switch (fn->type.ret) {
+	case (vp_i32):
+		*(u32 *)res = *(u32 *)((uxx)state->fp + state->fp->ret_offset);
 		break;
-	case(vp_i64):
-		*(u64*)res = *(u64*)((uxx)state->fp + state->fp->ret_offset);
+	case (vp_i64):
+		*(u64 *)res = *(u64 *)((uxx)state->fp + state->fp->ret_offset);
 		break;
-	case(vp_iarch):
-		*(uxx*)res = *(uxx*)((uxx)state->fp + state->fp->ret_offset);
+	case (vp_iarch):
+		*(uxx *)res = *(uxx *)((uxx)state->fp + state->fp->ret_offset);
 		break;
 	default:
 		return 1;
@@ -66,63 +66,55 @@ static int dispatch(vp_state *state)
 	register u32 *r32;
 	register u64 *r64;
 	register uxx *rxx;
-	register vp_func* fn;
+	register vp_func *fn;
 
-	#define imm() (*ip++)
-	#define imm2() \
-		(ip += 2, *(u16*)(ip - 2))
-	#define imm4() \
-		(ip += 4, *(u32*)(ip - 4))
-	#define imm8() \
-		(ip += 8, *(u64*)(ip - 8))
+#define imm() (*ip++)
+#define imm2() (ip += 2, *(u16 *)(ip - 2))
+#define imm4() (ip += 4, *(u32 *)(ip - 4))
+#define imm8() (ip += 8, *(u64 *)(ip - 8))
 
-	#define LOAD_FRAME() \
-		ip = state->fp->ip; \
-		r32 = VP_R32(state->fp); \
-		r64 = VP_R64(state->fp); \
-		rxx = VP_RXX(state->fp); \
-		fn = state->fp->fn;	
-	#define STORE_FRAME() \
-		state->fp->ip = ip;
+#define LOAD_FRAME()                                                           \
+	ip = state->fp->ip;                                                    \
+	r32 = VP_R32(state->fp);                                               \
+	r64 = VP_R64(state->fp);                                               \
+	rxx = VP_RXX(state->fp);                                               \
+	fn = state->fp->fn;
+#define STORE_FRAME() state->fp->ip = ip;
 
-	#ifdef VP_CGO
+#ifdef VP_CGO
 
-	static void* dispatch_table[] = {
-		#define OPCODE(name, _) &&OPC_##name,
-		BCDEF(OPCODE)
-		#undef OPCODE
+	static void *dispatch_table[] = {
+#define OPCODE(name, _) &&OPC_##name,
+	    BCDEF(OPCODE)
+#undef OPCODE
 	};
 
-	#define next() \
-		goto *dispatch_table[imm()]
+#define next() goto *dispatch_table[imm()]
 
-	#define vm_loop \
-		next();
+#define vm_loop next();
 
-	
-	#define vm_break \
-		next()
+#define vm_break next()
 
-	#define vm_case(op) \
-		OPC_##op
+#define vm_case(op) OPC_##op
 
-	#else
+#else
 
-	#define next_case(op, _) case OP_##op: goto OPC_##op;
+#define next_case(op, _)                                                       \
+	case OP_##op:                                                          \
+		goto OPC_##op;
 
-	#define next() \
-		switch(imm()) { BCDEF(next_case) }
+#define next()                                                                 \
+	switch (imm()) {                                                       \
+		BCDEF(next_case)                                               \
+	}
 
-	#define vm_loop \
-		next();
-	
-	#define vm_break \
-		next()
-	
-	#define vm_case(op) \
-		OPC_##op:
+#define vm_loop next();
 
-	#endif
+#define vm_break next()
+
+#define vm_case(op) OPC_##op:
+
+#endif
 
 	LOAD_FRAME();
 
@@ -197,8 +189,8 @@ static int dispatch(vp_state *state)
 		vm_break;
 	}
 	vm_case(JMP)
-	     // TODO: OP_JMP
-	      return vperr_internal;
+	    // TODO: OP_JMP
+	    return vperr_internal;
 	vm_case(NEG_W) return vperr_internal;
 	vm_case(NEG_L) return vperr_internal;
 	vm_case(EQZ_W) return vperr_internal;
@@ -383,13 +375,13 @@ static int dispatch(vp_state *state)
 		vm_break;
 	}
 #undef vm_case
-	#undef vm_break
-	#undef vm_loop
-	#undef next
-	#undef LOAD_FRAME
-	#undef imm
-	#undef imm2
-	#undef imm4
+#undef vm_break
+#undef vm_loop
+#undef next
+#undef LOAD_FRAME
+#undef imm
+#undef imm2
+#undef imm4
 
 	return vperr_internal;
 }

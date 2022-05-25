@@ -7,14 +7,14 @@
 #ifndef VP_UTIL_H_
 #define VP_UTIL_H_
 
-#include <stdlib.h>
 #include "common.h"
+#include <stdlib.h>
 
 void *vu_malloc(size_t size);
 void *vu_zalloc(size_t size);
 void *vu_malloc_array(size_t n, size_t size);
 void *vu_realloc(void *p, size_t size);
-int vu_free(void* p);
+int vu_free(void *p);
 
 typedef struct vu_dbuff {
 	size_t cap;

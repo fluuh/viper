@@ -7,10 +7,13 @@
 #ifndef VP_OBJ_H_
 #define VP_OBJ_H_
 
+#include "common.h"
+#include <stdlib.h>
+
 // An object
 // It can be used for global values and
 // data.
-// It will be placed in memory at runtime 
+// It will be placed in memory at runtime
 // with an initial value and
 // the "obj" instruction will return the
 // address of a given object id.

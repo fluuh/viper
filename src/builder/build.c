@@ -9,7 +9,8 @@
 int vb_build(vb_builder *builder, vn_nest **dst)
 {
 	int b = vb_bind(builder);
-	if(b != 0) {
+	if (b != 0) {
 		return 1;
 	}
+	return 0;
 }

@@ -19,7 +19,7 @@ typedef struct {
 		vn_ref_call,
 		vn_ref_obj,
 	} type;
-	u32* loc;
+	u32 *loc;
 	u8 imported;
 	union {
 		const char *name;
@@ -50,6 +50,6 @@ int vn_linker_add(vn_linker *linker, vn_nest *nest);
 // 2. Resolve imports and fix all IDs.
 //    If an import couldn't be resolved, it's added to
 //    a new imports table.
-vn_nest* vn_linker_link(vn_linker *linker);
+vn_nest *vn_linker_link(vn_linker *linker);
 
 #endif

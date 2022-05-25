@@ -6,7 +6,4 @@
 
 #include <viper/viper.h>
 
-void VP_VER_SYM(void)
-{
-
-}
+void VP_VER_SYM(void) {}

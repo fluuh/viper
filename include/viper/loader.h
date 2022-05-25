@@ -7,11 +7,13 @@
 #ifndef VP_LOADER_H_
 #define VP_LOADER_H_
 
-#include <stdio.h>
 #include "nest.h"
 #include "util.h"
+#include <stdio.h>
 
-#define VN_MAGIC "\x7f""FME"
+#define VN_MAGIC                                                               \
+	"\x7f"                                                                 \
+	"FME"
 #define VN_ELEMENT_START 0x6a
 #define VN_SECTION_START 0xfa
 #define VN_SECTION_EXPORTS 2

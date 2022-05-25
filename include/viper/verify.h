@@ -7,6 +7,4 @@
 #ifndef VP_VERIFY_H_
 #define VP_VERIFY_H_
 
-
-
 #endif
