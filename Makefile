@@ -56,3 +56,6 @@ $(CORE_OBJ): $(OUT_DIR)/obj/%.o:src/%.c
 
 clean:
 	$(RM) -r $(OUT_DIR)
+
+fmt:
+	clang-format -i -style=file $(BIN_SRC) $(CORE_SRC)
