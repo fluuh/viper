@@ -10,11 +10,11 @@
 #include "common.h"
 #include <stdlib.h>
 
-void *vu_malloc(size_t size);
-void *vu_zalloc(size_t size);
-void *vu_malloc_array(size_t n, size_t size);
-void *vu_realloc(void *p, size_t size);
-int vu_free(void *p);
+#define vu_malloc(size) malloc(size)
+#define vu_malloc_array(n, size) malloc(n * size)
+#define vu_realloc(p, s) realloc(p, s)
+#define vu_free(p) free(p)
+#define vu_free_const(p) free((void*)p)
 
 typedef struct vu_dbuff {
 	size_t cap;
@@ -25,6 +25,6 @@ typedef struct vu_dbuff {
 vu_dbuff *vu_dbuff_create(size_t n, size_t size);
 int vu_dbuff_write(vu_dbuff *b, const u8 *src, size_t size);
 int vu_dbuff_cwrite(vu_dbuff *b, const char c);
-int vu_dbuff_free(vu_dbuff *b);
+void vu_dbuff_free(vu_dbuff *b);
 
 #endif

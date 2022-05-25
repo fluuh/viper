@@ -58,8 +58,8 @@ int vu_dbuff_cwrite(vu_dbuff *b, const char c)
 	return 0;
 }
 
-int vu_dbuff_free(vu_dbuff *b)
+void vu_dbuff_free(vu_dbuff *b)
 {
 	vu_free(b->buff);
-	return vu_free(b);
+	vu_free(b);
 }
