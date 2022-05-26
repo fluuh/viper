@@ -6,4 +6,5 @@ BreakBeforeBraces: Linux
 AllowShortIfStatementsOnASingleLine: false
 IndentCaseLabels: false
 ColumnLimit: 80
+AllowShortFunctionsOnASingleLine: Empty
 AccessModifierOffset: -4
