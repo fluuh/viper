@@ -57,6 +57,8 @@ int vn_verify(vn_nest *nest);
 int vn_nest_free_partial(vn_nest *nest);
 int vn_nest_free(vn_nest *nest);
 
+vp_export vn_func_export(const char *name, vn_nest *nest, vp_func *fn);
+vp_export vn_obj_export(const char *name, vn_nest *nest, vp_obj *obj);
 vp_export vn_get_export(vn_nest *nest, const char *name);
 
 #endif

@@ -50,13 +50,6 @@ vp_func *vp_func_create_native(const char *name, vp_type ret, vp_type *args,
 	return fn;
 }
 
-// int vp_func_export(vp_func *fn, const char *name)
-// {
-// 	fn->name = vu_malloc(strlen(name) + 1);
-// 	memcpy(fn->name, name, strlen(name) + 1);
-// 	return 0;
-// }
-
 int vp_func_free(vp_func *fn)
 {
 	if (fn->code != (void *)0) {

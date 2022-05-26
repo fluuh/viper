@@ -88,6 +88,45 @@ int vn_nest_free(vn_nest *nest)
 	return vn_nest_free_partial(nest);
 }
 
+static vn_export *vn_export_create(vn_export *exp, const char *name,
+                                   vn_nest *nest, int type, void *ptr)
+{
+	exp->type = type;
+	if (name != NULL) {
+		exp->name = vu_malloc(strlen(name) + 1);
+		memcpy(exp->name, name, strlen(name) + 1);
+	} else {
+		exp->name = NULL;
+	}
+	switch (type) {
+	case (vn_export_obj):
+		exp->obj = ptr;
+		break;
+	case (vn_export_func):
+		exp->fn = ptr;
+		break;
+	default:
+		return (void *)0;
+	}
+	return exp;
+}
+
+vp_export vn_func_export(const char *name, vn_nest *nest, vp_func *fn)
+{
+	int id = nest->num_exports;
+	vn_export_create(&nest->exports[nest->num_exports++], name, nest,
+	                 vn_export_obj, fn);
+	return id;
+}
+
+vp_export vn_obj_export(const char *name, vn_nest *nest, vp_obj *obj)
+{
+	int id = nest->num_exports;
+	vn_export_create(&nest->exports[nest->num_exports++], name, nest,
+	                 vn_export_obj, obj);
+	return id;
+}
+
 vp_export vn_get_export(vn_nest *nest, const char *name)
 {
 	for (int i = 0; i < nest->num_funcs; i++) {

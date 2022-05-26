@@ -35,11 +35,11 @@ typedef struct vp_func {
 	vp_func_type type;
 } vp_func;
 
+// name is optional
 vp_func *vp_func_create(const char *name, vp_type ret, vp_type *args,
                         size_t num_args);
 vp_func *vp_func_create_native(const char *name, vp_type ret, vp_type *args,
                                size_t num_args, vp_native_func func);
-// int vp_func_export(vp_func *fn, const char *name);
 // this also frees the code
 int vp_func_free(vp_func *fn);
 

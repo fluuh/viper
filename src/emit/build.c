@@ -41,7 +41,7 @@ vp_obj *vn_bobject(vn_builder *builder, size_t size, u8 *init)
 {
 	u32 i = builder->num_objs;
 	builder->num_objs++;
-	vp_obj *obj = vp_obj_create(init, size);
+	vp_obj *obj = vp_obj_create(NULL, init, size);
 	obj->id = i;
 	builder->objs[i] = obj;
 	return obj;

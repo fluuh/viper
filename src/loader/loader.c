@@ -122,7 +122,7 @@ static int read_objs(loader *ld)
 		fread(&size, 4, 1, ld->file);
 		u8 *init = vu_malloc_array(size, 1);
 		fread(init, 1, size, ld->file);
-		vp_obj *obj = vp_obj_create(init, size);
+		vp_obj *obj = vp_obj_create(NULL, init, size);
 		vu_free(init);
 		obj->id = id;
 		ld->objs[id] = obj;
