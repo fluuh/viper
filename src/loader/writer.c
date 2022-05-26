@@ -78,21 +78,6 @@ static int read_objs(vn_writer *writer)
 	vu_dbuff *b = writer->objs;
 	for (int i = 0; i < nest->num_funcs; i++) {
 		vp_obj *obj = nest->objs[i];
-		const char *name = obj->name;
-		if (name != (void *)0) {
-			// is exported
-			u32 len = (u32)strlen(name);
-			u32 id = i;
-			vu_dbuff_cwrite(b, VN_ELEMENT_START);
-			// export type
-			// this is the section type for consistency
-			vu_dbuff_cwrite(b, VN_SECTION_OBJS);
-
-			vu_dbuff_write(b, (u8 *)&id, 4);
-			vu_dbuff_write(b, (u8 *)&len, 4);
-			// strings are not null-terminated
-			vu_dbuff_write(b, (const u8 *)name, len);
-		}
 		vu_dbuff_cwrite(b, VN_ELEMENT_START);
 		u32 size = obj->size;
 		vu_dbuff_write(b, (u8 *)&size, 4);

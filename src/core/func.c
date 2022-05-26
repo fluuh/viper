@@ -9,16 +9,10 @@
 #include <viper/core.h>
 #include <viper/util.h>
 
-vp_func *vp_func_create(const char *name, vp_type ret, vp_type *args,
+vp_func *vp_func_create(vp_type ret, vp_type *args,
                         size_t num_args)
 {
 	vp_func *fn = vu_malloc(sizeof(*fn));
-	if (name != NULL) {
-		fn->name = vu_malloc(strlen(name) + 1);
-		memcpy(fn->name, name, strlen(name) + 1);
-	} else {
-		fn->name = NULL;
-	}
 	// the code is provided by the caller
 	fn->ftype = vp_func_normal;
 	fn->cap_code = 0;
@@ -30,16 +24,10 @@ vp_func *vp_func_create(const char *name, vp_type ret, vp_type *args,
 	return fn;
 }
 
-vp_func *vp_func_create_native(const char *name, vp_type ret, vp_type *args,
+vp_func *vp_func_create_native(vp_type ret, vp_type *args,
                                size_t num_args, vp_native_func func)
 {
 	vp_func *fn = vu_malloc(sizeof(*fn));
-	if (name != NULL) {
-		fn->name = vu_malloc(strlen(name) + 1);
-		memcpy(fn->name, name, strlen(name) + 1);
-	} else {
-		fn->name = NULL;
-	}
 	/* unused fields */
 	fn->code = (void *)0;
 	fn->ftype = vp_func_native;

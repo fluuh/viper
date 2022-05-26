@@ -14,8 +14,7 @@ typedef struct export
 	char *name;
 	int type;
 	u32 id;
-}
-export;
+} export;
 
 typedef struct loader {
 	u16 opt;
@@ -100,7 +99,7 @@ static int read_funcs(loader *ld)
 		u32 id = ld->num_funcs;
 		ld->num_funcs++;
 		vp_func *fn =
-		    vp_func_create((void *)0, tret, args_buff, num_args);
+		    vp_func_create(tret, args_buff, num_args);
 		fn->id = id;
 		ld->funcs[id] = fn;
 	}
@@ -121,7 +120,7 @@ static int read_objs(loader *ld)
 		fread(&size, 4, 1, ld->file);
 		u8 *init = vu_malloc_array(size, 1);
 		fread(init, 1, size, ld->file);
-		vp_obj *obj = vp_obj_create(NULL, init, size);
+		vp_obj *obj = vp_obj_create(init, size);
 		vu_free(init);
 		obj->id = id;
 		ld->objs[id] = obj;
@@ -169,21 +168,6 @@ static int read_header(loader *ld)
 	return 0;
 }
 
-static int resolve_exports(loader *ld)
-{
-	for (int i = 0; i < ld->num_exports; i++) {
-		export *ex = &ld->exports[i];
-		if (ex->type == VN_SECTION_OBJS) {
-			ld->objs[ex->id]->name = ex->name;
-		} else if (ex->type == VN_SECTION_FUNCS) {
-			ld->funcs[ex->id]->name = ex->name;
-		} else {
-			return 1;
-		}
-	}
-	return 0;
-}
-
 int vp_load_file(FILE *file, vn_nest **nest)
 {
 	loader *ld = vu_malloc(sizeof(*ld));
@@ -210,7 +194,7 @@ int vp_load_file(FILE *file, vn_nest **nest)
 	SEC_START();
 	if (read_exports(ld) != 0 || read_objs(ld) != 0 ||
 	    read_funcs(ld) != 0 || read_code(ld) != 0 ||
-	    read_imports(ld) != 0 || resolve_exports(ld) != 0) {
+	    read_imports(ld) != 0) {
 		return 1;
 	}
 	vn_nest *new = vn_nest_alloc(ld->num_funcs, ld->num_imports,
@@ -229,20 +213,16 @@ int vp_load_file(FILE *file, vn_nest **nest)
 	}
 	for (int i = 0; i < ld->num_exports; i++) {
 		export *ex = &ld->exports[i];
-		vn_export *nex = &new->exports[i];
 		switch (ex->type) {
 		case (VN_SECTION_OBJS):
-			nex->type = vn_export_obj;
-			nex->fn = ld->funcs[i];
+			vn_obj_export(ex->name, new, new->objs[ex->id]);
 			break;
 		case (VN_SECTION_FUNCS):
-			nex->type = vn_export_func;
-			nex->obj = ld->objs[i];
+			vn_func_export(ex->name, new, new->funcs[ex->id]);
 			break;
 		default:
 			return 1;
 		}
-		nex->name = ex->name;
 	}
 	*nest = new;
 	vu_free(ld->exports);

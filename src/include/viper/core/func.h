@@ -11,9 +11,6 @@
 
 typedef struct vp_label {
 	size_t pos;
-#ifdef VP_DEBUG
-	const char *name;
-#endif
 } vp_label;
 
 typedef struct vp_func {
@@ -35,9 +32,9 @@ typedef struct vp_func {
 } vp_func;
 
 // name is optional
-vp_func *vp_func_create(const char *name, vp_type ret, vp_type *args,
+vp_func *vp_func_create(vp_type ret, vp_type *args,
                         size_t num_args);
-vp_func *vp_func_create_native(const char *name, vp_type ret, vp_type *args,
+vp_func *vp_func_create_native(vp_type ret, vp_type *args,
                                size_t num_args, vp_native_func func);
 // this also frees the code
 int vp_func_free(vp_func *fn);
