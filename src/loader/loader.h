@@ -4,12 +4,11 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-#ifndef VP_LOADER_H_
-#define VP_LOADER_H_
+#ifndef INT_LOADER_H_
+#define INT_LOADER_H_
 
-#include "nest.h"
-#include "util.h"
-#include <stdio.h>
+#include <viper/loader.h>
+#include <viper/util.h>
 
 #define VN_MAGIC                                                               \
 	"\x7f"                                                                 \
@@ -33,12 +32,6 @@ typedef struct {
 	vu_dbuff *objs;
 } vn_writer;
 
-// This function generally doesn't need to be called from
-// user code.
 vn_writer *vn_writer_init(FILE *file, vn_nest *nest);
-// Write a nest to file.
-int vp_write_nest(FILE *file, vn_nest *nest);
-
-int vp_load_file(FILE *file, vn_nest **nest);
 
 #endif

@@ -7,7 +7,6 @@
 #ifndef VP_OBJ_H_
 #define VP_OBJ_H_
 
-#include "common.h"
 #include <stdlib.h>
 
 // An object

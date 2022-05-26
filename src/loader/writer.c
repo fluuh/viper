@@ -6,9 +6,7 @@
 
 #include <string.h>
 
-#include <viper/loader.h>
-#include <viper/util.h>
-#include <viper/viper.h>
+#include "loader.h"
 
 static int read_funcs(vn_writer *writer)
 {

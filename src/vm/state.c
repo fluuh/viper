@@ -6,8 +6,7 @@
 
 #include <string.h>
 
-#include <viper/state.h>
-#include <viper/util.h>
+#include <viper/vm.h>
 
 static void ve_free_block(ve_allocator *alloc, ve_mblock *block)
 {

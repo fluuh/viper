@@ -7,10 +7,6 @@
 #ifndef VP_NEST_H_
 #define VP_NEST_H_
 
-#include "common.h"
-#include "func.h"
-#include "obj.h"
-
 typedef struct vn_export {
 	char *name;
 	enum {

@@ -6,7 +6,7 @@
 
 #include <string.h>
 
-#include <viper/nest.h>
+#include <viper/core.h>
 #include <viper/util.h>
 
 vn_nest *vn_nest_alloc(u32 num_funcs, u32 num_imports, u32 num_objs,

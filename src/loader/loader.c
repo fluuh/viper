@@ -7,8 +7,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#include <viper/loader.h>
-#include <viper/viper.h>
+#include "loader.h"
 
 typedef struct export
 {

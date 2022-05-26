@@ -4,12 +4,11 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-#include "viper/nest.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-#include <viper/linker.h>
+#include <viper/core.h>
 #include <viper/util.h>
 
 vn_linker *vn_linker_create(void)

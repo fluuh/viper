@@ -7,8 +7,6 @@
 #ifndef VP_LINKER_H_
 #define VP_LINKER_H_
 
-#include "nest.h"
-
 typedef struct vn_sym {
 	const char *name;
 	vp_func *f;

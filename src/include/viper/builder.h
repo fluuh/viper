@@ -7,8 +7,10 @@
 #ifndef VP_BUILDER_H_
 #define VP_BUILDER_H_
 
+#include "viper.h"
+#include "core.h"
+
 #include "common.h"
-#include "nest.h"
 
 typedef struct vb_label_s vb_label;
 

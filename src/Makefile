@@ -1,0 +1,46 @@
+
+AR = ar rcs
+
+CC = clang
+CCOPT = -march=native -std=c99 -Iinclude -g
+# -Wcast-qual 
+CWARN = -Wall -Wshadow -Wpointer-arith \
+	-Wstrict-prototypes -Wmissing-prototypes
+
+OUT_DIR = ../build
+
+# CLI: VM Loader Core
+CLI_OUT = $(OUT_DIR)/viper
+
+CLI_SRC = cli/main.c
+CLI_OBJ = $(CLI_SRC:%.c=$(OUT_DIR)/obj/%.o)
+
+# Core & Util
+UTIL_SRC = core/util/dbuff.c
+CORE_SRC = core/api.c core/func.c core/linker.c core/nest.c core/obj.c \
+	$(UTIL_SRC)
+CORE_OBJ = $(CORE_SRC:%.c=$(OUT_DIR)/obj/%.o)
+
+# VM: Loader Core
+VM_OUT = $(OUT_DIR)/libvipervm.a
+VM_SRC = vm/state.c vm/vm.c
+VM_OBJ = $(VM_SRC:%.c=$(OUT_DIR)/obj/%.o)
+
+# Loader: Core
+LD_SRC = loader/loader.c loader/writer.c
+LD_OBJ = $(LD_SRC:%.c=$(OUT_DIR)/obj/%.o)
+
+default all: $(CLI_OUT)
+
+$(CLI_OUT): $(CLI_OBJ) $(VM_OUT)
+	@echo "LINK    $(subst $(OUT_DIR)/,,$@)"
+	@$(CC) -o $@ $^
+
+$(VM_OUT): $(CORE_OBJ) $(LD_OBJ) $(VM_OBJ)
+	@echo "AR      $(subst $(OUT_DIR)/,,$@)"
+	@$(AR) $@ $^
+
+$(OUT_DIR)/obj/%.o: %.c
+	@echo "CC      $(subst $(OUT_DIR)/obj/,,$@)"
+	@mkdir -p $(@D)
+	@$(CC) $(CCOPT) $(CWARN) -c -o $@ $<

@@ -6,7 +6,7 @@
 
 #include <string.h>
 
-#include <viper/obj.h>
+#include <viper/core.h>
 #include <viper/util.h>
 
 vp_obj *vp_obj_create(const char *name, u8 *init, size_t size)
@@ -26,7 +26,7 @@ vp_obj *vp_obj_create(const char *name, u8 *init, size_t size)
 
 int vp_obj_free(vp_obj *obj)
 {
-	if(obj->name != NULL) {
+	if (obj->name != NULL) {
 		vu_free(obj->name);
 	}
 	vu_free(obj);

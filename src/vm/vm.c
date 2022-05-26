@@ -4,8 +4,8 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
+#include <viper/vm.h>
 #include <viper/bc.h>
-#include <viper/state.h>
 
 static int dispatch(vp_state *state);
 
@@ -15,13 +15,9 @@ static int push_callframe(vp_state *state, vp_func *fn)
 	fp->prev = state->fp;
 	state->fp = fp;
 	size_t r32 = sizeof(u32) * fn->r32;
-	size_t r64 = sizeof(u64) * fn->r64;
-	size_t rxx = sizeof(uxx) * fn->rxx;
-	size_t size = sizeof(*fp) + r32 + r64 + rxx;
+	size_t size = sizeof(*fp) + r32;
 	fp->size = size;
 	fp->r32 = sizeof(*fp);
-	fp->r64 = fp->r32 + r32;
-	fp->rxx = fp->r64 + r64;
 	fp->fn = fn;
 	if (fn->ftype == vp_func_normal) {
 		fp->ip = fn->code;
@@ -51,9 +47,6 @@ int vp_call_func(vp_state *state, vp_export fi, void *res, u64 *args,
 	case (vp_i64):
 		*(u64 *)res = *(u64 *)((uxx)state->fp + state->fp->ret_offset);
 		break;
-	case (vp_iarch):
-		*(uxx *)res = *(uxx *)((uxx)state->fp + state->fp->ret_offset);
-		break;
 	default:
 		return 1;
 	}
@@ -64,9 +57,10 @@ static int dispatch(vp_state *state)
 {
 	register u8 *ip;
 	register u32 *r32;
-	register u64 *r64;
-	register uxx *rxx;
 	register vp_func *fn;
+
+#define REG32(r) (r32 + r)
+#define REG64(r) (u64 *)(r32 + r)
 
 #define imm() (*ip++)
 #define imm2() (ip += 2, *(u16 *)(ip - 2))
@@ -76,8 +70,6 @@ static int dispatch(vp_state *state)
 #define LOAD_FRAME()                                                           \
 	ip = state->fp->ip;                                                    \
 	r32 = VP_R32(state->fp);                                               \
-	r64 = VP_R64(state->fp);                                               \
-	rxx = VP_RXX(state->fp);                                               \
 	fn = state->fp->fn;
 #define STORE_FRAME() state->fp->ip = ip;
 
@@ -137,21 +129,7 @@ static int dispatch(vp_state *state)
 		imm();
 		u8 rreg = imm();
 		void *ret;
-		switch (fn->type.ret) {
-		case (vp_i32):
-			ret = r32 + rreg;
-			break;
-		case (vp_i64):
-			ret = r64 + rreg;
-			break;
-		case (vp_iarch):
-			ret = rxx + rreg;
-			break;
-		default:
-			// probably vp_void
-			ret = 0;
-			break;
-		}
+		ret = r32 + rreg;
 		if (state->fp == state->frames) {
 			// there are no frames left,
 			// return to host
@@ -176,10 +154,6 @@ static int dispatch(vp_state *state)
 		case (vp_i64):
 			*(u64 *)((u8 *)state->fp + state->fp->ret_offset) =
 			    *(u64 *)ret;
-			break;
-		case (vp_iarch):
-			*(uxx *)((u8 *)state->fp + state->fp->ret_offset) =
-			    *(uxx *)ret;
 			break;
 		default:
 			// do nothing
@@ -215,81 +189,81 @@ static int dispatch(vp_state *state)
 	vm_case(GE_LS) return vperr_internal;
 	vm_case(ADD_W)
 	{
-		u32 *dst = (r32 + imm());
-		u32 *op0 = (r32 + imm());
-		u32 *op1 = (r32 + imm());
+		u32 *dst = REG32(imm());
+		u32 *op0 = REG32(imm());
+		u32 *op1 = REG32(imm());
 		*dst = *op0 + *op1;
 		vm_break;
 	}
 	vm_case(ADD_L)
 	{
-		u64 *dst = (r64 + imm());
-		u64 *op0 = (r64 + imm());
-		u64 *op1 = (r64 + imm());
+		u64 *dst = REG64(imm());
+		u64 *op0 = REG64(imm());
+		u64 *op1 = REG64(imm());
 		*dst = *op0 + *op1;
 		vm_break;
 	}
 	vm_case(SUB_W)
 	{
-		u32 *dst = (r32 + imm());
-		u32 *op0 = (r32 + imm());
-		u32 *op1 = (r32 + imm());
+		u32 *dst = REG32(imm());
+		u32 *op0 = REG32(imm());
+		u32 *op1 = REG32(imm());
 		*dst = *op0 - *op1;
 		vm_break;
 	}
 	vm_case(SUB_L)
 	{
-		u64 *dst = (r64 + imm());
-		u64 *op0 = (r64 + imm());
-		u64 *op1 = (r64 + imm());
+		u64 *dst = REG64(imm());
+		u64 *op0 = REG64(imm());
+		u64 *op1 = REG64(imm());
 		*dst = *op0 - *op1;
 		vm_break;
 	}
 	vm_case(MUL_W)
 	{
-		u32 *dst = (r32 + imm());
-		u32 *op0 = (r32 + imm());
-		u32 *op1 = (r32 + imm());
+		u32 *dst = REG32(imm());
+		u32 *op0 = REG32(imm());
+		u32 *op1 = REG32(imm());
 		*dst = *op0 * *op1;
 		vm_break;
 	}
 	vm_case(MUL_L)
 	{
-		u64 *dst = (r64 + imm());
-		u64 *op0 = (r64 + imm());
-		u64 *op1 = (r64 + imm());
+		u64 *dst = REG64(imm());
+		u64 *op0 = REG64(imm());
+		u64 *op1 = REG64(imm());
 		*dst = *op0 * *op1;
 		vm_break;
 	}
 	vm_case(DIV_WU)
 	{
-		u32 *dst = (r32 + imm());
-		u32 *op0 = (r32 + imm());
-		u32 *op1 = (r32 + imm());
+		u32 *dst = REG32(imm());
+		u32 *op0 = REG32(imm());
+		u32 *op1 = REG32(imm());
 		*dst = *op0 / *op1;
 		vm_break;
 	}
 	vm_case(DIV_LU)
 	{
-		u64 *dst = (r64 + imm());
-		u64 *op0 = (r64 + imm());
-		u64 *op1 = (r64 + imm());
+		u64 *dst = REG64(imm());
+		u64 *op0 = REG64(imm());
+		u64 *op1 = REG64(imm());
 		*dst = *op0 / *op1;
 		vm_break;
 	}
 	vm_case(DIV_WS)
 	{
-		i32 *dst = (i32 *)(r32 + imm());
-		i32 *op0 = (i32 *)(r32 + imm());
-		i32 *op1 = (i32 *)(r32 + imm());
+		i32 *dst = (i32 *)REG32(imm());
+		i32 *op0 = (i32 *)REG32(imm());
+		i32 *op1 = (i32 *)REG32(imm());
 		*dst = *op0 / *op1;
 		vm_break;
 	}
 	vm_case(DIV_LS)
 	{
-		i64 *dst = (i64 *)(r64 + imm());
-		i64 *op0 = (i64 *)(r64 + imm());
-		i64 *op1 = (i64 *)(r64 + imm());
+		i64 *dst = (i64 *)REG64(imm());
+		i64 *op0 = (i64 *)REG64(imm());
+		i64 *op1 = (i64 *)REG64(imm());
 		*dst = *op0 / *op1;
 		vm_break;
 	}
@@ -297,15 +271,15 @@ static int dispatch(vp_state *state)
 	{
 		u8 dst = imm();
 		u32 id = imm4();
-		uxx val = (uxx)state->objs[id];
-		*(rxx + dst) = val;
+		u64 val = (u64)state->objs[id];
+		*REG64(dst) = val;
 		vm_break;
 	}
 	vm_case(LDI_W)
 	{
 		u8 dst = imm();
 		u32 val = imm4();
-		*(r32 + dst) = val;
+		*REG32(dst) = val;
 		vm_break;
 	}
 	vm_case(BR) return 1;
@@ -313,28 +287,14 @@ static int dispatch(vp_state *state)
 	{
 		u8 dst = imm();
 		u64 val = imm8();
-		*(r64 + dst) = val;
+		*REG64(dst) = val;
 		vm_break;
 	}
 	vm_case(CALL)
 	{
-		vp_type tdst = imm();
+		imm(); // type, is this necessary?
 		u8 dst = imm();
-		size_t rof = 0;
-		switch (tdst) {
-		case (vp_i32):
-			rof = state->fp->r32 + dst;
-			break;
-		case (vp_i64):
-			rof = state->fp->r64 + dst;
-			break;
-		case (vp_iarch):
-			rof = state->fp->rxx + dst;
-			break;
-		default:
-			// vp_void
-			break;
-		}
+		size_t rof = state->fp->r32 + dst;
 		u32 id = imm4();
 		vp_func *f = state->nest->funcs[id];
 		u8 num_args = imm();
@@ -344,26 +304,20 @@ static int dispatch(vp_state *state)
 		push_callframe(state, f);
 		state->fp->ret_offset = rof;
 		int rw = 0;
-		int rl = 0;
-		int rx = 0;
-		for (int i = 0; i < num_args * 2; i++) {
-			vp_type type = *(args + i++);
-			u8 reg = *(args + i++);
+		while (args != ip) {
+			vp_type type = *(args++);
+			u8 reg = *(args++);
 			switch (type) {
 			case (vp_i32):
-				*(VP_R32(state->fp) + rw) = *(r32 + reg);
-				rw++;
+				*(VP_R32(state->fp) + rw) = *REG32(reg);
+				rw += 1;
 				break;
 			case (vp_i64):
-				*(VP_R64(state->fp) + rl) = *(r64 + reg);
-				rl++;
-				break;
-			case (vp_iarch):
-				*(VP_RXX(state->fp) + rx) = *(rxx + reg);
-				rx++;
+				*(u64 *)(VP_R32(state->fp) + rw) = *REG64(reg);
+				rw += 2;
 				break;
 			default:
-				return 1;
+				return vperr_code;
 			}
 		}
 		if (f->ftype == vp_func_normal) {

@@ -4,14 +4,17 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-#ifndef VP_ASM_H_
-#define VP_ASM_H_
+#ifndef VP_LOADER_H_
+#define VP_LOADER_H_
+
+#include "viper.h"
+#include "core.h"
 
 #include <stdio.h>
 
-#include "nest.h"
+// Write a nest to file.
+int vp_write_nest(FILE *file, vn_nest *nest);
 
-vn_nest *vn_assemble_file(FILE *file);
-vn_nest *vn_assemble(const char *src);
+int vp_load_file(FILE *file, vn_nest **nest);
 
 #endif

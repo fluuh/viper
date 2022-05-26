@@ -4,10 +4,8 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-#ifndef VP_STATE_H_
-#define VP_STATE_H_
-
-#include "nest.h"
+#ifndef VIPER_STATE_H_
+#define VIPER_STATE_H_
 
 typedef struct ve_mblock ve_mblock;
 
@@ -40,8 +38,6 @@ struct ve_callframe {
 	u8 *ip;
 	size_t ret_offset;
 	size_t r32;
-	size_t r64;
-	size_t rxx;
 };
 
 // typedef is in common.h
@@ -56,9 +52,7 @@ struct vp_state {
 	ve_callframe *fp;
 };
 
-#define VP_RXX(fp) (uxx *)((uxx)fp + fp->rxx)
 #define VP_R32(fp) (u32 *)((uxx)fp + fp->r32)
-#define VP_R64(fp) (u64 *)((uxx)fp + fp->r64)
 
 vp_state *vp_state_init(vn_nest *nest);
 void vp_state_free(vp_state *state);

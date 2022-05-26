@@ -20,17 +20,10 @@
 
 #define VP_VER_SYM vp_ver_0_1_0
 
-void VP_VER_SYM(void);
+#define VP_API
 
-#include "asm.h"
-#include "builder.h"
-#include "emit.h"
-#include "func.h"
-#include "linker.h"
-#include "loader.h"
-#include "nest.h"
-#include "obj.h"
-#include "state.h"
-#include "util.h"
+VP_API void VP_VER_SYM(void);
+
+#include "common.h"
 
 #endif

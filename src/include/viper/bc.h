@@ -18,12 +18,6 @@
  * 41: variable length
  */
 
-/* Control flow effect */
-#define BC_CFE_NONE 0
-#define BC_CFE_BR 1
-#define BC_CFE_CALL 2
-#define BC_CFE_RET 3
-
 /* Op types */
 
 /*

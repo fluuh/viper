@@ -6,7 +6,7 @@
 
 #include <string.h>
 
-#include <viper/func.h>
+#include <viper/core.h>
 #include <viper/util.h>
 
 vp_func *vp_func_create(const char *name, vp_type ret, vp_type *args,

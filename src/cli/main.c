@@ -5,6 +5,7 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 
 #include <viper/viper.h>
 
@@ -102,21 +103,6 @@ static void print_error(const char *msg)
 	fflush(stderr);
 }
 
-static int std_print(vp_state *state)
-{
-	printf("%s\n", (char *)*VP_RXX(state->fp));
-	return 0;
-}
-
-static vn_nest *create_stdnest(void)
-{
-	vn_builder *builder = vn_build_create();
-	vp_type params[] = {vp_iarch};
-	vn_bfunc_create_native("print", builder, vp_void, params, 1,
-	                       &std_print);
-	return vn_build(builder);
-}
-
 static int pmain(void)
 {
 	struct status *s = &status;
@@ -140,23 +126,6 @@ static int pmain(void)
 	}
 
 	if (args.mode == MODE_ASM) {
-		FILE *file = fopen(args.args[0], "r");
-		vn_nest *nest = vn_assemble_file(file);
-		if (nest == (void *)0) {
-			print_error("assembler failed");
-			return 1;
-		}
-		FILE *out;
-		if (args.out != NULL) {
-			out = fopen(args.out, "w");
-		} else {
-			out = stdout;
-		}
-		if (vp_write_nest(out, nest) != 0) {
-			print_error("writer failed");
-			return 1;
-		}
-		vn_nest_free(nest);
 		return 0;
 	}
 	FILE *file = fopen(args.args[0], "r");
@@ -164,34 +133,6 @@ static int pmain(void)
 		print_error("file not found");
 		return 1;
 	}
-	vn_nest *new;
-	int nres = vp_load_file(file, &new);
-	if (nres != 0) {
-		print_error("loader failed");
-		return 1;
-	}
-	vn_nest *stdnest = create_stdnest();
-	vn_linker *lk = vn_linker_create();
-	if (vn_linker_add(lk, new) != 0 || vn_linker_add(lk, stdnest) != 0) {
-		print_error("linker failed");
-		return 1;
-	}
-	vn_nest *nest = vn_linker_link(lk);
-	if (nest == (void *)0) {
-		print_error("linker failed");
-		return 1;
-	}
-	vp_state *state = vp_state_init(nest);
-	vp_export start = vn_get_export(state->nest, args.start);
-	if (start == VP_EXPORT_NONE) {
-		print_error("start function not found");
-		return 1;
-	}
-	i32 res = 0;
-	vp_call_func(state, start, &res, (void *)0, 0);
-	printf("program exited with code %i\n", res);
-	vp_state_free(state);
-	vn_nest_free(nest);
 	return 0;
 }
 

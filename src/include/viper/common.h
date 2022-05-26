@@ -12,21 +12,10 @@
 #define VP_BUFF_DEFAULT 256
 
 enum {
-	vperr_none = 0,
-	vperr_internal,
-	vperr_halt,
-	vperr_code,
-	vperr_index,
-	vperr_mem,
-};
-
-enum {
 	// floats aren't tracked
 	vp_void = 0,
 	vp_i32 = -1, // word, size_t
 	vp_i64 = -2, // long, ptr
-	/* TODO: remove iarch */
-	vp_iarch = -3,
 };
 /* Types */
 
@@ -57,5 +46,7 @@ typedef struct vp_func_type {
 
 typedef i64 vp_export;
 #define VP_EXPORT_NONE -1
+
+#include "util.h"
 
 #endif

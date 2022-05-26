@@ -7,7 +7,6 @@
 #ifndef VP_FUNC_H_
 #define VP_FUNC_H_
 
-#include "common.h"
 #include <stdlib.h>
 
 typedef struct vp_label {
