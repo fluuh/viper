@@ -9,6 +9,15 @@ CWARN = -Wall -Wshadow -Wpointer-arith \
 
 OUT_DIR = ../build
 
+# ASM: Builder Core
+ASM_SRC = asm/asm.c
+ASM_OBJ = $(ASM_SRC:%.c=$(OUT_DIR)/obj/%.o)
+
+# Builder: Core
+BLD_SRC = builder/bind.c builder/build.c builder/builder.c builder/emit.c \
+	builder/verify.c
+BLD_OBJ = $(BLD_SRC:%.c=$(OUT_DIR)/obj/%.o)
+
 # CLI: VM Loader Core
 CLI_OUT = $(OUT_DIR)/viper
 
@@ -32,7 +41,7 @@ LD_OBJ = $(LD_SRC:%.c=$(OUT_DIR)/obj/%.o)
 
 default all: $(CLI_OUT)
 
-$(CLI_OUT): $(CLI_OBJ) $(VM_OUT)
+$(CLI_OUT): $(CLI_OBJ) $(VM_OUT) $(ASM_OBJ) $(BLD_OBJ)
 	@echo "LINK    $(subst $(OUT_DIR)/,,$@)"
 	@$(CC) -o $@ $^
 
