@@ -16,6 +16,8 @@ vp_func *vp_func_create(const char *name, vp_type ret, vp_type *args,
 	if (name != NULL) {
 		fn->name = vu_malloc(strlen(name) + 1);
 		memcpy(fn->name, name, strlen(name) + 1);
+	} else {
+		fn->name = NULL;
 	}
 	// the code is provided by the caller
 	fn->ftype = vp_func_normal;
@@ -35,6 +37,8 @@ vp_func *vp_func_create_native(const char *name, vp_type ret, vp_type *args,
 	if (name != NULL) {
 		fn->name = vu_malloc(strlen(name) + 1);
 		memcpy(fn->name, name, strlen(name) + 1);
+	} else {
+		fn->name = NULL;
 	}
 	/* unused fields */
 	fn->code = (void *)0;
