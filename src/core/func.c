@@ -6,6 +6,7 @@
 
 #include <string.h>
 
+<<<<<<< HEAD
 #include <viper/core.h>
 #include <viper/util.h>
 
@@ -48,4 +49,38 @@ int vp_func_free(vp_func *fn)
 	}
 	vu_free(fn);
 	return 0;
+=======
+#include "core.h"
+
+struct vi_code *vi_code_create(int nreg, size_t size, u8 *code)
+{
+	struct vi_code *c = vi_malloc(sizeof(*c) + size);
+	c->nreg = nreg;
+	c->size = size;
+	if (code != NULL) {
+		memcpy(c->code, code, size);
+	}
+	return c;
+}
+
+struct vi_func *vi_func_create(vp_funcType *type, struct vi_code *code)
+{
+	struct vi_func *fn = vi_malloc(sizeof(*fn));
+	fn->ty = type;
+	fn->id = 0;
+	fn->nest = NULL;
+	fn->code = code;
+	return fn;
+}
+
+void vi_func_delete(struct vi_func *fn)
+{
+	vi_free(fn->code);
+	vi_func_free(fn);
+}
+
+void vi_func_free(struct vi_func *fn)
+{
+	vi_free(fn);
+>>>>>>> bb5c964 (fuck it, full rewrite)
 }

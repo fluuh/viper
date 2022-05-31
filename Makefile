@@ -1,6 +1,10 @@
+<<<<<<< HEAD
 
 
 VERSION = 0.1.0
+=======
+VERSION = 0.1.0a
+>>>>>>> bb5c964 (fuck it, full rewrite)
 
 INSTALL_ROOT = /usr/local
 INSTALL_BIN = $(INSTALL_ROOT)/bin

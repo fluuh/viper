@@ -1,3 +1,7 @@
+<<<<<<< HEAD
 build/
 *.out
 *.vp
+=======
+_build/
+>>>>>>> bb5c964 (fuck it, full rewrite)

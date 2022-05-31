@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 data txt "Hello, World!"
 
 extern print(iarch) -> void
@@ -8,4 +9,16 @@ pub func _start() -> i32 {
 	%1 = ldi.i32 4
 	%1 = add.i32 %1, %1
 	ret i32 %1
+=======
+data txt[15] = "Hello, World!\n\0"
+
+func _start() -> void {
+	%0 = obj txt
+	%2 = ldi.i64 STDOUT
+	%4 = ldi.i32 15
+	write %0, %2, %4
+	%0 = ldi.i32 0
+	halt %0
+	retvoid
+>>>>>>> bb5c964 (fuck it, full rewrite)
 }

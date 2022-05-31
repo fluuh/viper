@@ -4,6 +4,7 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
+<<<<<<< HEAD
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -147,4 +148,55 @@ int main(int argc, char **argv)
 	status.argv = argv;
 	int p = pmain();
 	return (p > 0) ? EXIT_FAILURE : EXIT_SUCCESS;
+=======
+#include <alloca.h>
+#include <stdio.h>
+#define VP_USE_RUNTIME
+#include "../core/core.h"
+
+static void print_version()
+{
+	fputs(VP_VERSION "\n", stdout);
+}
+
+int main(int argc, char *argv[])
+{
+	static u8 fcode[] = {
+	    6,                       /* obj */
+	    0,                       /* %0 */
+	    0,  0, 0, 0,             /* i32 0 */
+	    7,                       /* ldi.i64 */
+	    2,                       /* %2 */
+	    0,  0, 0, 0, 0, 0, 0, 0, /* i64 0 */
+	    5,                       /* ldi.i32 */
+	    4,                       /* %4 */
+	    15, 0, 0, 0,             /* i32 15 */
+	    3,                       /* write */
+	    0,                       /* %0 */
+	    2,                       /* %2 */
+	    4,                       /* %4 */
+	    5,                       /* ldi.i32 */
+	    0,                       /* %0 */
+	    0,  0, 0, 0,             /* i32 0 */
+	    3,                       /* halt */
+	    0,                       /* %0 */
+	    2,                       /* retvoid */
+	    1,                       /* end */
+	};
+	struct vi_nest *nest = vi_nest_create(1, 1);
+	struct vi_obj  *obj = vi_obj_create(15, (u8 *)"Hello, World!\n");
+	vi_obj_insert(nest, obj, 0);
+	struct vi_code *code = vi_code_create(5, 38, fcode);
+	vp_funcType    *ty = alloca(sizeof(*ty));
+	ty->ret = vp_void;
+	ty->num_args = 0;
+	struct vi_func *fn = vi_func_create(ty, code);
+	vi_func_insert(nest, fn, 0);
+	/* run */
+	vp_runtime r = vp_runtime_create(nest);
+	vp_call(r, 0, NULL, 0, NULL);
+	print_version();
+	vp_runtime_delete(r);
+	return 0;
+>>>>>>> bb5c964 (fuck it, full rewrite)
 }
