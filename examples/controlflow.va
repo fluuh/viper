@@ -1,9 +1,5 @@
-<<<<<<< HEAD
-func _start(i32) -> i32 {
-=======
 
 func flow(i32) -> i32 {
->>>>>>> bb5c964 (fuck it, full rewrite)
 	br %0, :cond_true, :cond_false
 .cond_true:
 	%1 = ldi.i32 4
@@ -12,9 +8,5 @@ func flow(i32) -> i32 {
 	%1 = ldi.i32 8
 	jmp :cond_end
 .cond_end:
-<<<<<<< HEAD
-	ret i32 %1
-=======
 	ret %1
->>>>>>> bb5c964 (fuck it, full rewrite)
 }
