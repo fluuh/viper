@@ -17,8 +17,8 @@ struct vi_callframe {
 	u32                  regs[];
 };
 
-#define VM_REG32(vm, i) ((u32*)&vm->frame->regs[i])
-#define VM_REG64(vm, i) ((u64*)&vm->frame->regs[i])
+#define VM_REG32(vm, i) ((u32 *)&vm->frame->regs[i])
+#define VM_REG64(vm, i) ((u64 *)&vm->frame->regs[i])
 
 struct vi_vm {
 	struct vi_runtime *r;

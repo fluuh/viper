@@ -37,15 +37,15 @@ static int vm_cf_pop(struct vi_vm *vm, int ret)
 		return 1;
 	}
 	void *reg = VM_REG32(vm, ret);
-	int ton = frame->ret;
+	int   ton = frame->ret;
 	vm->frame = frame->prev;
 	void *to = VM_REG32(vm, ton);
-	switch(frame->fn->ty->ret) {
-	case(vp_i32):
-		*(u32*)to = *(u32*)reg;
+	switch (frame->fn->ty->ret) {
+	case (vp_i32):
+		*(u32 *)to = *(u32 *)reg;
 		break;
-	case(vp_i64):
-		*(u64*)to = *(u64*)reg;
+	case (vp_i64):
+		*(u64 *)to = *(u64 *)reg;
 		break;
 	default:
 		break;
@@ -103,7 +103,7 @@ static int vm_dispatch(struct vi_vm *vm, void *ret)
 	register struct vi_callframe *frame;
 	register struct vi_func      *fn;
 
-#define REG(i) ((void*)(_reg + i))
+#define REG(i) ((void *)(_reg + i))
 
 #define IMM() (*ip++)
 #define IMM2() (ip += 2, *(ip - 2))
@@ -150,11 +150,11 @@ static int vm_dispatch(struct vi_vm *vm, void *ret)
 	}
 	vm_case(RETVOID)
 	{
-		if(fn->ty->ret != vp_void) {
+		if (fn->ty->ret != vp_void) {
 			/* non-void function have to return something */
 			return -2;
 		}
-		if(vm_cf_pop(vm, 0) == 1) {
+		if (vm_cf_pop(vm, 0) == 1) {
 			return 0;
 		}
 		LOAD_FRAME();
