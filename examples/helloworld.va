@@ -2,8 +2,8 @@ data txt[15] = "Hello, World!\n\0"
 
 func _start() -> void {
 	%0 = obj txt
-	%2 = ldi.i64 STDOUT
-	%4 = ldi.i32 15
+	%2 = ldi.i64 1
+	%4 = ldi.i64 15
 	write %0, %2, %4
 	%0 = ldi.i32 0
 	halt %0
