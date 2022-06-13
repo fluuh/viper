@@ -12,7 +12,7 @@ typedef struct vi_nest *vp_nest;
 typedef struct vp_funcType {
 	vp_type ret;
 	int num_args;
-	vp_type args[];	
+	vp_type args[];
 } vp_funcType;
 
 typedef u32 vp_func;

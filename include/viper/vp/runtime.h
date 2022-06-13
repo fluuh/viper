@@ -7,11 +7,20 @@
 #ifndef VIPER_RUNTIME_H_
 #define VIPER_RUNTIME_H_
 
+enum {
+	vperr_none = 0,
+	vperr_internal = -1,
+	vperr_mem = -2,
+	vperr_code = -3,
+};
+
+typedef u64 vp_ptr;
+
 typedef struct vi_runtime *vp_runtime;
 
 typedef u64 vp_file;
 
-typedef int(*vp_writer)(vp_runtime r, vp_file f, void* data, size_t size);
+typedef int (*vp_writer)(vp_runtime r, vp_file f, void *data, size_t size);
 
 vp_runtime vp_runtime_create(vp_nest nest);
 void vp_runtime_delete(vp_runtime r);

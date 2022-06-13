@@ -32,6 +32,6 @@ typedef i8 vp_type;
 
 #define vi_malloc(size) malloc(size)
 #define vi_free(ptr) free(ptr)
-#define vi_free_const(ptr) free((void*)ptr)
+#define vi_free_const(ptr) free((void *)ptr)
 
 #endif
