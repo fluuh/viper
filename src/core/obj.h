@@ -8,13 +8,13 @@
 #define VP_CORE_OBJ_H_
 
 struct vi_obj {
-	u32             id;
+	u32 id;
 	struct vi_nest *nest;
-	size_t          size;
-	u8              initial[];
+	size_t size;
+	u8 initial[];
 };
 
 struct vi_obj *vi_obj_create(size_t size, u8 *initial);
-void           vi_obj_delete(struct vi_obj *obj);
+void vi_obj_delete(struct vi_obj *obj);
 
 #endif

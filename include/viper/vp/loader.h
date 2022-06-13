@@ -7,6 +7,4 @@
 #ifndef VIPER_LOADER_H_
 #define VIPER_LOADER_H_
 
-
-
 #endif

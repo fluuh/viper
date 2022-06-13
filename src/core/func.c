@@ -35,7 +35,4 @@ void vi_func_delete(struct vi_func *fn)
 	vi_func_free(fn);
 }
 
-void vi_func_free(struct vi_func *fn)
-{
-	vi_free(fn);
-}
+void vi_func_free(struct vi_func *fn) { vi_free(fn); }

@@ -6,11 +6,8 @@
 
 #include "runtime.h"
 
-int vi_call(struct vi_runtime *r,
-            struct vi_func    *fn,
-            void              *params,
-            int                num_params,
-            void              *ret)
+int vi_call(struct vi_runtime *r, struct vi_func *fn, void *params,
+            int num_params, void *ret)
 {
 	struct vi_vm *vm = vi_vm_create(r);
 	return vi_vm_call(vm, fn, params, num_params, ret);

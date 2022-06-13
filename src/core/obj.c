@@ -17,7 +17,4 @@ struct vi_obj *vi_obj_create(size_t size, u8 *initial)
 	memcpy(&obj->initial, initial, size);
 	return obj;
 }
-void vi_obj_delete(struct vi_obj *obj)
-{
-	vi_free(obj);
-}
+void vi_obj_delete(struct vi_obj *obj) { vi_free(obj); }

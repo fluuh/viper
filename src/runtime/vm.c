@@ -12,10 +12,8 @@
 
 static int vm_dispatch(struct vi_vm *vm, void *ret);
 
-static int vm_cf_push(struct vi_vm   *vm,
-                      struct vi_func *fn,
-                      void           *params,
-                      int             num_params)
+static int vm_cf_push(struct vi_vm *vm, struct vi_func *fn, void *params,
+                      int num_params)
 {
 	struct vi_callframe *prev = vm->frame;
 	struct vi_callframe *frame = (void *)((u8 *)prev + prev->size);
@@ -37,7 +35,7 @@ static int vm_cf_pop(struct vi_vm *vm, int ret)
 		return 1;
 	}
 	void *reg = VM_REG32(vm, ret);
-	int   ton = frame->ret;
+	int ton = frame->ret;
 	vm->frame = frame->prev;
 	void *to = VM_REG32(vm, ton);
 	switch (frame->fn->ty->ret) {
@@ -72,11 +70,8 @@ void vi_vm_delete(struct vi_vm *vm)
 	vi_free(vm);
 }
 
-int vi_vm_call(struct vi_vm   *vm,
-               struct vi_func *fn,
-               void           *params,
-               int             num_params,
-               void           *ret)
+int vi_vm_call(struct vi_vm *vm, struct vi_func *fn, void *params,
+               int num_params, void *ret)
 {
 	vm_cf_push(vm, fn, params, num_params);
 	int res = vm_dispatch(vm, ret);
@@ -98,10 +93,10 @@ int vi_vm_call(struct vi_vm   *vm,
 
 static int vm_dispatch(struct vi_vm *vm, void *ret)
 {
-	register u8                  *ip;
-	register u32                 *_reg;
+	register u8 *ip;
+	register u32 *_reg;
 	register struct vi_callframe *frame;
-	register struct vi_func      *fn;
+	register struct vi_func *fn;
 
 #define REG(i) ((void *)(_reg + i))
 
@@ -140,14 +135,8 @@ static int vm_dispatch(struct vi_vm *vm, void *ret)
 	u8 op;
 
 	vm_break;
-	vm_case(NOP)
-	{
-		vm_break;
-	}
-	vm_case(END)
-	{
-		return -2; /* error in code */
-	}
+	vm_case(NOP) { vm_break; }
+	vm_case(END) { return -2; /* error in code */ }
 	vm_case(RETVOID)
 	{
 		if (fn->ty->ret != vp_void) {
@@ -177,7 +166,7 @@ static int vm_dispatch(struct vi_vm *vm, void *ret)
 	vm_case(OBJ)
 	{
 		u64 *reg = IREG();
-		u32  id = IMM4();
+		u32 id = IMM4();
 		vm_break;
 	}
 	vm_case(LDI_L)

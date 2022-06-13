@@ -6,15 +6,9 @@
 
 #include "runtime.h"
 
-vp_runtime vp_runtime_create(vp_nest nest)
-{
-	return vi_runtime_create(nest);
-}
+vp_runtime vp_runtime_create(vp_nest nest) { return vi_runtime_create(nest); }
 
-void vp_runtime_delete(vp_runtime r)
-{
-	vi_runtime_delete(r);
-}
+void vp_runtime_delete(vp_runtime r) { vi_runtime_delete(r); }
 
 struct vi_runtime *vi_runtime_create(struct vi_nest *nest)
 {
@@ -28,10 +22,7 @@ void vi_runtime_delete(struct vi_runtime *r)
 	vi_nest_delete(r->nest);
 	vi_runtime_free(r);
 }
-void vi_runtime_free(struct vi_runtime *r)
-{
-	vi_free(r);
-}
+void vi_runtime_free(struct vi_runtime *r) { vi_free(r); }
 
 int vp_call(vp_runtime r, vp_func fn, u32 *params, int num_params, void *ret)
 {

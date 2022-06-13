@@ -16,13 +16,10 @@ struct vi_runtime {
 };
 
 struct vi_runtime *vi_runtime_create(struct vi_nest *nest);
-void               vi_runtime_delete(struct vi_runtime *r);
-void               vi_runtime_free(struct vi_runtime *r);
+void vi_runtime_delete(struct vi_runtime *r);
+void vi_runtime_free(struct vi_runtime *r);
 
-int                vi_call(struct vi_runtime *r,
-                           struct vi_func    *fn,
-                           void              *params,
-                           int                num_params,
-                           void              *ret);
+int vi_call(struct vi_runtime *r, struct vi_func *fn, void *params,
+            int num_params, void *ret);
 
 #endif
