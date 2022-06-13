@@ -19,7 +19,7 @@ int main(int argc, char *argv[])
 	if (asm_read_file(argv[1], &src) != 0) {
 		return 1;
 	}
-	printf("%s\n", src);
+	vp_assemble(src);
 	vi_free(src);
 	return 0; /* dead */
 	// static u8 fcode[] = {

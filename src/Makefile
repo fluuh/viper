@@ -13,6 +13,10 @@ OUT_DIR = ../_build
 CORE_SRC = core/func.c core/nest.c core/obj.c
 CORE_OBJ = $(CORE_SRC:%.c=$(OUT_DIR)/obj/%.o)
 
+# Assembler
+ASM_SRC = asm/asm.c asm/lexer.c asm/parser.c asm/util.c asm/token.c
+ASM_OBJ = $(ASM_SRC:%.c=$(OUT_DIR)/obj/%.o)
+
 # Runtime
 RT_OUT = $(OUT_DIR)/libviper.a
 RT_SRC = runtime/call.c runtime/runtime.c runtime/vm.c
@@ -25,7 +29,7 @@ CLI_OBJ = $(CLI_SRC:%.c=$(OUT_DIR)/obj/%.o)
 
 default all: $(CLI_OUT)
 
-$(CLI_OUT): $(CLI_OBJ) $(RT_OUT)
+$(CLI_OUT): $(CLI_OBJ) $(ASM_OBJ) $(RT_OUT)
 	@echo "LINK    $(subst $(OUT_DIR)/,,$@)"
 	@$(CC) -o $@ $^
 
