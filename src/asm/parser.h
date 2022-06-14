@@ -11,6 +11,8 @@
 
 #define ASM_MAX_LABELS 256
 #define ASM_MAX_OPERANDS 18 /* memory usage go poof */
+#define ASM_MAX_FUNCTIONS 1024
+#define ASM_MAX_OBJECTS 1024
 
 /* could use vi_obj, but I don't want to depend on core too much */
 struct asm_obj {
@@ -63,5 +65,13 @@ struct asm_func {
 	struct asm_code code;
 };
 
+struct asm_unit {
+	int num_funcs;
+	struct asm_func *funcs[ASM_MAX_FUNCTIONS];
+	int num_objs;
+	struct asm_obj *objs[ASM_MAX_OBJECTS];
+};
+
+void vi_asm_unit_free(struct asm_unit *unit);
 
 #endif
