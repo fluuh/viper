@@ -120,3 +120,23 @@ void vi_asm_unit_free(struct asm_unit *unit)
 	*/
 	vi_free(unit);
 }
+
+/* insert function into unit, returns id or -1 on failure */
+static int asm_func_insert(struct asm_func *fn, struct asm_unit *unit)
+{
+	if (unit->num_funcs + 1 >= ASM_MAX_FUNCTIONS) {
+		return -1;
+	}
+	unit->funcs[unit->num_funcs++] = fn;
+	return unit->num_funcs - 1;
+}
+
+/* insert object into unit, returns id or -1 on failure */
+static int asm_obj_insert(struct asm_obj *obj, struct asm_unit *unit)
+{
+	if (unit->num_objs + 1 >= ASM_MAX_OBJECTS) {
+		return -1;
+	}
+	unit->objs[unit->num_objs++] = obj;
+	return unit->num_objs - 1;
+}
