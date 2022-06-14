@@ -51,7 +51,8 @@ struct asm_code {
 	int num_labels;
 	struct asm_label labels[ASM_MAX_LABELS]; /* instruction index */
 	int num_insts;
-	struct asm_inst *inst;
+	struct asm_inst *first;
+	struct asm_inst *last;
 };
 
 struct asm_func {
