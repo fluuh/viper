@@ -61,8 +61,8 @@ struct asm_func {
 		func_exported,
 		func_imported,
 	} ty;
-	int id;
 	char *name;
+	vp_funcType *ftype;
 	struct asm_code code;
 };
 
