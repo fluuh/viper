@@ -1,6 +1,6 @@
 data txt[15] = "Hello, World!\n\0"
 
-func _start() -> void {
+export func _start() -> void {
 	%0 = obj txt
 	%2 = ldi.i64 1
 	%4 = ldi.i64 15

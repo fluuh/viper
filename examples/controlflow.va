@@ -1,5 +1,5 @@
 
-func flow(i32) -> i32 {
+export func flow(i32) -> i32 {
 	br %0, .cond_true, .cond_false
 .cond_true:
 	%1 = ldi.i32 4
