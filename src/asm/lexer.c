@@ -141,13 +141,13 @@ static int parse_id(struct asm_lexer *lex, struct asm_token *tok)
 static int id_keyword(const char *s, size_t len)
 {
 	switch (len) {
-	case(3):
-		if(vi_strcmpn("i32", s, 3))
+	case (3):
+		if (vi_strcmpn("i32", s, 3))
 			return tok_ty;
-		if(vi_strcmpn("i64", s, 3))
+		if (vi_strcmpn("i64", s, 3))
 			return tok_ty;
 	case (4):
-		if(vi_strcmpn("void", s, 4))
+		if (vi_strcmpn("void", s, 4))
 			return tok_ty;
 		if (vi_strcmpn("func", s, 4))
 			return tok_func;
@@ -176,7 +176,7 @@ static int parse_others(struct asm_lexer *lex, struct asm_token *tok)
 		nextc(lex);
 		/* label */
 		parse_id(lex, tok);
-		if(tok->len == 0) {
+		if (tok->len == 0) {
 			return -1;
 		}
 		tok->ty = tok_label;

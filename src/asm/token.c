@@ -49,7 +49,7 @@ const char *vi_tok_name(int ty)
 		return "eq";
 	case (tok_comma):
 		return "comma";
-	case(tok_colon):
+	case (tok_colon):
 		return "colon";
 	case (tok_label):
 		return "label";
