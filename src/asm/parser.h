@@ -27,7 +27,7 @@ struct asm_operand {
 		asm_num,
 		asm_name,
 		asm_label,
-	};
+	} ty;
 	union {
 		i64 num;
 		char *str;
