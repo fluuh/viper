@@ -20,6 +20,8 @@ struct asm_token {
 		tok_ty,  /* i32, i64, void */
 		tok_func,
 		tok_data,
+		tok_extern,
+		tok_export,
 		tok_lparen,
 		tok_rparen,
 		tok_lbrace,
@@ -29,7 +31,8 @@ struct asm_token {
 		tok_arrow,
 		tok_eq,
 		tok_comma,
-		tok_label, /* dot and colon cut out */
+		tok_colon,
+		tok_label, /* dot cut out */
 		tok_newline,
 	} ty;
 	/* the base of a number, used when parsing */

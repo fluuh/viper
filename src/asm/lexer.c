@@ -141,11 +141,23 @@ static int parse_id(struct asm_lexer *lex, struct asm_token *tok)
 static int id_keyword(const char *s, size_t len)
 {
 	switch (len) {
+	case(3):
+		if(vi_strcmpn("i32", s, 3))
+			return tok_ty;
+		if(vi_strcmpn("i64", s, 3))
+			return tok_ty;
 	case (4):
+		if(vi_strcmpn("void", s, 4))
+			return tok_ty;
 		if (vi_strcmpn("func", s, 4))
 			return tok_func;
 		if (vi_strcmpn("data", s, 4))
 			return tok_data;
+	case (6):
+		if (vi_strcmpn("export", s, 6))
+			return tok_export;
+		if (vi_strcmpn("extern", s, 6))
+			return tok_extern;
 	}
 	return tok_id;
 }
@@ -161,9 +173,10 @@ static int parse_others(struct asm_lexer *lex, struct asm_token *tok)
 	} else if (c == '"') {
 		return parse_string(lex, tok);
 	} else if (c == '.') {
+		nextc(lex);
 		/* label */
 		parse_id(lex, tok);
-		if (lex->c != ':') {
+		if(tok->len == 0) {
 			return -1;
 		}
 		tok->ty = tok_label;
@@ -240,6 +253,9 @@ struct asm_token *vi_lexer_next(struct asm_lexer *lex)
 	case (','):
 		tok->ty = tok_comma;
 		break;
+	case (':'):
+		tok->ty = tok_colon;
+		break;
 	default:
 		if (parse_others(lex, tok) < 0) {
 			tok->str = &lex->src[lex->i - 1];
@@ -249,6 +265,8 @@ struct asm_token *vi_lexer_next(struct asm_lexer *lex)
 		return tok;
 	}
 	/* only tokens that don't call nextc reach this */
+	tok->str = &lex->src[lex->i - 1];
+	tok->len = 1;
 	nextc(lex);
 	return tok;
 }

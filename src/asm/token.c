@@ -27,6 +27,10 @@ const char *vi_tok_name(int ty)
 		return "func";
 	case (tok_data):
 		return "data";
+	case (tok_export):
+		return "export";
+	case (tok_extern):
+		return "extern";
 	case (tok_lparen):
 		return "lparen";
 	case (tok_rparen):
@@ -45,6 +49,8 @@ const char *vi_tok_name(int ty)
 		return "eq";
 	case (tok_comma):
 		return "comma";
+	case(tok_colon):
+		return "colon";
 	case (tok_label):
 		return "label";
 	case (tok_newline):
