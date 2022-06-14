@@ -80,6 +80,23 @@ static void asm_code_free(struct asm_code *code)
  }
 }
 
+static struct asm_func *asm_func_create(char *name, int vis, vp_funcType *ty)
+{
+ struct asm_func *fn = vi_malloc(sizeof(*fn));
+ fn->vis = vis;
+ fn->ty = ty;
+ asm_code_create(fn->code);
+ return fn;
+}
+
+static void asm_func_free(struct asm_func *fn)
+{
+ vi_free(fn->name);
+ vi_free(fn->ty);
+ asm_code_free(fn->code);
+ vi_free(fn);
+}
+
 static struct asm_unit *asm_unit_create(void)
 {
  struct asm_unit *unit = vi_malloc(sizeof(*unit));

@@ -60,9 +60,9 @@ struct asm_func {
 		func_private,
 		func_exported,
 		func_imported,
-	} ty;
+	} vis;
 	char *name;
-	vp_funcType *ftype;
+	vp_funcType *ty;
 	struct asm_code code;
 };
 
