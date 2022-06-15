@@ -123,16 +123,16 @@ void vi_asm_unit_free(struct asm_unit *unit)
 
 static int asm_func_append(struct asm_func *fn, struct asm_unit *unit)
 {
-	if(unit->num_funcs + 1 >= ASM_MAX_FUNCTIONS) {
+	if (unit->num_funcs + 1 >= ASM_MAX_FUNCTIONS) {
 		return -1;
 	}
 	unit->funcs[unit->num_funcs++] = fn;
-	return unit->num_funcs - 1; 
+	return unit->num_funcs - 1;
 }
 
 static int asm_obj_append(struct asm_obj *obj, struct asm_unit *unit)
 {
-	if(unit->num_objs + 1 >= ASM_MAX_OBJECTS) {
+	if (unit->num_objs + 1 >= ASM_MAX_OBJECTS) {
 		return -1;
 	}
 	unit->objs[unit->num_objs++] = obj;
