@@ -7,6 +7,7 @@
 #ifndef VI_ASM_TOKEN_H_
 #define VI_ASM_TOKEN_H_
 
+#include <viper/viper.h>
 #include <string.h>
 
 struct asm_token {
@@ -47,6 +48,10 @@ struct asm_token {
 	size_t len;
 	const char *str;
 };
+
+char *vi_tok_str(struct asm_token *tok);
+int vi_tok_num(struct asm_token *tok);
+vp_type vi_tok_type(struct asm_token *tok);
 
 const char *vi_tok_name(int ty);
 
