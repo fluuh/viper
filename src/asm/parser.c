@@ -88,7 +88,7 @@ static struct asm_func *asm_func_create(char *name, int vis, vp_funcType *ty)
 	struct asm_func *fn = vi_malloc(sizeof(*fn));
 	fn->vis = vis;
 	fn->ty = ty;
-	asm_code_create(fn->code);
+	asm_code_create(&fn->code);
 	return fn;
 }
 
@@ -96,7 +96,7 @@ static void asm_func_free(struct asm_func *fn)
 {
 	vi_free(fn->name);
 	vi_free(fn->ty);
-	asm_code_free(fn->code);
+	asm_code_free(&fn->code);
 	vi_free(fn);
 }
 
@@ -121,20 +121,18 @@ void vi_asm_unit_free(struct asm_unit *unit)
 	vi_free(unit);
 }
 
-/* insert function into unit, returns id or -1 on failure */
-static int asm_func_insert(struct asm_func *fn, struct asm_unit *unit)
+static int asm_func_append(struct asm_func *fn, struct asm_unit *unit)
 {
-	if (unit->num_funcs + 1 >= ASM_MAX_FUNCTIONS) {
+	if(unit->num_funcs + 1 >= ASM_MAX_FUNCTIONS) {
 		return -1;
 	}
 	unit->funcs[unit->num_funcs++] = fn;
-	return unit->num_funcs - 1;
+	return unit->num_funcs - 1; 
 }
 
-/* insert object into unit, returns id or -1 on failure */
-static int asm_obj_insert(struct asm_obj *obj, struct asm_unit *unit)
+static int asm_obj_append(struct asm_obj *obj, struct asm_unit *unit)
 {
-	if (unit->num_objs + 1 >= ASM_MAX_OBJECTS) {
+	if(unit->num_objs + 1 >= ASM_MAX_OBJECTS) {
 		return -1;
 	}
 	unit->objs[unit->num_objs++] = obj;
