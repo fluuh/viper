@@ -4,8 +4,8 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-#include <viper/viper.h>
 #include "token.h"
+#include "util.h"
 
 char *vi_tok_str(struct asm_token *tok)
 {
@@ -17,9 +17,9 @@ char *vi_tok_str(struct asm_token *tok)
 
 static long int char_to_num(char c)
 {
-	if (c >= 48 && c <= 57) {
+	if(c >= 48 && c <= 57) {
 		return c - 48;
-	} else if (c >= 65 && c <= 70) {
+	} else if(c >= 65 && c <= 70) {
 		return 10 + c - 65;
 	} else if (c >= 97 && c <= 102) {
 		return 10 + c - 97;
@@ -33,9 +33,9 @@ static long int parse_num(const char *str, size_t len, int base)
 	const char *p = &str[len - 1];
 	int mul = 1;
 	long int num = 0;
-	while (len > 0) {
+	while(len > 0) {
 		long int n = char_to_num(*p--);
-		if (n >= base || n < 0) {
+		if(n >= base || n < 0) {
 			return 0;
 		}
 		num += n * mul;
@@ -48,17 +48,17 @@ static long int parse_num(const char *str, size_t len, int base)
 int vi_tok_num(struct asm_token *tok)
 {
 	int base;
-	switch (tok->num_ty) {
-	case (num_bin):
+	switch(tok->num_ty) {
+	case(num_bin):
 		base = 2;
 		break;
-	case (num_oct):
+	case(num_oct):
 		base = 8;
 		break;
-	case (num_dec):
+	case(num_dec):
 		base = 10;
 		break;
-	case (num_hex):
+	case(num_hex):
 		base = 16;
 		break;
 	default:
@@ -69,15 +69,15 @@ int vi_tok_num(struct asm_token *tok)
 
 vp_type vi_tok_type(struct asm_token *tok)
 {
-	switch (tok->len) {
-	case (3):
-		if (vi_strcmpn("i32", tok->str, 3))
+	switch(tok->len) {
+	case(3):
+		if(vi_strcmpn("i32", tok->str, 3))
 			return vp_i32;
-		if (vi_strcmpn("i64", tok->str, 3))
+		if(vi_strcmpn("i64", tok->str, 3))
 			return vp_i64;
 		break;
-	case (4):
-		if (vi_strcmpn("void", tok->str, 4))
+	case(4):
+		if(vi_strcmpn("void", tok->str, 4))
 			return vp_void;
 		break;
 	}
@@ -127,7 +127,7 @@ const char *vi_tok_name(int ty)
 		return "eq";
 	case (tok_comma):
 		return "comma";
-	case (tok_colon):
+	case(tok_colon):
 		return "colon";
 	case (tok_label):
 		return "label";
