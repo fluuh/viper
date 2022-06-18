@@ -10,14 +10,13 @@
 /* type of bytecode inst
  * - d: destination register (i8)
  * - e: destination register i64 (i8)
- * - r: register (i8)
- * - s: register i64 (i8)
+ * - r: typed register (t, i8)
+ * - i: register i32 (i8)
+ * - l: register i64 (i8)
  * - t: type (i8)
- * - b: byte (i8)
- * - i: immediate (i16)
  * - j: jump target (i16)
- * - w: word (i32)
- * - l: long (i64)
+ * - 4: word (i32)
+ * - 8: long (i64)
  * - o: object index (i32)
  * - f: function index (i32)
  */
@@ -29,18 +28,18 @@
  */
 
 #define BCDEF(_)                                                               \
-	_(NOP, "nop", "")                                                 \
-	_(END, "end", "")                                                 \
-	_(RETVOID, "retvoid", "")                                         \
+	_(NOP, "nop", "")                                                      \
+	_(END, "end", "")                                                      \
+	_(RETVOID, "retvoid", "")                                              \
 	/* +1 */                                                               \
-	_(HALT, "halt", "r")                                                  \
+	_(HALT, "halt", "i")                                                   \
 	/* +3 */                                                               \
-	_(WRITE, "write", "sss")                                              \
+	_(WRITE, "write", "lll")                                               \
 	/* +5 */                                                               \
-	_(LDI_W, "ldi.i32", "dw")                                             \
-	_(OBJ, "obj", "eo")                                                   \
+	_(LDI_W, "ldi.i32", "d4")                                              \
+	_(OBJ, "obj", "eo")                                                    \
 	/* +8 */                                                               \
-	_(LDI_L, "ldi.i64", "el")
+	_(LDI_L, "ldi.i64", "e8")
 
 extern char *vi_bc_ops[];
 
