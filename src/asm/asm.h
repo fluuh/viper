@@ -10,9 +10,12 @@
 #include <viper/asm.h>
 #include <viper/viper.h>
 
+#include "lexer.h"
+#include "parser.h"
+
 struct vi_asm {
-	const char *src;
-	int i;
+	struct asm_lexer *lex;
+	struct asm_unit *unit;
 };
 
 #endif
