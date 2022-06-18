@@ -8,6 +8,6 @@
 
 char *vi_bc_ops[] = {
 #define OPCODE(n, s, type) type,
-	BCDEF(OPCODE)
+    BCDEF(OPCODE)
 #undef OPCODE
 };
