@@ -149,7 +149,7 @@ static struct asm_token *asm_next(struct vi_asm *as)
 static struct asm_token *asm_expect(struct vi_asm *as, int ty)
 {
 	struct asm_token *tok = asm_next(as);
-	if(tok->ty != ty) {
+	if (tok->ty != ty) {
 		// error_expected(as, ty);
 		return NULL;
 	}
