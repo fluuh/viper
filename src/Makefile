@@ -10,7 +10,7 @@ CWARN = -Wall -Wshadow -Wpointer-arith \
 OUT_DIR = ../_build
 
 # Core
-CORE_SRC = core/func.c core/nest.c core/obj.c
+CORE_SRC = core/func.c core/nest.c core/obj.c core/bc.c
 CORE_OBJ = $(CORE_SRC:%.c=$(OUT_DIR)/obj/%.o)
 
 # Assembler

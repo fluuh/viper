@@ -21,18 +21,6 @@
  * - o: object index (i32)
  * - f: function index (i32)
  */
-enum {
-	bc_none, /* +0 */
-	bc_r,    /* +1 */
-	bc_rre,  /* +3 */
-	bc_dw,   /* +5 */
-	bc_do,   /* +5 */
-	bc_eo,   /* +5 */
-	bc_el,   /* +9 */
-	bc_dl,   /* +9 */
-	bc_rrl,  /* +10 */
-	bc_call, /* special case */
-};
 
 /* ranges:
  *   0-2: 1+0
@@ -41,18 +29,20 @@ enum {
  */
 
 #define BCDEF(_)                                                               \
-	_(NOP, "nop", bc_none)                                                 \
-	_(END, "end", bc_none)                                                 \
-	_(RETVOID, "retvoid", bc_none)                                         \
+	_(NOP, "nop", "")                                                 \
+	_(END, "end", "")                                                 \
+	_(RETVOID, "retvoid", "")                                         \
 	/* +1 */                                                               \
-	_(HALT, "halt", bc_r)                                                  \
+	_(HALT, "halt", "r")                                                  \
 	/* +3 */                                                               \
-	_(WRITE, "write", bc_rre)                                              \
+	_(WRITE, "write", "sss")                                              \
 	/* +5 */                                                               \
-	_(LDI_W, "ldi.i32", bc_dw)                                             \
-	_(OBJ, "obj", bc_eo)                                                   \
+	_(LDI_W, "ldi.i32", "dw")                                             \
+	_(OBJ, "obj", "eo")                                                   \
 	/* +8 */                                                               \
-	_(LDI_L, "ldi.i64", bc_el)
+	_(LDI_L, "ldi.i64", "el")
+
+extern char *vi_bc_ops[];
 
 enum {
 #define OPCODE(name, s, t) OP_##name,
