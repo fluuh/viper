@@ -7,7 +7,7 @@
 #ifndef VIPER_BC_H_
 #define VIPER_BC_H_
 
-/* type of bytecode inst
+/* operand types:
  * - d: destination register (i8)
  * - e: destination register i64 (i8)
  * - r: typed register (t, i8)
