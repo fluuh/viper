@@ -140,3 +140,18 @@ static int asm_obj_insert(struct asm_obj *obj, struct asm_unit *unit)
 	unit->objs[unit->num_objs++] = obj;
 	return unit->num_objs - 1;
 }
+
+static struct asm_token *asm_next(struct vi_asm *as)
+{
+	return vi_lexer_next(as->lex);
+}
+
+static struct asm_token *asm_expect(struct vi_asm *as, int ty)
+{
+	struct asm_token *tok = asm_next(as);
+	if(tok->ty != ty) {
+		// error_expected(as, ty);
+		return NULL;
+	}
+	return tok;
+}
