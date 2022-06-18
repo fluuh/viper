@@ -11,7 +11,7 @@
  * - d: destination register (i8)
  * - e: destination register i64 (i8)
  * - r: typed register (t, i8)
- * - i: register i32 (i8)
+ * - w: register i32 (i8)
  * - l: register i64 (i8)
  * - t: type (i8)
  * - j: jump target (i16)
@@ -32,7 +32,7 @@
 	_(END, "end", "")                                                      \
 	_(RETVOID, "retvoid", "")                                              \
 	/* +1 */                                                               \
-	_(HALT, "halt", "i")                                                   \
+	_(HALT, "halt", "w")                                                   \
 	/* +3 */                                                               \
 	_(WRITE, "write", "lll")                                               \
 	/* +5 */                                                               \
