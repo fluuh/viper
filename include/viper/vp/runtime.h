@@ -18,6 +18,12 @@ typedef u64 vp_ptr;
 
 typedef struct vi_runtime *vp_runtime;
 
+/* reserved file ids:
+ * 0 - none (zero on read, nothing on write)
+ * 1 - stdout
+ * 2 - stderr
+ * 3 - stdin
+ */
 typedef u64 vp_file;
 
 typedef int (*vp_writer)(vp_runtime r, vp_file f, void *data, size_t size);
