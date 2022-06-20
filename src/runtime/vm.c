@@ -140,7 +140,7 @@ static int vm_dispatch(struct vi_vm *vm, void *ret)
 	vm_case(RETVOID)
 	{
 		if (fn->ty->ret != vp_void) {
-			/* non-void function have to return something */
+			/* non-void functions have to return something */
 			return -2;
 		}
 		if (vm_cf_pop(vm, 0) == 1) {
@@ -167,6 +167,8 @@ static int vm_dispatch(struct vi_vm *vm, void *ret)
 	{
 		u64 *reg = IREG();
 		u32 id = IMM4();
+		(void)reg;
+		(void)id;
 		vm_break;
 	}
 	vm_case(LDI_L)
