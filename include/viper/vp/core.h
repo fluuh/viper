@@ -30,4 +30,17 @@ int vp_obj_delete(vp_nest nest, vp_obj obj);
 size_t vp_obj_size(vp_nest nest, vp_obj obj);
 void *vp_obj_initial(vp_nest nest, vp_obj obj);
 
+typedef struct {
+	enum {
+		vp_export_func,
+		vp_export_obj,
+	} ty;
+	union {
+		vp_func fn;
+		vp_func obj;
+	};
+} vp_export;
+
+int vp_get(vp_nest nest, const char *name, vp_export *x);
+
 #endif
