@@ -32,6 +32,7 @@
 	_(END, "end", "")                                                      \
 	_(RETVOID, "retvoid", "")                                              \
 	/* +1 */                                                               \
+	_(RET, "ret", "r")                                                     \
 	_(HALT, "halt", "w")                                                   \
 	/* +3 */                                                               \
 	_(WRITE, "write", "lll")                                               \
@@ -39,7 +40,9 @@
 	_(LDI_W, "ldi.i32", "d4")                                              \
 	_(OBJ, "obj", "eo")                                                    \
 	/* +8 */                                                               \
-	_(LDI_L, "ldi.i64", "e8")
+	_(LDI_L, "ldi.i64", "e8")                                              \
+	/* special */                                                          \
+	_(CALL, "call", "rf[r]")
 
 extern char *vi_bc_ops[];
 
