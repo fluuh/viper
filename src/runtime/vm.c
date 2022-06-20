@@ -6,6 +6,7 @@
 
 /* ;( */
 #include <stdbool.h>
+#include <string.h>
 
 #include "runtime.h"
 #include <viper/bc.h>
@@ -22,6 +23,7 @@ static int vm_cf_push(struct vi_vm *vm, struct vi_func *fn, void *params,
 	frame->ip = fn->code->code;
 	frame->nreg = fn->code->size;
 	frame->size = sizeof(*frame) + sizeof(u32) * frame->nreg;
+	memcpy(&frame->regs, params, num_params * 2);
 
 	vm->frame = frame;
 	return 0;
@@ -200,6 +202,26 @@ static int vm_dispatch(struct vi_vm *vm, void *ret)
 	{
 		u64 *reg = IREG();
 		*reg = IMM8();
+		vm_break;
+	}
+	vm_case(CALL)
+	{
+		int ty = IMM();
+		void *reg = IREG();
+		u32 fid = IMM4();
+		struct vi_func *f = vi_get_func(vm->r->nest, fid);
+		if(f == NULL) {
+			/* function does not exist */
+			return -1;
+		}
+		if(ty != f->ty->ret) {
+			/* type mismatch */
+			return -1;
+		}
+		int nargs = IMM();
+		void *args = ip;
+		vm_cf_push(vm, f, args, nargs);
+		LOAD_FRAME();
 		vm_break;
 	}
 
