@@ -149,6 +149,31 @@ static int vm_dispatch(struct vi_vm *vm, void *ret)
 		LOAD_FRAME();
 		vm_break;
 	}
+	vm_case(RET)
+	{
+		int ty = IMM();
+		void *reg = IREG();
+		int dst = frame->ret;
+		if(ty != fn->ty->ret) {
+			return -2;
+		}
+		if(vm_cf_pop(vm, 0) == 1) {
+			/* TODO: return value to host */
+			return 0;
+		}
+		LOAD_FRAME();
+		switch(ty) {
+		case(vp_i32):
+			*(u32*)REG(dst) = *(u32*)reg;
+			break;
+		case(vp_i64):
+			*(u64*)REG(dst) = *(u64*)reg;
+			break;
+		default:
+			return -1;
+		}
+		vm_break;
+	}
 	vm_case(HALT)
 	{
 		vm->status = vm_dead;
