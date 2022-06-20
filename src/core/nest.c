@@ -56,3 +56,11 @@ int vi_func_insert(struct vi_nest *nest, struct vi_func *func, u32 id)
 	nest->funcs[id] = func;
 	return 0;
 }
+
+struct vi_func *vi_get_func(struct vi_nest *nest, vp_func id)
+{
+	if(id >= nest->num_funcs) {
+		return NULL;
+	}
+	return nest->funcs[id];
+}

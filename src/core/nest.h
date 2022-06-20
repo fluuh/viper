@@ -21,4 +21,6 @@ void vi_nest_free(struct vi_nest *nest);
 int vi_obj_insert(struct vi_nest *nest, struct vi_obj *obj, u32 id);
 int vi_func_insert(struct vi_nest *nest, struct vi_func *func, u32 id);
 
+struct vi_func *vi_get_func(struct vi_nest *nest, vp_func id);
+
 #endif
