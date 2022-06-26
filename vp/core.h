@@ -10,30 +10,68 @@
 /* includes common.h */
 #include "code.h"
 
+/* an identifier for an object or function
+ * it does not keep track of which one it is
+ */
+typedef uint32_t vp_id;
+
 typedef struct vp_obj_def {
-	
+	size_t size;
+	void *initial;
 } vp_obj;
 
-typedef struct vp_func {
-	vp_func_type ftype;
-	vp_code code;
+/* allocate and initialize an object
+ * takes ownership of initial
+ */
+vp_obj *vp_obj_create(void *initial, size_t size);
+void vp_obj_free(vp_obj *obj);
+
+typedef struct vp_sig_def {
+	int n_rets;
+	int n_args;
+	/* first rets, then args */
+	vp_type types[];
+} vp_sig;
+
+/* allocate and initialize a function signature */
+vp_sig *vp_sig_create(int n_rets, int n_args, vp_type types[]);
+/* free a signature, should probably just use vfree instead */
+void vp_sig_free(vp_sig *sig);
+
+typedef struct vp_func_def {
+	vp_sig *sig;
+	vp_code *code;
 } vp_func;
 
-typedef struct vp_fvec_def {
-	size_t cap;
-	size_t len;
-	vp_func **func;
-} vp_fvec;
+/* allocate and initialize function */
+vp_func *vp_func_create(vp_sig *sig, vp_code *code);
+void vp_func_free(vp_func *func);
 
-typedef struct vp_ovec_def {
+/* bad for type safety, but it works */
+typedef struct vp_vec_def {
 	size_t cap;
 	size_t len;
-	vp_obj **obj;
-} vp_ovec;
+	void **data;
+} vp_vec;
 
 typedef struct vp_nest_def {
-	vp_fvec funcs;
-	vp_ovec objs;
+	vp_vec func;
+	vp_vec obj;
 } vp_nest;
+
+/* allocate and initialize a nest */
+vp_nest *vp_nest_create(void);
+
+void vp_nest_free(vp_nest *nest);
+
+/* get an object from id */
+vp_obj *vp_obj_get(vp_nest *nest, vp_id id);
+/* get a function from id */
+vp_func *vp_func_get(vp_nest *nest, vp_id id);
+
+/* insert an object into vp_ovec */
+vp_id vp_obj_insert(vp_nest *nest, vp_obj *obj);
+/* insert a function into vp_fvec */
+vp_id vp_func_insert(vp_nest *nest, vp_func *func);
 
 #endif

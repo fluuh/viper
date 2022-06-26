@@ -26,4 +26,8 @@ typedef enum vp_type_def {
 #define vfree(ptr) free(ptr)
 #define vfree_const(ptr) free((void*)ptr)
 
+/* definitions */
+/* the initial size of a vector */
+#define VP_VEC_INIT 256
+
 #endif
