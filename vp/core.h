@@ -16,6 +16,7 @@
 typedef uint32_t vp_id;
 
 typedef struct vp_obj_def {
+	vp_id id;
 	size_t size;
 	void *initial;
 } vp_obj;
@@ -39,6 +40,7 @@ vp_sig *vp_sig_create(int n_rets, int n_args, vp_type types[]);
 void vp_sig_free(vp_sig *sig);
 
 typedef struct vp_func_def {
+	vp_id id;
 	vp_sig *sig;
 	vp_code *code;
 } vp_func;

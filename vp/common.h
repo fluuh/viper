@@ -7,6 +7,9 @@
 #ifndef VP_COMMON_H_
 #define VP_COMMON_H_
 
+/* mostly not useful */
+#include "viper.h"
+
 typedef enum vp_type_def {
 	vp_void,
 	vp_i32,

@@ -129,10 +129,12 @@ vp_func *vp_func_get(vp_nest *nest, vp_id id)
 
 vp_id vp_obj_insert(vp_nest *nest, vp_obj *obj)
 {
-	return (vp_id)vec_insert(&nest->obj, obj);
+	obj->id = (vp_id)vec_insert(&nest->obj, obj);
+	return obj->id;
 }
 
 vp_id vp_func_insert(vp_nest *nest, vp_func *func)
 {
-	return (vp_id)vec_insert(&nest->func, func);
+	func->id = (vp_id)vec_insert(&nest->func, func);
+	return func->id;
 }
