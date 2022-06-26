@@ -4,9 +4,10 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-#ifndef VI_ASM_UTIL_H_
-#define VI_ASM_UTIL_H_
+#include <stdio.h>
 
-int vi_strcmpn(const char *s1, const char *s2, int n);
-
-#endif
+int main(int argc, char **argv)
+{
+	printf("Viper\n");
+	return 0;
+}

@@ -4,13 +4,10 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-#ifndef VP_CORE_MOD_H_
-#define VP_CORE_MOD_H_
+#ifndef VIPER_H_
+#define VIPER_H_
 
-#include <viper/viper.h>
-
-#include "func.h"
-#include "nest.h"
-#include "obj.h"
+#define VP_VERSION "Viper 0.1.0"
+#define VP_VER_NUM 100 /* 00.01.00 */
 
 #endif
