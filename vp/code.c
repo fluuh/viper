@@ -49,3 +49,9 @@ vp_code *vp_code_init(vp_code *code, int n_reg, uint8_t *ip, size_t len)
 	memcpy(code->ip, ip, len);
 	return code;
 }
+
+void vp_code_free(vp_code *code)
+{
+	vfree(code->ip);
+	vfree(code);
+}

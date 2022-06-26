@@ -37,5 +37,7 @@ vp_code *vp_code_alloc(size_t len);
 vp_code *vp_code_create(int n_reg, uint8_t *ip, size_t len);
 /* initialize already allocated code */
 vp_code *vp_code_init(vp_code *code, int n_reg, uint8_t *ip, size_t len);
+/* free code */
+void vp_code_free(vp_code *code);
 
 #endif
