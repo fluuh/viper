@@ -12,3 +12,12 @@
 ## Introduction
 
 **Viper** is a portable binary instruction format.
+
+## How to build
+
+To build with CMake:
+```
+$ mkdir build
+$ (cd build && cmake ..)
+$ cmake --build build
+```
