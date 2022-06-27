@@ -10,6 +10,8 @@ add_library(viper)
 add_executable(viper.cli)
 set_target_properties(viper.cli PROPERTIES OUTPUT_NAME viper)
 
+target_compile_options(viper PRIVATE -Wall -Wmissing-prototypes -Wstrict-prototypes -Wshadow=local)
+
 include(Sources.cmake)
 
 target_link_libraries(viper.cli viper)
