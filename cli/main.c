@@ -6,8 +6,10 @@
 
 #include <stdio.h>
 
+#include <vp/viper.h>
+
 int main(int argc, char **argv)
 {
-	printf("Viper\n");
+	printf(VP_VERSION "\n");
 	return 0;
 }
