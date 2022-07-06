@@ -11,4 +11,5 @@ set(CMAKE_C_STANDARD_REQUIRED True)
 
 add_subdirectory(vp)
 add_subdirectory(cli)
+add_subdirectory(vp-emit)
 
