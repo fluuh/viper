@@ -6,22 +6,16 @@
 
 #include "code.h"
 
-#define OPCODE(ENUM, NAME, TYPE) NAME ,
-const char *const vp_bc_name[] = {
-	BCDEF(OPCODE)
-};
+#define OPCODE(ENUM, NAME, TYPE) NAME,
+const char *const vp_bc_name[] = {BCDEF(OPCODE)};
 #undef OPCODE
 
-#define OPCODE(ENUM, NAME, TYPE) TYPE ,
-const char *const vp_bc_type[] = {
-	BCDEF(OPCODE)
-};
+#define OPCODE(ENUM, NAME, TYPE) TYPE,
+const char *const vp_bc_type[] = {BCDEF(OPCODE)};
 #undef OPCODE
 
-#define OPCODE(ENUM, NAME, TYPE) sizeof( TYPE ),
-const unsigned char vp_bc_length[] = {
-	BCDEF(OPCODE)
-};
+#define OPCODE(ENUM, NAME, TYPE) sizeof(TYPE),
+const unsigned char vp_bc_length[] = {BCDEF(OPCODE)};
 #undef OPCODE
 
 vp_code *vp_code_alloc(size_t len)

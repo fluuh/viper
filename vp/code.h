@@ -10,13 +10,11 @@
 #include "common.h"
 
 /* bytecode */
-#define BCDEF(_) \
-	_(NOP, "nop", "")
+#define BCDEF(_) _(NOP, "nop", "")
 
-#define OPCODE(ENUM, NAME, TYPE) BC_##ENUM ,
+#define OPCODE(ENUM, NAME, TYPE) BC_##ENUM,
 typedef enum vp_bc_def {
-	BCDEF(OPCODE)
-	BC_LAST_UNUSED, /* to get number of codes */
+	BCDEF(OPCODE) BC_LAST_UNUSED, /* to get number of codes */
 } vp_bc;
 #undef OPCODE
 

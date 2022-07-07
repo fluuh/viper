@@ -9,7 +9,7 @@
 /* initialize an empty vector */
 static vp_vec *vec_init(vp_vec *vec, size_t init)
 {
-	if(init == 0) {
+	if (init == 0) {
 		init = VP_VEC_INIT;
 	}
 	vec->cap = init;
@@ -25,7 +25,7 @@ static void vec_free(vp_vec *vec)
 
 static void *vec_get(vp_vec *vec, size_t i)
 {
-	if(i >= vec->len) {
+	if (i >= vec->len) {
 		return NULL;
 	}
 	return vec->data[i];
@@ -33,7 +33,7 @@ static void *vec_get(vp_vec *vec, size_t i)
 
 static size_t vec_insert(vp_vec *vec, void *data)
 {
-	if(vec->len >= vec->cap) {
+	if (vec->len >= vec->cap) {
 		vec->cap *= 2;
 		vec->data = vrealloc(vec->data, vec->cap);
 	}
@@ -62,7 +62,8 @@ void vp_obj_free(vp_obj *obj)
 
 vp_sig *vp_sig_create(int n_rets, int n_args, vp_type types[])
 {
-	vp_sig *sig = vmalloc(sizeof(*sig) + sizeof(vp_type) * (n_rets + n_args));
+	vp_sig *sig =
+	    vmalloc(sizeof(*sig) + sizeof(vp_type) * (n_rets + n_args));
 	sig->n_rets = n_rets;
 	sig->n_args = n_args;
 	memcpy(&sig->types, types, sizeof(vp_type) * (n_rets + n_args));
@@ -96,20 +97,19 @@ void vp_func_free(vp_func *func)
 vp_nest *vp_nest_create()
 {
 	vp_nest *nest = vmalloc(sizeof(*nest));
-	if(vec_init(&nest->obj, 0) == NULL ||
-	   vec_init(&nest->func, 0) == NULL) {
+	if (vec_init(&nest->obj, 0) == NULL ||
+	    vec_init(&nest->func, 0) == NULL) {
 		return NULL;
 	}
 	return nest;
 }
 
-
 void vp_nest_free(vp_nest *nest)
 {
-	for(int i = 0; i < nest->func.len; i++) {
+	for (int i = 0; i < nest->func.len; i++) {
 		/* vp_func_free(nest->func.data[i]); */
 	}
-	for(int i = 0; i < nest->obj.len; i++) {
+	for (int i = 0; i < nest->obj.len; i++) {
 		/* vp_obj_free(nest->obj.data[i]); */
 	}
 	vec_free(&nest->func);
