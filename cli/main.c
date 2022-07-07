@@ -11,7 +11,7 @@
 int main(int argc, char **argv)
 {
 	vpe_context *cx = vpe_context_create();
-	vpe_function_create(cx);
+	vpe_insn_nop(vpe_function_create(cx));
 	vpe_context_build(cx);
 	return 0;
 }
