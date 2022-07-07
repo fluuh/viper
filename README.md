@@ -14,7 +14,9 @@
 
 To build with CMake:
 ```
-$ mkdir build
-$ (cd build && cmake ..)
+$ cmake -B build -G <generator>
 $ cmake --build build
 ```
+Some common generators are:
+- `Ninja`
+- `Unix Makefiles`
