@@ -6,10 +6,12 @@
 
 #include <stdio.h>
 
-#include <vp/viper.h>
+#include <vp-emit/emit.h>
 
 int main(int argc, char **argv)
 {
-	printf(VP_VERSION "\n");
+	vpe_context *cx = vpe_context_create();
+	vpe_function_create(cx);
+	vpe_context_build(cx);
 	return 0;
 }

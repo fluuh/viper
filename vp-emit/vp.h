@@ -15,15 +15,29 @@
  * It might be worthwhile to write a more abstract emitter later,
  * but that isn't really useful to me. */
 
-typedef struct vpe_insn_def {
-	vp_bc op;
-} vpe_insn;
+typedef struct vpe_function_def vpe_function;
+
+typedef union vpe_arg_def {
+	vpe_function *fn;
+	/* vpe_obj *obj; */
+	int reg;
+	long long num;
+} vpe_arg;
+
+typedef struct vpe_insn_def vpe_insn;
+struct vpe_insn_def {
+	vpe_insn *next;
+	vp_bc code;
+	int n_ops;
+	vpe_arg ops[];
+};
 
 /* a block will automatically be created when emitting
  * a jump or ret instruction */
 typedef struct vpe_block_def vpe_block;
 struct vpe_block_def {
 	vpe_block *next;
+	vpe_block *prev;
 	size_t size;
 	/* this is useful for emitting jumps */
 	size_t pos;
@@ -40,12 +54,12 @@ typedef struct vpe_label_def {
 
 typedef struct vpe_code_def {
 	int n_blocks;
+	vpe_block *first;
 	vpe_block *last;
 } vpe_code;
 
 /* implementing this as a linked list is fine as
  * we'll never have to get an index */
-typedef struct vpe_function_def vpe_function;
 struct vpe_function_def {
 	uint32_t id;
 	vpe_function *prev;
