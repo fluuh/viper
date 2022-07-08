@@ -9,7 +9,7 @@
 
 /* definitions for the loader, etc. */
 
-#define VPLD_MAGIC "\x7fFME"
+#define VPLD_MAGIC "\x7f""FME"
 #define VPLD_VERSION 0
 #define VPLD_SECTION_START 0x72
 #define VPLD_SECTION_END 0x73
