@@ -80,6 +80,7 @@ vpe_function *vpe_function_create(vpe_context *cx);
 
 vpe_block *vpe_block_create(vpe_function *func);
 
+void vpe_context_free(vpe_context *cx);
 /* Creates a nest. */
 vpe_nest *vpe_context_build(vpe_context *cx);
 
