@@ -94,7 +94,7 @@ typedef struct vpe_context_def {
 
 typedef struct vpe_nest_def {
 	size_t len;
-	const char *nest;
+	char *nest;
 } vpe_nest;
 
 vpe_context *vpe_context_create(void);
