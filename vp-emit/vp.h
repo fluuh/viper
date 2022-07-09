@@ -85,6 +85,7 @@ struct vpe_info_def {
 
 typedef struct vpe_context_def {
 	vpe_info *info;
+	vpe_function *first_func;
 	vpe_function *last_func;
 } vpe_context;
 

@@ -9,6 +9,7 @@
 vpe_context *vpe_context_create()
 {
 	vpe_context *cx = vmalloc(sizeof(*cx));
+	cx->first_func = NULL;
 	cx->last_func = NULL;
 	cx->info = NULL;
 	return cx;
@@ -37,6 +38,7 @@ vpe_function *vpe_function_create(vpe_context *cx, vpe_signature *sig)
 	vpe_function *func = vmalloc(sizeof(*func));
 	func->sig = sig;
 	if(cx->last_func == NULL) {
+		cx->first_func = func;
 		func->id = 0;
 	} else {
 		func->id = cx->last_func->id + 1;
