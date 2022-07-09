@@ -11,6 +11,9 @@
 /* includes stdio.h and stdint.h */
 #include <vp/core.h>
 
+extern const unsigned char vpe_bc_length[];
+extern const char *const vpe_bc_type[];
+
 /* This is an emitter api which matches Viper IR very closely.
  * It might be worthwhile to write a more abstract emitter later,
  * but that isn't really useful to me. */

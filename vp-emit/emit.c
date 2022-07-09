@@ -9,13 +9,13 @@
 /* we can't depend on the definitions in viper */
 
 #define OPCODE(ENUM, NAME, TYPE) sizeof(TYPE) ,
-static const unsigned char bc_length[] = {
+const unsigned char vpe_bc_length[] = {
 	BCDEF(OPCODE)
 };
 #undef OPCODE
 
 #define OPCODE(ENUM, NAME, TYPE) TYPE ,
-static const char *const bc_type[] = {
+const char *const vpe_bc_type[] = {
 	BCDEF(OPCODE)
 };
 #undef OPCODE
@@ -23,9 +23,9 @@ static const char *const bc_type[] = {
 static vpe_insn *create_insn(vp_bc code)
 {
 	vpe_insn *insn = vmalloc(sizeof(*insn) +
-		                 sizeof(*insn->ops) * bc_length[code]);
+		                 sizeof(*insn->ops) * vpe_bc_length[code]);
 	insn->code = code;
-	insn->n_ops = bc_length[code];
+	insn->n_ops = vpe_bc_length[code];
 	insn->next = NULL;
 	return insn;
 }
