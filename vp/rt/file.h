@@ -9,7 +9,7 @@
 
 #include "state.h"
 
-typedef uint64_t vp_file;
+typedef uint32_t vp_file;
 typedef uint32_t vp_store;
 typedef int (*vp_fwrite_t)(vp_state *s, vp_file f);
 typedef int (*vp_fread_t)(vp_state *s, vp_file f, vp_ptr to, uint64_t len);
