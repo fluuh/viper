@@ -14,6 +14,7 @@ int main(int argc, char **argv)
 	vpe_signature *sig = vpe_sig_create(0, 0, NULL);
 	vpe_insn_nop(vpe_function_create(cx, sig));
 	vpe_info_add(cx, "AUTHORS", "Me <me@example.org>");
-	vpe_context_build(cx);
+	vpe_nest *nest = vpe_context_build(cx);
+	fwrite(nest->nest, 1, nest->len, stdout);
 	return 0;
 }

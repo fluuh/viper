@@ -9,10 +9,12 @@
 
 /* definitions for the loader, etc. */
 
-#define VPLD_MAGIC "\x7f""FME"
+#define VPLD_MAGIC "\x7f""VP""\x01"
 #define VPLD_VERSION 0
-#define VPLD_SECTION_START 0x72
-#define VPLD_SECTION_END 0x73
+#define VPLD_ELEM_START 0x0A
+#define VPLD_SECTION_START 0x02
+#define VPLD_SECTION_END 0x03
+#define VPLD_EOF 0x04
 
 /* user-defined, ignored */
 #define VPLD_SECTION_CUSTOM 0
