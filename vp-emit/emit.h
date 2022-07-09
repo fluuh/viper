@@ -14,5 +14,8 @@
 /* it might be better to auto-generate these */
 
 vpe_insn *vpe_insn_nop(vpe_function *func);
+vpe_insn *vpe_insn_retvoid(vpe_function *func);
+vpe_insn *vpe_insn_halt(vpe_function *func);
+vpe_insn *vpe_insn_break(vpe_function *func);
 
 #endif

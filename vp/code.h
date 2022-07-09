@@ -12,7 +12,10 @@
 /* bytecode */
 #define BCDEF(_) \
 	_(NOP, "nop", "") \
-	_(END, "end", "")
+	_(END, "end", "") \
+	_(RETVOID, "retvoid", "") \
+	_(HALT, "halt", "") \
+	_(BREAK, "break", "")
 
 #define OPCODE(ENUM, NAME, TYPE) BC_##ENUM,
 typedef enum vp_bc_def {
@@ -22,6 +25,7 @@ typedef enum vp_bc_def {
 
 #define VP_NUM_BC (BC_LAST_UNUSED)
 extern const char *const vp_bc_name[];
+/* see types in code.c */
 extern const char *const vp_bc_type[];
 extern const unsigned char vp_bc_length[];
 

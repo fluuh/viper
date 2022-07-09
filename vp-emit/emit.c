@@ -48,3 +48,17 @@ vpe_insn *vpe_insn_nop(vpe_function *func)
 	return emit(func, BC_NOP);
 }
 
+vpe_insn *vpe_insn_retvoid(vpe_function *func)
+{
+	return emit(func, BC_RETVOID);
+}
+
+vpe_insn *vpe_insn_halt(vpe_function *func)
+{
+	return emit(func, BC_HALT);
+}
+
+vpe_insn *vpe_insn_break(vpe_function *func)
+{
+	return emit(func, BC_BREAK);
+}
