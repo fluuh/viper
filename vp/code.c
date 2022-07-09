@@ -10,6 +10,24 @@
 const char *const vp_bc_name[] = {BCDEF(OPCODE)};
 #undef OPCODE
 
+/* operand types:
+ * - "f" - register (f32)
+ * - "F" - destination register (f32)
+ * - "d" - register (f64)
+ * - "D" - destination register (f64)
+ * - "w" - register (i32)
+ * - "W" - destination register (i32)
+ * - "l" - register (i64)
+ * - "L" - destination register (i64)
+ * - "r" - typed register
+ * - "R" - typed destination register
+ * - "t" - type
+ * - "4" - word (i32)
+ * - "8" - long (i64)
+ * - "o" - object index (i32)
+ * - "f" - function index (i32)
+ * - "j" - jump target (i16)
+ */
 #define OPCODE(ENUM, NAME, TYPE) TYPE,
 const char *const vp_bc_type[] = {BCDEF(OPCODE)};
 #undef OPCODE
