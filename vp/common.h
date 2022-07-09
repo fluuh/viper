@@ -7,15 +7,17 @@
 #ifndef VP_COMMON_H_
 #define VP_COMMON_H_
 
-/* mostly not useful */
-#include "viper.h"
-
-typedef enum vp_type_def { vp_void, vp_i32, vp_i64, vp_f32, vp_f64 } vp_type;
-
 /* used by most files */
 #include <stdlib.h>
 #include <string.h>
 #include <stdint.h>
+
+/* mostly not useful */
+#include "viper.h"
+
+/* vp_type */
+typedef uint8_t vp_type;
+enum vp_type_enum { vp_void, vp_i32, vp_i64, vp_f32, vp_f64 };
 
 /* memory management macros */
 #define vmalloc(size) malloc(size)
