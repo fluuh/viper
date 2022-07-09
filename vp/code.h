@@ -10,7 +10,9 @@
 #include "common.h"
 
 /* bytecode */
-#define BCDEF(_) _(NOP, "nop", "")
+#define BCDEF(_) \
+	_(NOP, "nop", "") \
+	_(END, "end", "")
 
 #define OPCODE(ENUM, NAME, TYPE) BC_##ENUM,
 typedef enum vp_bc_def {
