@@ -94,7 +94,7 @@ typedef struct vpe_nest_def {
 
 vpe_context *vpe_context_create(void);
 void vpe_info_add(vpe_context *cx, const char *key, const char *val);
-vpe_function *vpe_function_create(vpe_context *cx);
+vpe_function *vpe_function_create(vpe_context *cx, vpe_signature *sig);
 
 vpe_block *vpe_block_create(vpe_function *func);
 

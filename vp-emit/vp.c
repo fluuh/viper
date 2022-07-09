@@ -32,9 +32,10 @@ vpe_signature *vpe_sig_create(int n_rets, int n_args, vp_type args[])
 	return sig;
 }
 
-vpe_function *vpe_function_create(vpe_context *cx)
+vpe_function *vpe_function_create(vpe_context *cx, vpe_signature *sig)
 {
 	vpe_function *func = vmalloc(sizeof(*func));
+	func->sig = sig;
 	if(cx->last_func == NULL) {
 		func->id = 0;
 	} else {
@@ -94,6 +95,7 @@ static vpe_function *func_free(vpe_function *func)
 		block = block_free(block);
 	}
 	vpe_function *prev = func->prev;
+	vfree(func->sig);
 	vfree(func);
 	return prev;
 }

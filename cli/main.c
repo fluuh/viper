@@ -11,7 +11,8 @@
 int main(int argc, char **argv)
 {
 	vpe_context *cx = vpe_context_create();
-	vpe_insn_nop(vpe_function_create(cx));
+	vpe_signature *sig = vpe_sig_create(0, 0, NULL);
+	vpe_insn_nop(vpe_function_create(cx, sig));
 	vpe_info_add(cx, "AUTHORS", "Me <me@example.org>");
 	vpe_context_build(cx);
 	return 0;
