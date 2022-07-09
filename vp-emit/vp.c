@@ -4,13 +4,23 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-#include "vp.h"
+#include "build.h"
 
 vpe_context *vpe_context_create()
 {
 	vpe_context *cx = vmalloc(sizeof(*cx));
 	cx->last_func = NULL;
+	cx->info = NULL;
 	return cx;
+}
+
+void vpe_info_add(vpe_context *cx, const char *key, const char *val)
+{
+	vpe_info *info = vmalloc(sizeof(*info));
+	info->key = key;
+	info->val = val;
+	info->next = cx->info;
+	cx->info = info;
 }
 
 vpe_function *vpe_function_create(vpe_context *cx)
@@ -81,6 +91,13 @@ static vpe_function *func_free(vpe_function *func)
 
 void vpe_context_free(vpe_context *cx)
 {
+	/* free info */
+	vpe_info *info = cx->info;
+	while(info != NULL) {
+		vpe_info *next = info->next;
+		vfree(info);
+		info = next;
+	}
 	/* free functions */
 	vpe_function *func = cx->last_func;
 	while(func != NULL) {
@@ -91,7 +108,7 @@ void vpe_context_free(vpe_context *cx)
 
 vpe_nest *vpe_context_build(vpe_context *cx)
 {
-	/* TODO: build cx */
+	vpe_nest *nest = cx_build(cx);
 	vpe_context_free(cx);
-	return NULL;
+	return nest;
 }

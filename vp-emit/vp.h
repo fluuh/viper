@@ -66,7 +66,15 @@ struct vpe_function_def {
 	vpe_code code;
 };
 
+typedef struct vpe_info_def vpe_info;
+struct vpe_info_def {
+	vpe_info *next;
+	const char *key;
+	const char *val;
+};
+
 typedef struct vpe_context_def {
+	vpe_info *info;
 	vpe_function *last_func;
 } vpe_context;
 
@@ -76,6 +84,7 @@ typedef struct vpe_nest_def {
 } vpe_nest;
 
 vpe_context *vpe_context_create(void);
+void vpe_info_add(vpe_context *cx, const char *key, const char *val);
 vpe_function *vpe_function_create(vpe_context *cx);
 
 vpe_block *vpe_block_create(vpe_function *func);
