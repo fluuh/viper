@@ -58,9 +58,18 @@ typedef struct vpe_code_def {
 	vpe_block *last;
 } vpe_code;
 
+typedef struct vpe_signature_def {
+	int n_rets;
+	int n_args;
+	vp_type types[];
+} vpe_signature;
+
+vpe_signature *vpe_sig_create(int n_rets, int n_args, vp_type args[]);
+
 /* implementing this as a linked list is fine as
  * we'll never have to get an index */
 struct vpe_function_def {
+	vpe_signature *sig;
 	uint32_t id;
 	vpe_function *prev;
 	vpe_code code;

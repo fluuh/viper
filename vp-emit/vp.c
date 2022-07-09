@@ -23,6 +23,15 @@ void vpe_info_add(vpe_context *cx, const char *key, const char *val)
 	cx->info = info;
 }
 
+vpe_signature *vpe_sig_create(int n_rets, int n_args, vp_type args[])
+{
+	vpe_signature *sig = vmalloc(sizeof(*sig) + n_rets + n_args);
+	sig->n_rets = n_rets;
+	sig->n_args = n_args;
+	memcpy(sig->types, args, n_rets + n_args);
+	return sig;
+}
+
 vpe_function *vpe_function_create(vpe_context *cx)
 {
 	vpe_function *func = vmalloc(sizeof(*func));
