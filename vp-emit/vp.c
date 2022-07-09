@@ -42,6 +42,7 @@ vpe_function *vpe_function_create(vpe_context *cx, vpe_signature *sig)
 		func->id = cx->last_func->id + 1;
 	}
 	func->prev = cx->last_func;
+	func->code.n_regs = 0;
 	func->code.n_blocks = 0;
 	func->code.last = NULL;
 	func->code.first = NULL;

@@ -53,6 +53,7 @@ typedef struct vpe_label_def {
 } vpe_label;
 
 typedef struct vpe_code_def {
+	int n_regs;
 	int n_blocks;
 	vpe_block *first;
 	vpe_block *last;
