@@ -4,8 +4,8 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-#ifndef VP_DEF_H_
-#define VP_DEF_H_
+#ifndef VP_LD_DEF_H_
+#define VP_LD_DEF_H_
 
 /* definitions for the loader, etc. */
 
