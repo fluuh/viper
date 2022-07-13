@@ -16,12 +16,12 @@ static void print_version(void)
 
 int main(int argc, char **argv)
 {
-	print_version();
 	vpe_context *cx = vpe_context_create();
 	vpe_signature *sig = vpe_sig_create(0, 0, NULL);
-	vpe_insn_nop(vpe_function_create(cx, sig));
+	vpe_function *func = vpe_function_create(cx, sig);
+	vpe_insn_add_u4(func, 2, 0, 1); /* should probably initialize these :X */
 	vpe_info_add(cx, "AUTHORS", "Me <me@example.org>");
 	vpe_nest *nest = vpe_context_build(cx);
-	// fwrite(nest->nest, 1, nest->len, stdout);
+	fwrite(nest->nest, 1, nest->len, stdout);
 	return 0;
 }

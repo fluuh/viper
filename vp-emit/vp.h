@@ -19,20 +19,21 @@ extern const char *const vpe_bc_type[];
  * but that isn't really useful to me. */
 
 typedef struct vpe_function_def vpe_function;
+typedef int vpe_reg;
 
-typedef union vpe_arg_def {
+typedef union vpe_op_def {
 	vpe_function *fn;
 	/* vpe_obj *obj; */
-	int reg;
+	vpe_reg reg;
 	long long num;
-} vpe_arg;
+} vpe_op;
 
 typedef struct vpe_insn_def vpe_insn;
 struct vpe_insn_def {
 	vpe_insn *next;
 	vp_bc code;
 	int n_ops;
-	vpe_arg ops[];
+	vpe_op ops[];
 };
 
 /* a block will automatically be created when emitting
