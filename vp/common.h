@@ -18,13 +18,24 @@
 /* vp_type */
 typedef uint8_t vp_type;
 enum vp_type_enum {
-	vp_void,
-	vp_i32,
-	vp_i64,
-	vp_f32,
-	vp_f64,
-	vp_isize, /* pointer? */
+ vp_void,
+ vp_i32,
+ vp_i64,
+ vp_f32,
+ vp_f64,
+ vp_isize, /* pointer? */
 };
+
+typedef int32_t vp_s32_t;
+typedef int64_t vp_s64_t;
+typedef uint32_t vp_u32_t;
+typedef uint64_t vp_u64_t;
+typedef float vp_f32_t;
+typedef double vp_f64_t;
+/* vp_isize has to be the pointer size, not size_t */
+typedef intptr_t vp_ssize_t;
+typedef uintptr_t vp_usize_t;
+
 
 /* memory management macros */
 #define vmalloc(size) malloc(size)
