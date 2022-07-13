@@ -14,7 +14,7 @@
 	_(NOP, "nop", "")                                                      \
 	_(END, "end", "")                                                      \
 	_(RETVOID, "retvoid", "")                                              \
-	_(HALT, "halt", "")                                                    \
+	_(HALT, "halt", "w")                                                   \
 	_(BREAK, "break", "")                                                  \
 	_(ADD_U4, "add.i32", "Www")                                            \
 	_(ADD_S4, "iadd.i32", "Www")                                           \
