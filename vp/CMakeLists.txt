@@ -6,5 +6,6 @@ target_sources(viper PRIVATE
 	viper.c
 	rt/file.c
 	rt/mem.c
-	rt/state.c)
+	rt/state.c
+	rt/vm/vm.c)
 
