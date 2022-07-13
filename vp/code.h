@@ -15,7 +15,16 @@
 	_(END, "end", "")                                                      \
 	_(RETVOID, "retvoid", "")                                              \
 	_(HALT, "halt", "")                                                    \
-	_(BREAK, "break", "")
+	_(BREAK, "break", "")                                                  \
+	_(ADD_U4, "add.i32", "Www")                                            \
+	_(ADD_S4, "iadd.i32", "Www")                                           \
+	_(ADD_U8, "add.i64", "Lll")                                            \
+	_(ADD_S8, "iadd.i64", "Lll")                                           \
+	_(SUB_U4, "sub.i32", "Www")                                            \
+	_(SUB_S4, "isub.i32", "Www")                                           \
+	_(SUB_U8, "sub.i64", "Lll")                                            \
+	_(SUB_S8, "isub.i64", "Lll")                                           \
+	_(PRINT, "print", "Sss")
 
 #define OPCODE(ENUM, NAME, TYPE) BC_##ENUM,
 typedef enum vp_bc_def {
