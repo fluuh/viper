@@ -20,6 +20,8 @@ const char *const vp_bc_name[] = {BCDEF(OPCODE)};
  * - "l" - register (i64)
  * - "L" - destination register (i64)
  * - "r" - typed register
+ * - "s" - register (isize)
+ * - "S" - destination register (isize)
  * - "R" - typed destination register
  * - "t" - type
  * - "4" - word (i32)

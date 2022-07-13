@@ -23,7 +23,7 @@ enum vp_type_enum {
 	vp_i64,
 	vp_f32,
 	vp_f64,
-	vp_size, /* pointer? */
+	vp_isize, /* pointer? */
 };
 
 /* memory management macros */
