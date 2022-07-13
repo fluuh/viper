@@ -107,7 +107,7 @@ static void builder_free(builder *b)
 
 static void emit_section(vpe_nest *nest, emitter *em, char section)
 {
-	if(em->len == 0) {
+	if (em->len == 0) {
 		return;
 	}
 	static uint8_t section_start = VPLD_SECTION_START;
@@ -181,8 +181,8 @@ static void insert_insn(builder *b, vpe_insn *insn)
 {
 	uint8_t code = (uint8_t)insn->code;
 	emitter_write(b->code, &code, 1);
-	for(int i = 0; i < vpe_bc_length[code]; i++) {
-		switch(vpe_bc_type[code][i]) {
+	for (int i = 0; i < vpe_bc_length[code]; i++) {
+		switch (vpe_bc_type[code][i]) {
 		default:
 			/* oh no */
 			break;
@@ -192,8 +192,7 @@ static void insert_insn(builder *b, vpe_insn *insn)
 
 static void insert_block(builder *b, vpe_block *block)
 {
-	for(vpe_insn *insn = block->first; insn != NULL; insn = insn->next)
-	{
+	for (vpe_insn *insn = block->first; insn != NULL; insn = insn->next) {
 		insert_insn(b, insn);
 	}
 }
@@ -209,7 +208,8 @@ static void insert_func(builder *b, vpe_function *func)
 	uint32_t code_size = func->code.last->pos + func->code.last->size + 1;
 	emitter_write(b->code, &code_size, 4);
 	emitter_write(b->code, &func->code.n_regs, 4);
-	for(vpe_block *block = func->code.first; block != NULL; block = block->next) {
+	for (vpe_block *block = func->code.first; block != NULL;
+	     block = block->next) {
 		insert_block(b, block);
 	}
 	/* end */
@@ -221,30 +221,22 @@ static vpe_nest *cx_build(vpe_context *cx)
 {
 	builder *b = builder_create();
 	/* info */
-	for(vpe_info *info = cx->info; info != NULL; info = info->next) {
+	for (vpe_info *info = cx->info; info != NULL; info = info->next) {
 		insert_info(b, info->key, info->val);
 	}
 	/* functions */
-	for(vpe_function *func = cx->last_func; func != NULL; func = func->prev) {
+	for (vpe_function *func = cx->last_func; func != NULL;
+	     func = func->prev) {
 		insert_func(b, func);
 	}
 	/* emit */
 	size_t len = 9; /* header and end */
-	emitter *ems[] = {
-		b->code,
-		b->data,
-		b->exports,
-		b->func,
-		b->info,
-		b->obj,
-		b->str,
-		b->type,
-		NULL
-	};
+	emitter *ems[] = {b->code, b->data, b->exports, b->func, b->info,
+	                  b->obj,  b->str,  b->type,    NULL};
 	/* get length */
-	for(int i = 0; ems[i] != NULL; i++) {
+	for (int i = 0; ems[i] != NULL; i++) {
 		emitter *em = ems[i];
-		if(em->len == 0) {
+		if (em->len == 0) {
 			continue;
 		}
 		/* section start and type */

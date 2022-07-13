@@ -10,11 +10,11 @@
 #include "common.h"
 
 /* bytecode */
-#define BCDEF(_) \
-	_(NOP, "nop", "") \
-	_(END, "end", "") \
-	_(RETVOID, "retvoid", "") \
-	_(HALT, "halt", "") \
+#define BCDEF(_)                                                               \
+	_(NOP, "nop", "")                                                      \
+	_(END, "end", "")                                                      \
+	_(RETVOID, "retvoid", "")                                              \
+	_(HALT, "halt", "")                                                    \
 	_(BREAK, "break", "")
 
 #define OPCODE(ENUM, NAME, TYPE) BC_##ENUM,

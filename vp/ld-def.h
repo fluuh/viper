@@ -9,7 +9,10 @@
 
 /* definitions for the loader, etc. */
 
-#define VPLD_MAGIC "\x7f""VP""\x01"
+#define VPLD_MAGIC                                                             \
+	"\x7f"                                                                 \
+	"VP"                                                                   \
+	"\x01"
 #define VPLD_VERSION 0
 #define VPLD_ELEM_START 0x0A
 #define VPLD_SECTION_START 0x02

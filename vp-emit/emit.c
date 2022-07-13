@@ -8,22 +8,18 @@
 
 /* we can't depend on the definitions in viper */
 
-#define OPCODE(ENUM, NAME, TYPE) sizeof(TYPE) ,
-const unsigned char vpe_bc_length[] = {
-	BCDEF(OPCODE)
-};
+#define OPCODE(ENUM, NAME, TYPE) sizeof(TYPE),
+const unsigned char vpe_bc_length[] = {BCDEF(OPCODE)};
 #undef OPCODE
 
-#define OPCODE(ENUM, NAME, TYPE) TYPE ,
-const char *const vpe_bc_type[] = {
-	BCDEF(OPCODE)
-};
+#define OPCODE(ENUM, NAME, TYPE) TYPE,
+const char *const vpe_bc_type[] = {BCDEF(OPCODE)};
 #undef OPCODE
 
 static vpe_insn *create_insn(vp_bc code)
 {
-	vpe_insn *insn = vmalloc(sizeof(*insn) +
-		                 sizeof(*insn->ops) * vpe_bc_length[code]);
+	vpe_insn *insn =
+	    vmalloc(sizeof(*insn) + sizeof(*insn->ops) * vpe_bc_length[code]);
 	insn->code = code;
 	insn->n_ops = vpe_bc_length[code];
 	insn->next = NULL;
@@ -34,7 +30,7 @@ static vpe_insn *emit(vpe_function *func, int code)
 {
 	vpe_block *block = func->code.last;
 	vpe_insn *insn = create_insn(code);
-	if(block->first == NULL) {
+	if (block->first == NULL) {
 		block->first = insn;
 	} else {
 		block->last->next = insn;

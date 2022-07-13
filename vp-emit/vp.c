@@ -37,7 +37,7 @@ vpe_function *vpe_function_create(vpe_context *cx, vpe_signature *sig)
 {
 	vpe_function *func = vmalloc(sizeof(*func));
 	func->sig = sig;
-	if(cx->last_func == NULL) {
+	if (cx->last_func == NULL) {
 		cx->first_func = func;
 		func->id = 0;
 	} else {
@@ -59,7 +59,7 @@ vpe_block *vpe_block_create(vpe_function *func)
 	vpe_block *block = vmalloc(sizeof(*block));
 	block->first = NULL;
 	block->last = NULL;
-	if(func->code.last == NULL) {
+	if (func->code.last == NULL) {
 		func->code.first = block;
 		block->prev = NULL;
 		block->pos = 0;
@@ -79,7 +79,7 @@ vpe_block *vpe_block_create(vpe_function *func)
 static vpe_block *block_free(vpe_block *block)
 {
 	vpe_insn *insn = block->first;
-	while(insn != NULL) {
+	while (insn != NULL) {
 		vpe_insn *next = insn->next;
 		vfree(insn);
 		insn = next;
@@ -94,7 +94,7 @@ static vpe_function *func_free(vpe_function *func)
 {
 	/* free blocks */
 	vpe_block *block = func->code.last;
-	while(block != NULL) {
+	while (block != NULL) {
 		block = block_free(block);
 	}
 	vpe_function *prev = func->prev;
@@ -107,14 +107,14 @@ void vpe_context_free(vpe_context *cx)
 {
 	/* free info */
 	vpe_info *info = cx->info;
-	while(info != NULL) {
+	while (info != NULL) {
 		vpe_info *next = info->next;
 		vfree(info);
 		info = next;
 	}
 	/* free functions */
 	vpe_function *func = cx->last_func;
-	while(func != NULL) {
+	while (func != NULL) {
 		func = func_free(func);
 	}
 	vfree(cx);
