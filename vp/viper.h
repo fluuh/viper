@@ -7,7 +7,8 @@
 #ifndef VIPER_H_
 #define VIPER_H_
 
-#define VP_VERSION "Viper 0.1.0"
+#define VP_PROGNAME "viper"
+#define VP_VERSION "vp0.1.0"
 #define VP_VER_NUM 100 /* 00.01.00 */
 
 #define VP_VER_SYM vp_ver_0_1_0

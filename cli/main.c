@@ -6,15 +6,22 @@
 
 #include <stdio.h>
 
+#include <vp/viper.h>
 #include <vp-emit/emit.h>
+
+static void print_version(void)
+{
+	printf("%s ver %s\n", VP_PROGNAME, VP_VERSION);
+}
 
 int main(int argc, char **argv)
 {
+	print_version();
 	vpe_context *cx = vpe_context_create();
 	vpe_signature *sig = vpe_sig_create(0, 0, NULL);
 	vpe_insn_nop(vpe_function_create(cx, sig));
 	vpe_info_add(cx, "AUTHORS", "Me <me@example.org>");
 	vpe_nest *nest = vpe_context_build(cx);
-	fwrite(nest->nest, 1, nest->len, stdout);
+	// fwrite(nest->nest, 1, nest->len, stdout);
 	return 0;
 }
