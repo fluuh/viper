@@ -17,7 +17,14 @@
 
 /* vp_type */
 typedef uint8_t vp_type;
-enum vp_type_enum { vp_void, vp_i32, vp_i64, vp_f32, vp_f64 };
+enum vp_type_enum {
+	vp_void,
+	vp_i32,
+	vp_i64,
+	vp_f32,
+	vp_f64,
+	vp_size, /* pointer? */
+};
 
 /* memory management macros */
 #define vmalloc(size) malloc(size)
