@@ -11,12 +11,12 @@
 #include "mem.h"
 
 typedef struct vp_state_def {
-	vp_nest *nest;
 	vp_mem *mem;
 	int n_objs;
 	vp_ptr *obj;
 } vp_state;
 
+/* nest is only used for object lookup */
 vp_state *vp_state_create(vp_nest *nest);
 void vp_state_free(vp_state *state);
 

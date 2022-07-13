@@ -9,7 +9,6 @@
 vp_state *vp_state_create(vp_nest *nest)
 {
 	vp_state *s = vmalloc(sizeof(*s));
-	s->nest = nest;
 	s->mem = vp_mem_create(0);
 	s->n_objs = nest->obj.len;
 	s->obj = vmalloc(sizeof(*s->obj) * s->n_objs);
