@@ -18,10 +18,15 @@ vpe_insn *vpe_insn_end(vpe_function *func);
 vpe_insn *vpe_insn_retvoid(vpe_function *func);
 vpe_insn *vpe_insn_halt(vpe_function *func, vpe_reg op0);
 vpe_insn *vpe_insn_break(vpe_function *func);
-vpe_insn *vpe_insn_add_u4(vpe_function *func, vpe_reg dst, vpe_reg op0, vpe_reg op1);
-vpe_insn *vpe_insn_add_s4(vpe_function *func, vpe_reg dst, vpe_reg op0, vpe_reg op1);
-vpe_insn *vpe_insn_add_u8(vpe_function *func, vpe_reg dst, vpe_reg op0, vpe_reg op1);
-vpe_insn *vpe_insn_add_s8(vpe_function *func, vpe_reg dst, vpe_reg op0, vpe_reg op1);
-vpe_insn *vpe_insn_print(vpe_function *func, vpe_reg op0, vpe_reg op1, vpe_reg op2);
+vpe_insn *vpe_insn_add_u4(vpe_function *func, vpe_reg dst, vpe_reg op0,
+                          vpe_reg op1);
+vpe_insn *vpe_insn_add_s4(vpe_function *func, vpe_reg dst, vpe_reg op0,
+                          vpe_reg op1);
+vpe_insn *vpe_insn_add_u8(vpe_function *func, vpe_reg dst, vpe_reg op0,
+                          vpe_reg op1);
+vpe_insn *vpe_insn_add_s8(vpe_function *func, vpe_reg dst, vpe_reg op0,
+                          vpe_reg op1);
+vpe_insn *vpe_insn_print(vpe_function *func, vpe_reg op0, vpe_reg op1,
+                         vpe_reg op2);
 
 #endif

@@ -66,7 +66,8 @@ vpe_insn *vpe_insn_break(vpe_function *func)
 	return emit(func, BC_BREAK);
 }
 
-static vpe_insn *vpe_insn_triple(vpe_function *func, int code, vpe_reg dst, vpe_reg op0, vpe_reg op1)
+static vpe_insn *vpe_insn_triple(vpe_function *func, int code, vpe_reg dst,
+                                 vpe_reg op0, vpe_reg op1)
 {
 	vpe_insn *insn = emit(func, code);
 	insn->ops[0].reg = dst;
@@ -75,27 +76,32 @@ static vpe_insn *vpe_insn_triple(vpe_function *func, int code, vpe_reg dst, vpe_
 	return insn;
 }
 
-vpe_insn *vpe_insn_add_u4(vpe_function *func, vpe_reg dst, vpe_reg op0, vpe_reg op1)
+vpe_insn *vpe_insn_add_u4(vpe_function *func, vpe_reg dst, vpe_reg op0,
+                          vpe_reg op1)
 {
 	return vpe_insn_triple(func, BC_ADD_U4, dst, op0, op1);
 }
 
-vpe_insn *vpe_insn_add_s4(vpe_function *func, vpe_reg dst, vpe_reg op0, vpe_reg op1)
+vpe_insn *vpe_insn_add_s4(vpe_function *func, vpe_reg dst, vpe_reg op0,
+                          vpe_reg op1)
 {
 	return vpe_insn_triple(func, BC_ADD_S4, dst, op0, op1);
 }
 
-vpe_insn *vpe_insn_add_u8(vpe_function *func, vpe_reg dst, vpe_reg op0, vpe_reg op1)
+vpe_insn *vpe_insn_add_u8(vpe_function *func, vpe_reg dst, vpe_reg op0,
+                          vpe_reg op1)
 {
 	return vpe_insn_triple(func, BC_ADD_U8, dst, op0, op1);
 }
 
-vpe_insn *vpe_insn_add_s8(vpe_function *func, vpe_reg dst, vpe_reg op0, vpe_reg op1)
+vpe_insn *vpe_insn_add_s8(vpe_function *func, vpe_reg dst, vpe_reg op0,
+                          vpe_reg op1)
 {
 	return vpe_insn_triple(func, BC_ADD_S8, dst, op0, op1);
 }
 
-vpe_insn *vpe_insn_print(vpe_function *func, vpe_reg op0, vpe_reg op1, vpe_reg op2)
+vpe_insn *vpe_insn_print(vpe_function *func, vpe_reg op0, vpe_reg op1,
+                         vpe_reg op2)
 {
 	vpe_insn *insn = emit(func, BC_PRINT);
 	insn->ops[0].reg = op0;

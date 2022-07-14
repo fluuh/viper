@@ -183,16 +183,16 @@ static void insert_insn(builder *b, vpe_insn *insn)
 	emitter_write(b->code, &code, 1);
 	for (int i = 0; i < vpe_bc_length[code]; i++) {
 		switch (vpe_bc_type[code][i]) {
-		case('f'):
-		case('F'):
-		case('d'):
-		case('D'):
-		case('w'):
-		case('W'):
-		case('l'):
-		case('L'):
-		case('s'):
-		case('S'):
+		case ('f'):
+		case ('F'):
+		case ('d'):
+		case ('D'):
+		case ('w'):
+		case ('W'):
+		case ('l'):
+		case ('L'):
+		case ('s'):
+		case ('S'):
 			/* register */
 			unsigned char reg = (unsigned char)insn->ops[i].reg;
 			emitter_write(b->code, &reg, 1);

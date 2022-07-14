@@ -55,7 +55,8 @@ static vm_frame *cf_push(vp_vm *vm, vp_func *fn, int dst, vm_reg *args,
                          int n_args)
 {
 	/* check if stack has enough space */
-	if (vm->frame != NULL && vm->sp + vm->frame->size + fn->code->n_reg >= vm->stack_size) {
+	if (vm->frame != NULL &&
+	    vm->sp + vm->frame->size + fn->code->n_reg >= vm->stack_size) {
 		/* TODO: resize stack */
 		return NULL;
 	}
