@@ -14,6 +14,7 @@ static vp_vec *vec_init(vp_vec *vec, size_t init)
 	}
 	vec->cap = init;
 	vec->len = 0;
+	vec->data = vmalloc(sizeof(*vec->data) * init);
 	return vec;
 }
 
