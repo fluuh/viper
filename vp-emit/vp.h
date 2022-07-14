@@ -98,6 +98,8 @@ typedef struct vpe_nest_def {
 	char *nest;
 } vpe_nest;
 
+void vpe_nest_free(vpe_nest *nest);
+
 vpe_context *vpe_context_create(void);
 void vpe_info_add(vpe_context *cx, const char *key, const char *val);
 vpe_function *vpe_function_create(vpe_context *cx, vpe_signature *sig);

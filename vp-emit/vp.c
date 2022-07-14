@@ -6,6 +6,12 @@
 
 #include "build.h"
 
+void vpe_nest_free(vpe_nest *nest)
+{
+	vfree(nest->nest);
+	vfree(nest);
+}
+
 vpe_context *vpe_context_create()
 {
 	vpe_context *cx = vmalloc(sizeof(*cx));
