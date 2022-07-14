@@ -14,6 +14,9 @@ static int dispatch(vp_vm *vm);
 vp_vm *vp_vm_create(vp_state *s, size_t stack_size)
 {
 	vp_vm *vm = vmalloc(sizeof(*vm));
+	if (stack_size == 0) {
+		stack_size = VM_STACK_SIZE;
+	}
 	vm->state = s;
 	vm->frame = NULL;
 	vm->stack_size = stack_size;
@@ -52,7 +55,7 @@ static vm_frame *cf_push(vp_vm *vm, vp_func *fn, int dst, vm_reg *args,
                          int n_args)
 {
 	/* check if stack has enough space */
-	if (vm->sp + vm->frame->size + fn->code->n_reg >= vm->stack_size) {
+	if (vm->frame != NULL && vm->sp + vm->frame->size + fn->code->n_reg >= vm->stack_size) {
 		/* TODO: resize stack */
 		return NULL;
 	}
@@ -63,7 +66,11 @@ static vm_frame *cf_push(vp_vm *vm, vp_func *fn, int dst, vm_reg *args,
 	frame->ip = fn->code->ip;
 	frame->func = fn;
 	frame->size = fn->code->n_reg;
-	frame->start = vm->sp + vm->frame->size;
+	if (vm->frame == NULL) {
+		frame->start = 0;
+	} else {
+		frame->start = vm->sp + vm->frame->size;
+	}
 	vm->sp = frame->start;
 	vm->frame = frame;
 	/* copy arguments */
@@ -133,30 +140,34 @@ static int dispatch(vp_vm *vm)
 	vm_case(BREAK) : vm_break;
 	vm_case(ADD_U4) :
 	{
+		uint32_t *dst = VM_REG(vm, IMM());
 		uint32_t a = *(uint32_t *)VM_REG(vm, IMM());
 		uint32_t b = *(uint32_t *)VM_REG(vm, IMM());
-		*(uint32_t *)VM_REG(vm, IMM()) = a + b;
+		*dst = a + b;
 		vm_break;
 	}
 	vm_case(ADD_S4) :
 	{
+		int32_t *dst = VM_REG(vm, IMM());
 		int32_t a = *(int32_t *)VM_REG(vm, IMM());
 		int32_t b = *(int32_t *)VM_REG(vm, IMM());
-		*(int32_t *)VM_REG(vm, IMM()) = a + b;
+		*dst = a + b;
 		vm_break;
 	}
 	vm_case(ADD_U8) :
 	{
+		uint64_t *dst = VM_REG(vm, IMM());
 		uint64_t a = *(uint64_t *)VM_REG(vm, IMM());
 		uint64_t b = *(uint64_t *)VM_REG(vm, IMM());
-		*(uint64_t *)VM_REG(vm, IMM()) = a + b;
+		*dst = a + b;
 		vm_break;
 	}
 	vm_case(ADD_S8) :
 	{
+		int64_t *dst = VM_REG(vm, IMM());
 		int64_t a = *(int64_t *)VM_REG(vm, IMM());
 		int64_t b = *(int64_t *)VM_REG(vm, IMM());
-		*(int64_t *)VM_REG(vm, IMM()) = a + b;
+		*dst = a + b;
 		vm_break;
 	}
 	vm_case(PRINT) :

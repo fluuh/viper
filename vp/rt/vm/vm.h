@@ -39,4 +39,6 @@ void vp_vm_destroy(vp_vm *vm);
 #define VM_REG_GET(vm, i) (*(vm_reg *)VM_REG(vm, i))
 #define VM_REG_SET(vm, i, val) (vm->stack[vm->sp + i] = val)
 
+#define VM_STACK_SIZE 65536
+
 #endif
